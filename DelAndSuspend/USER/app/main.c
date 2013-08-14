@@ -174,7 +174,7 @@ void TaskStart(void * pdata)
 	OSTaskCreate(TaskLed, (void * )0, (OS_STK *)&TASK_LED_STK[LED_STK_SIZE-1], LED_TASK_Prio);
 	OSTaskCreate(TaskLed1, (void * )0, (OS_STK *)&TASK_LED1_STK[LED1_STK_SIZE-1], LED1_TASK_Prio);
     OSTaskCreate(TaskLed2, (void * )0, (OS_STK *)&TASK_LED2_STK[LED2_STK_SIZE-1], LED2_TASK_Prio);
-    OSTaskCreate(TaskLed3, (void * )0, (OS_STK *)&TASK_LED3_STK[LED2_STK_SIZE-1], LED3_TASK_Prio);
+ //   OSTaskCreate(TaskLed3, (void * )0, (OS_STK *)&TASK_LED3_STK[LED2_STK_SIZE-1], LED3_TASK_Prio);
 // 	OSTaskCreate(TaskLCD, (void * )0, (OS_STK *)&TASK_LCD_STK[LCD_STK_SIZE-1], LCD_TASK_Prio);
 //  	OSTaskCreate(TaskKey, (void * )0, (OS_STK *)&TASK_KEY_STK[KEY_STK_SIZE-1], KEY_TASK_Prio);
 // 	OSTaskCreate(TaskTouch, (void * )0, (OS_STK *)&TASK_TOUCH_STK[TOUCH_STK_SIZE-1], TOUCH_TASK_Prio);

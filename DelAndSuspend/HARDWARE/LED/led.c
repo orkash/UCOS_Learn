@@ -30,12 +30,12 @@ void LED_Init(void)
 // GPIO_ResetBits(GPIOD,GPIO_Pin_2);						 //PD.2 输出高
 
 
- RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);   //使能PD端口时钟
+ RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);   //使能PD端口时钟
 
- GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_7;	    		 //LED1-->PD.4 端口配置
+ GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2;	    		 //LED1-->PD.4 端口配置
  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
- GPIO_Init(GPIOD, &GPIO_InitStructure);	
- GPIO_ResetBits(GPIOD,GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_7); 						 //PD.4 输出高 
+ GPIO_Init(GPIOA, &GPIO_InitStructure);	
+ GPIO_ResetBits(GPIOA,GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2); 						 //PD.4 输出高 
 }
  

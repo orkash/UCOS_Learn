@@ -7,9 +7,9 @@
 //2012/2/27
 
 //LED端口定义
-#define LED0 PDout(2)// PD2
-#define LED1 PDout(3)// PD3
-#define LED2 PDout(4)// PD4	
+#define LED0 PAout(0)// PD2
+#define LED1 PAout(1)// PD3
+#define LED2 PAout(2)// PD4	
 #define LED3 PDout(7)// PD7	
 
 void LED_Init(void);//初始化
