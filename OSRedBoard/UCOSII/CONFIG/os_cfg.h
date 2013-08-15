@@ -96,7 +96,7 @@ uC/OS-II实时控制内核
 #define OS_SCHED_LOCK_EN          1    //允许生成OSSchedLock() and OSSchedUnlock()       
 
 
-#define OS_TICKS_PER_SEC        1000   //设置每秒的节拍数目                       
+#define OS_TICKS_PER_SEC          100  //设置每秒的节拍数目                       
 
 
 //typedef INT16U             OS_FLAGS;   // Date type for event flag bits (8, 16 or 32 bits)             

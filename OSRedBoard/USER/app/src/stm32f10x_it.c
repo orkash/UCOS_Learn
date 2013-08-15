@@ -23,6 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h" 
+#include "user_cfg.h"
 
 
  
@@ -74,11 +75,18 @@ void DebugMon_Handler(void)
 void PendSV_Handler(void)
 {
 }
- 
+*/ 
+#ifdef OS_CRITICAL_METHOD 	//如果OS_CRITICAL_METHOD定义了,说明使用ucosII了.
+//systick中断服务函数,使用ucos时用到
 void SysTick_Handler(void)
-{
+{				   
+	OSIntEnter();		//进入中断
+    OSTimeTick();       //调用ucos的时钟服务程序               
+    OSIntExit();        //触发任务切换软中断
 }
-*/
+#endif
+
+
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */
 /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
