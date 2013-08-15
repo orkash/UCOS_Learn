@@ -1,6 +1,7 @@
 #ifndef __FATTESTER_H
 #define __FATTESTER_H 			   
-#include "sys.h"   
+//#include "sys.h" 
+#include "stm32f10x.h"
 #include "ff.h"
 
  

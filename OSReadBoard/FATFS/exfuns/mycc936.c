@@ -1,6 +1,6 @@
 #include "ff.h"   
-#include "fontupd.h"
-#include "flash.h"   
+//#include "fontupd.h"
+//#include "flash.h"   
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //Mini STM32开发板		   
@@ -30,7 +30,7 @@ WCHAR ff_convert (	/* Converted code, 0 means conversion error */
 	{
  		if(dir)	//GBK 2 UNICODE
 		{
-			gbk2uni_offset=ftinfo.ugbksize/2;	 
+//			gbk2uni_offset=ftinfo.ugbksize/2;	 
 		}else	//UNICODE 2 GBK  
 		{   
 			gbk2uni_offset=0;
@@ -38,13 +38,13 @@ WCHAR ff_convert (	/* Converted code, 0 means conversion error */
 		//if(UK_FLAG)//存在 		    
 		{
 		 
-			hi=ftinfo.ugbksize/2;//对半开.
+//			hi=ftinfo.ugbksize/2;//对半开.
 			hi =hi / 4 - 1;
 			li = 0;
 			for (n = 16; n; n--)
 			{
 				i = li + (hi - li) / 2;	
-				SPI_Flash_Read((u8*)&t,ftinfo.ugbkaddr+i*4+gbk2uni_offset,4);//读出8个字节  
+//				SPI_Flash_Read((u8*)&t,ftinfo.ugbkaddr+i*4+gbk2uni_offset,4);//读出8个字节  
 				if (src == t[0]) break;
 				if (src > t[0])li = i;  
 				else hi = i;    

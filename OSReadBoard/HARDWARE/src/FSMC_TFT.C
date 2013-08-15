@@ -15,6 +15,13 @@
 #include "drivers.h"
 
 u16 DestTop_Color_Buffer[14] = {WHITE,BLACK,BLUE,BRED,GRED,GBLUE,RED,MAGENTA,GREEN,CYAN,YELLOW,BROWN,BRRED,GRAY};
+/********************************************************************************************
+*  名    称：void TFT_FSMC_GPIO_Configuration(void)
+*  功    能：TFT屏幕IO口配置函数
+*  入口参数：无
+*  出口参数：无
+*  说    明：
+********************************************************************************************/
 void TFT_FSMC_GPIO_Configuration(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -32,7 +39,13 @@ void TFT_FSMC_GPIO_Configuration(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	
 	GPIO_Init(GPIOE,&GPIO_InitStructure);
 }
-
+/********************************************************************************************
+*  名    称：void TFT_FSMC_Configuration(void)
+*  功    能：TFT屏幕 FSMC功能配置函数
+*  入口参数：无
+*  出口参数：无
+*  说    明：
+********************************************************************************************/
 void TFT_FSMC_Configuration(void)
 {
 	FSMC_NORSRAMInitTypeDef  FSMC_NORSRAMInitStructure;
@@ -246,8 +259,8 @@ void TFT_SetPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
 *  名    称：void TFT_DrawBigPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
 *  功    能：在屏幕上指定位置画一个图形点
 *  入口参数：Point_x    		横轴坐标
-*			 Point_y    		纵轴坐标
-*			 Point_Color  		图形颜色
+*			 			 Point_y    		纵轴坐标
+*			 			 Point_Color  		图形颜色
 *  出口参数：无
 *  说    明：
 ****************************************************************************************************/
@@ -266,11 +279,11 @@ void TFT_DrawBigPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
 * 功    能：TFT屏幕上指定位置开始 显示任意大小格式的字符
 * 入口参数：Char_PX  		X轴起始坐标
 *           Char_PY			Y轴起始坐标
-*			Put_Char        需要显示的字符
-* 			Char_Size		字符大小   Character_16_24     Character_16_32
-*			CharColor       字符颜色
-*			BkColor			背景颜色
-*			Cover           背景色是否显示  1：覆盖原背景色  0：不覆盖原背景色
+*						Put_Char        需要显示的字符
+* 					Char_Size		字符大小   Character_16_24     Character_16_32
+*						CharColor       字符颜色
+*						BkColor			背景颜色
+*						Cover           背景色是否显示  1：覆盖原背景色  0：不覆盖原背景色
 * 出口参数：无
 * 说    明：
 ************************************************************************************/
@@ -310,11 +323,11 @@ void TFT_PutCharacter(u16 Char_PX,u16 Char_PY,u8 Put_Char,u8 Char_Size,u16 CharC
 * 功    能：TFT屏幕上指定位置开始 显示任意大小格式的一串字符
 * 入口参数：Str_PX  		X轴起始坐标
 *           Str_PY			Y轴起始坐标
-*			*Str_PTR        字符数组
-* 			Char_Size		字符大小	 Character_16_24     Character_16_32  Character_32_48
-*			CharColor       字符颜色
-*			BkColor			背景颜色
-*			Cover           背景色是否显示  1：覆盖原背景色  0：不覆盖原背景色
+*						*Str_PTR        字符数组
+* 					Char_Size		字符大小	 Character_16_24     Character_16_32  Character_32_48
+*						CharColor       字符颜色
+*						BkColor			背景颜色
+*						Cover           背景色是否显示  1：覆盖原背景色  0：不覆盖原背景色
 * 出口参数：无
 * 说    明：
 ************************************************************************************/
@@ -345,12 +358,12 @@ void TFT_DisplayStringLine(u16 Str_PX,u16 Str_PY,u8 *Str_PTR,u8 Char_Size,u16 Ch
 * 功    能：TFT屏幕上指定位置开始 显示任意大小格式的一串汉字
 * 入口参数：Chinese_X  				X轴起始坐标
 *           Chinese_Y				Y轴起始坐标
-*			**ChineseLine_PTR       汉字数组
-*			Chinese_num				显示汉字个数
-* 			Chinese_Size			汉字大小	 Chinese_32_32     Chinese_48_48
-*			ChineseColor       		汉字颜色
-*			BkColor					背景颜色
-*			Cover           		背景色是否显示  1：覆盖原背景色  0：不覆盖原背景色
+*						**ChineseLine_PTR       汉字数组
+*						Chinese_num				显示汉字个数
+* 					Chinese_Size			汉字大小	 Chinese_32_32     Chinese_48_48
+*						ChineseColor       		汉字颜色
+*						BkColor					背景颜色
+*						Cover           		背景色是否显示  1：覆盖原背景色  0：不覆盖原背景色
 * 出口参数：无
 * 说    明：
 ************************************************************************************/
@@ -386,10 +399,10 @@ void TFT_PutChineseLine(u16 Chinese_X, u16 Chinese_Y,u8 **ChineseLine_PTR,u8 Chi
 * 名    称：void TFT_WriteBMP(u8 Xpos, u16 Ypos, u8 Height, u16 Width, u8 *bitmap)
 * 功    能：TFT屏幕上显示图片
 * 入口参数：Xpos        X轴起始位置
-*			Ypos		Y轴起始位置
+*						Ypos		Y轴起始位置
 *           Height		X轴增量
-*			Width		Y轴增量
-*			*bitmap		图片数组起始位置
+*						Width		Y轴增量
+*						*bitmap		图片数组起始位置
 * 出口参数：无
 * 说    明：此函数中将指针bitmap强制转换成16进制，因此每次取*bitmap_ptr时实际
 *			取出的是一个16位数据,符合RGB标准
@@ -410,7 +423,7 @@ void TFT_WriteBMP(u16 Xpos, u16 Ypos, u16 Width, u16 Height,u8 *bitmap)
 * 名    称：TFT_ShowBMP_Formflash(u16 size,u8 *bitmap)
 * 功    能：TFT屏幕上显示图片  数据从片外Flash(W25Q16)中读取
 * 入口参数：size  		一次显示数据个数
-*			*bitmap  	图片数组地址
+*						*bitmap  	图片数组地址
 * 出口参数：无
 * 说    明：调用此函数之前 要设置光标位置TFT_SetCursor  写GRAM使能TFT_WriteRAM_Prepare
 ************************************************************************************/
@@ -429,9 +442,9 @@ void TFT_ShowBMP_Formflash(u32 size,u8 *bitmap)
 * 名    称：TFT_SetDisplayWindow(u8 Xpos, u16 Ypos, u8 Height, u16 Width)
 * 功    能：设定TFT屏幕上填充颜色的区域范围
 * 入口参数：XSta        横向起始位置
-*			YSta		纵向起始位置
+*						YSta		纵向起始位置
 *           XEnd		横向结束位置
-*			YEnd		纵向结束位置	
+*						YEnd		纵向结束位置	
 * 出口参数：无
 * 说    明：
 ************************************************************************************/
@@ -455,10 +468,10 @@ void TFT_SetDisplayWindow(u16 XSta,u16 YSta,u16 XEnd,u16 YEnd)
 * 名    称：TFT_Fill(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u16 Fill_Color)
 * 功    能：在TFT屏幕上指定区域内填充指定颜色
 * 入口参数：XSta        	横向起始位置
-*			YSta			纵向起始位置
+*						YSta			纵向起始位置
 *           Xincrease		横向增量
-*			Yincrease		纵向增量
-*			Fill_Color  	填充的颜色	
+*						Yincrease		纵向增量
+*						Fill_Color  	填充的颜色	
 * 出口参数：无
 * 说    明：
 ************************************************************************************/
@@ -479,10 +492,10 @@ void TFT_Fill(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u16 Fill_Color)
 * 名    称：TFT_Fill_BMP(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u8 *Fill_BMP_STR)
 * 功    能：在TFT屏幕上指定区域内填充指定颜色
 * 入口参数：XSta        	横向起始位置
-*			YSta			纵向起始位置
+*						YSta			纵向起始位置
 *           Xincrease		图片横向宽度
-*			Yincrease		图片纵向高度
-*			Fill_BMP_STR    填充图片数据的首地址  数据格式为U8	
+*						Yincrease		图片纵向高度
+*						Fill_BMP_STR    填充图片数据的首地址  数据格式为U8	
 * 出口参数：无
 * 说    明：先将u8类型的图片数组转换成u16类型的数组，这样每次读取数组内容时是u16类型的
 *			使用DMA方式向FSMC发送数据
@@ -504,10 +517,10 @@ void TFT_Fill_BMP(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u8 *Fill_BMP_STR
 * 名    称：TFT_Fill_BMP(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u8 *Fill_BMP_STR)
 * 功    能：在TFT屏幕上指定区域内填充指定颜色
 * 入口参数：XSta        	横向起始位置
-*			YSta			纵向起始位置
+*						YSta			纵向起始位置
 *           Xincrease		图片横向宽度
-*			Yincrease		图片纵向高度
-*			Fill_BMP_STR    填充图片数据的首地址  数据格式为u16	
+*						Yincrease		图片纵向高度
+*						Fill_BMP_STR    填充图片数据的首地址  数据格式为u16	
 * 出口参数：无
 * 说    明：使用DMA方式向FSMC发送数据
 ************************************************************************************/
@@ -525,10 +538,10 @@ void TFT_Fill_BMP_16(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u16 *Fill_BMP
 * 名    称：TFT_DrawLine(u16 XSta, u16 YSta, u16 XEnd, u16 YEnd, u16 Line_Color)
 * 功    能：在TFT屏幕上任意两点之间画一条直线
 * 入口参数：XSta        横向起始位置
-*			YSta		纵向起始位置
+*						YSta		纵向起始位置
 *           XEnd		横向结束位置
-*			YEnd		纵向结束位置
-*			Line_Color  线的颜色	
+*						YEnd		纵向结束位置
+*						Line_Color  线的颜色	
 * 出口参数：无
 * 说    明：如果一条直线感觉不够明显，可以在起点和终点的横轴方向上增加1格再画几条直线
 ************************************************************************************/
@@ -579,9 +592,9 @@ void TFT_DrawLine(u16 XSta, u16 YSta, u16 XEnd, u16 YEnd, u16 Line_Color)
 * 名    称：TFT_DrawCircle(u16 Xptr, u16 Yptr, u8 Radiu, u16 Color)
 * 功    能：以TFT屏幕上任意一点为圆心 画任意半径的圆
 * 入口参数：Xptr        横向位置
-*			Yptr		纵向位置
-*			Radiu		圆的半径
-*			Color       画圆颜色
+*						Yptr		纵向位置
+*						Radiu		圆的半径
+*						Color       画圆颜色
 * 出口参数：无
 * 说    明：如果感觉圆线不够明显，可以在半径上增加1，多画几个圆
 ************************************************************************************/
@@ -621,10 +634,10 @@ void TFT_DrawCircle(u16 Xptr, u16 Yptr, u8 Radiu, u16 Color)
 * 名    称：void TFT_DrawRectangle(u16 XSta, u16 YSta, u16 Xincrease, u16 Yincrease, u16 Color)
 * 功    能：以TFT屏幕上任意两点之间画一个长方形
 * 入口参数：XSta        		横向起始位置
-*			YSta				纵向起始位置
-*			Xincrease			横向增量
-*			Yincrease        	纵向增量
-*			Color       		长方形颜色
+*						YSta				纵向起始位置
+*						Xincrease			横向增量
+*						Yincrease        	纵向增量
+*						Color       		长方形颜色
 * 出口参数：无
 * 说    明：如果感觉长方形颜色不够明显
 *			X轴起始位置-1，Y轴起始位置-1
