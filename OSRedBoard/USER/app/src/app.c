@@ -1,8 +1,9 @@
-#include "user_cfg.h"
+ï»¿#include "user_cfg.h"
+#include "sys_about.h"
 
 
 
-//ÉèÖÃÈÎÎñ¶ÑÕ»´óÐ¡
+//è®¾ç½®ä»»åŠ¡å †æ ˆå¤§å°
 #define LED_STK_SIZE     64
 #define LED1_STK_SIZE    64
 #define LED2_STK_SIZE    64
@@ -11,7 +12,7 @@
 #define TOUCH_STK_SIZE   64
 #define START_STK_SIZE   512
 
-//ÉèÖÃÈÎÎñÓÅÏÈ¼¶
+//è®¾ç½®ä»»åŠ¡ä¼˜å…ˆçº§
 #define LED_TASK_Prio       6
 #define LED1_TASK_Prio      5
 #define LED2_TASK_Prio      4
@@ -28,7 +29,7 @@
 
 #define START_TASK_Prio     10
 
-//ÈÎÎñ¶ÑÕ»
+//ä»»åŠ¡å †æ ˆ
 OS_STK  TASK_LED_STK[LED_STK_SIZE];
 OS_STK  TASK_LED1_STK[LED1_STK_SIZE];
 OS_STK  TASK_LED2_STK[LED_STK_SIZE];
@@ -38,7 +39,7 @@ OS_STK  TASK_START_STK[START_STK_SIZE];
 OS_STK  TASK_KEY_STK[KEY_STK_SIZE];
 OS_STK  TASK_TOUCH_STK[TOUCH_STK_SIZE];
 
-//ÈÎÎñÉêÃ÷
+//ä»»åŠ¡ç”³æ˜Ž
 void TaskStart(void *pdata);
 void TaskLed(void *pdata);
 void TaskLed1(void *pdata);
@@ -48,46 +49,45 @@ void TaskLed3(void *pdata);
 void LED_Init(void)
 {
  
- GPIO_InitTypeDef  GPIO_InitStructure;
+    GPIO_InitTypeDef  GPIO_InitStructure;
 
- RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);   //Ê¹ÄÜPA¶Ë¿ÚÊ±ÖÓ
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);   //ä½¿èƒ½PAç«¯å£æ—¶é’Ÿ
 
- GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2;
- GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //ÍÆÍìÊä³ö
- GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
- GPIO_Init(GPIOA, &GPIO_InitStructure);	
- GPIO_SetBits(GPIOA,GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2); 
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;      //æŽ¨æŒ½è¾“å‡º
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
+    GPIO_Init(GPIOA, &GPIO_InitStructure); 
+    GPIO_SetBits(GPIOA,GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2); 
 }
 
 void NVIC_Configuration(void)
 {
 
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);	//ÉèÖÃNVICÖÐ¶Ï·Ö×é2:2Î»ÇÀÕ¼ÓÅÏÈ¼¶£¬2Î»ÏìÓ¦ÓÅÏÈ¼¶
-
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //è®¾ç½®NVICä¸­æ–­åˆ†ç»„2:2ä½æŠ¢å ä¼˜å…ˆçº§ï¼Œ2ä½å“åº”ä¼˜å…ˆçº§
 }
 
-//³õÊ¼»¯ÑÓ³Ùº¯Êý
-//µ±Ê¹ÓÃucosµÄÊ±ºò,´Ëº¯Êý»á³õÊ¼»¯ucosµÄÊ±ÖÓ½ÚÅÄ
-//SYSTICKµÄÊ±ÖÓ¹Ì¶¨ÎªHCLKÊ±ÖÓµÄ1/8
-//SYSCLK:ÏµÍ³Ê±ÖÓ
+//åˆå§‹åŒ–å»¶è¿Ÿå‡½æ•°
+//å½“ä½¿ç”¨ucosçš„æ—¶å€™,æ­¤å‡½æ•°ä¼šåˆå§‹åŒ–ucosçš„æ—¶é’ŸèŠ‚æ‹
+//SYSTICKçš„æ—¶é’Ÿå›ºå®šä¸ºHCLKæ—¶é’Ÿçš„1/8
+//SYSCLK:ç³»ç»Ÿæ—¶é’Ÿ
 void delay_init(u8 SYSCLK)
 {
-#ifdef OS_CRITICAL_METHOD 	//Èç¹ûOS_CRITICAL_METHOD¶¨ÒåÁË,ËµÃ÷Ê¹ÓÃucosIIÁË.
-	u32 reload;
+#ifdef OS_CRITICAL_METHOD   //å¦‚æžœOS_CRITICAL_METHODå®šä¹‰äº†,è¯´æ˜Žä½¿ç”¨ucosIIäº†.
+  u32 reload;
 #endif
- 	SysTick->CTRL&=~(1<<2);	//SYSTICKÊ¹ÓÃÍâ²¿Ê±ÖÓÔ´	 
-//	fac_us=SYSCLK/8;		//²»ÂÛÊÇ·ñÊ¹ÓÃucos,fac_us¶¼ÐèÒªÊ¹ÓÃ
-	    
-#ifdef OS_TICKS_PER_SEC	 	//Èç¹ûÊ±ÖÓ½ÚÅÄÊý¶¨ÒåÁË,ËµÃ÷ÒªÊ¹ÓÃucosIIÁË.
-	reload=SYSCLK/8;		//Ã¿ÃëÖÓµÄ¼ÆÊý´ÎÊý µ¥Î»ÎªK	   
-	reload*=1000000/OS_TICKS_PER_SEC;//¸ù¾ÝOS_TICKS_PER_SECÉè¶¨Òç³öÊ±¼ä
-							//reloadÎª24Î»¼Ä´æÆ÷,×î´óÖµ:16777216,ÔÚ72MÏÂ,Ô¼ºÏ1.86s×óÓÒ	
-//	fac_ms=1000/OS_TICKS_PER_SEC;//´ú±íucos¿ÉÒÔÑÓÊ±µÄ×îÉÙµ¥Î»	   
-	SysTick->CTRL|=1<<1;   	//¿ªÆôSYSTICKÖÐ¶Ï
-	SysTick->LOAD=reload; 	//Ã¿1/OS_TICKS_PER_SECÃëÖÐ¶ÏÒ»´Î	
-	SysTick->CTRL|=1<<0;   	//¿ªÆôSYSTICK    
+  SysTick->CTRL&=~(1<<2); //SYSTICKä½¿ç”¨å¤–éƒ¨æ—¶é’Ÿæº  
+//  fac_us=SYSCLK/8;    //ä¸è®ºæ˜¯å¦ä½¿ç”¨ucos,fac_uséƒ½éœ€è¦ä½¿ç”¨
+      
+#ifdef OS_TICKS_PER_SEC   //å¦‚æžœæ—¶é’ŸèŠ‚æ‹æ•°å®šä¹‰äº†,è¯´æ˜Žè¦ä½¿ç”¨ucosIIäº†.
+  reload=SYSCLK/8;    //æ¯ç§’é’Ÿçš„è®¡æ•°æ¬¡æ•° å•ä½ä¸ºK     
+  reload*=1000000/OS_TICKS_PER_SEC;//æ ¹æ®OS_TICKS_PER_SECè®¾å®šæº¢å‡ºæ—¶é—´
+              //reloadä¸º24ä½å¯„å­˜å™¨,æœ€å¤§å€¼:16777216,åœ¨72Mä¸‹,çº¦åˆ1.86så·¦å³  
+//  fac_ms=1000/OS_TICKS_PER_SEC;//ä»£è¡¨ucoså¯ä»¥å»¶æ—¶çš„æœ€å°‘å•ä½    
+  SysTick->CTRL|=1<<1;    //å¼€å¯SYSTICKä¸­æ–­
+  SysTick->LOAD=reload;   //æ¯1/OS_TICKS_PER_SECç§’ä¸­æ–­ä¸€æ¬¡  
+  SysTick->CTRL|=1<<0;    //å¼€å¯SYSTICK    
 #else
-	fac_ms=(u16)fac_us*1000;//·ÇucosÏÂ,´ú±íÃ¿¸ömsÐèÒªµÄsystickÊ±ÖÓÊý   
+  fac_ms=(u16)fac_us*1000;//éžucosä¸‹,ä»£è¡¨æ¯ä¸ªmséœ€è¦çš„systickæ—¶é’Ÿæ•°   
 #endif
 }
 
@@ -95,82 +95,83 @@ void delay_init(u8 SYSCLK)
 
 
  int main(void)
- {
- 	 
-	SystemInit(); //ÏµÍ³³õÊ¼»¯72MÊ±ÖÓ
-    delay_init(72);	     //ÑÓÊ±³õÊ¼»¯
+ {   
+    SystemInit(); //ç³»ç»Ÿåˆå§‹åŒ–72Mæ—¶é’Ÿ
+    delay_init(72);      //å»¶æ—¶åˆå§‹åŒ–
+    
+//     SysTick_Config(1000000 / OS_TICKS_PER_SEC );  //     
 
-	NVIC_Configuration();
+    NVIC_Configuration();
 
- 	LED_Init();	     //LED¶Ë¿Ú³õÊ¼»¯
+    LED_Init();      //LEDç«¯å£åˆå§‹åŒ–
 
-	OSInit();	   //UCOSII³õÊ¼»¯
-	OSTaskCreate( TaskStart,	//´´½¨¿ªÊ¼ÈÎÎñ
-					(void *)0,	//parameter
-					(OS_STK *)&TASK_START_STK[START_STK_SIZE-1],	//task stack top pointer
-					START_TASK_Prio );	//task priority
-	OSStart();	//UCOSIIÏµÍ³Æô¶¯
-	return 0;
+		OSInit();    //UCOSIIåˆå§‹åŒ–
+		OSTaskCreate( TaskStart,  //åˆ›å»ºå¼€å§‹ä»»åŠ¡
+          (void *)0,  //parameter
+          (OS_STK *)&TASK_START_STK[START_STK_SIZE-1],  //task stack top pointer
+          START_TASK_Prio );  //task priority
+		OSStart();  //UCOSIIç³»ç»Ÿå¯åŠ¨
+		return 0;
 
- }	
+ }  
   
-//¿ªÊ¼ÈÎÎñ
+//å¼€å§‹ä»»åŠ¡
 void TaskStart(void * pdata)
 {
-	pdata = pdata; 
-	OS_ENTER_CRITICAL();   
-	OSTaskCreate(TaskLed, (void * )0, (OS_STK *)&TASK_LED_STK[LED_STK_SIZE-1], LED_TASK_Prio);
-	OSTaskCreate(TaskLed1, (void * )0, (OS_STK *)&TASK_LED1_STK[LED1_STK_SIZE-1], LED1_TASK_Prio);
+  pdata = pdata; 
+  OS_ENTER_CRITICAL();   
+  OSTaskCreate(TaskLed , (void * )0, (OS_STK *)&TASK_LED_STK[LED_STK_SIZE-1], LED_TASK_Prio);
+  OSTaskCreate(TaskLed1, (void * )0, (OS_STK *)&TASK_LED1_STK[LED1_STK_SIZE-1], LED1_TASK_Prio);
     OSTaskCreate(TaskLed2, (void * )0, (OS_STK *)&TASK_LED2_STK[LED2_STK_SIZE-1], LED2_TASK_Prio);
     
- 	OSTaskSuspend(START_TASK_Prio);	//suspend but not delete
-	OS_EXIT_CRITICAL();
+  OSTaskSuspend(START_TASK_Prio); //suspend but not delete
+  OS_EXIT_CRITICAL();
 }
-//ÈÎÎñ1
-//¿ØÖÆDS0µÄÁÁÃð.
+//ä»»åŠ¡1
+//æŽ§åˆ¶DS0çš„äº®ç­.
 void TaskLed(void *pdata)
 {
-	while(1)
-	{  	
-//        if(OSTaskDelReq(OS_PRIO_SELF)==OS_TASK_DEL_REQ) //ÅÐ¶ÏÊÇ·ñÓÐÉ¾³ýÇëÇó
-//		 OSTaskDel(OS_PRIO_SELF);						   //É¾³ýÈÎÎñ±¾ÉíTaskLed
-//		LED0=!LED0;
+  while(1)
+  {   
+//        if(OSTaskDelReq(OS_PRIO_SELF)==OS_TASK_DEL_REQ) //åˆ¤æ–­æ˜¯å¦æœ‰åˆ é™¤è¯·æ±‚
+//     OSTaskDel(OS_PRIO_SELF);              //åˆ é™¤ä»»åŠ¡æœ¬èº«TaskLed
+//    LED0=!LED0;
         GPIO_SetBits(GPIOA,GPIO_Pin_0);
-		OSTimeDlyHMSM(0,0,0,500);	
-	}
+    OSTimeDlyHMSM(0,0,0,500); 
+  }
 }
-//ÈÎÎñ2							
-//¿ØÖÆDS1µÄÁÁÃð.
+//ä»»åŠ¡2             
+//æŽ§åˆ¶DS1çš„äº®ç­.
 void TaskLed1(void *pdata)
 {
-	while(1)
-	{    
-//		LED1=!LED1;
+  while(1)
+  {    
+//    LED1=!LED1;
         GPIO_ResetBits(GPIOA,GPIO_Pin_0);
         GPIO_SetBits(GPIOA,GPIO_Pin_1);
-		OSTimeDlyHMSM(0,0,0,400);	
-	}
+    OSTimeDlyHMSM(0,0,0,400); 
+  }
 }
-//ÈÎÎñ3							
-//¿ØÖÆDS2µÄÁÁÃð.
+//ä»»åŠ¡3             
+//æŽ§åˆ¶DS2çš„äº®ç­.
 void TaskLed2(void *pdata)
 {
-	while(1)
-	{    
-//		LED2=!LED2;
+  while(1)
+  {    
+//    LED2=!LED2;
         GPIO_ResetBits(GPIOA,GPIO_Pin_1);
-		OSTimeDlyHMSM(0,0,0,300);	
-	}
+    OSTimeDlyHMSM(0,0,0,300); 
+  }
 }
-//ÈÎÎñ4							
-//¿ØÖÆDS3µÄÁÁÃð.
+//ä»»åŠ¡4             
+//æŽ§åˆ¶DS3çš„äº®ç­.
 void TaskLed3(void *pdata)
 {
-	while(1)
-	{    
-//		LED3=!LED3;
-		OSTimeDlyHMSM(0,0,0,200);	
-	}
+  while(1)
+  {    
+//    LED3=!LED3;
+    OSTimeDlyHMSM(0,0,0,200); 
+  }
 }
 
 

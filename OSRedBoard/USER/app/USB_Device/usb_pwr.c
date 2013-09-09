@@ -1,4 +1,4 @@
-/******************** (C) COPYRIGHT 2009 STMicroelectronics ********************
+﻿/******************** (C) COPYRIGHT 2009 STMicroelectronics ********************
 * File Name          : usb_pwr.c
 * Author             : MCD Application Team
 * Version            : V3.0.1

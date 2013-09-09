@@ -1,12 +1,12 @@
-/*
+ï»¿/*
 *************************************************************************************
-**ÎÄ¼şËµÃ÷£ºTFTÒº¾§ÆÁ Ê¹ÓÃFSMCÓëDMAÍ¨ĞÅ´«Êä¿ØÖÆº¯Êı
-**ÎÄ¼şÃû³Æ£ºFSMC_TFT.C
-**´´½¨ÈÕÆÚ£º2013.6.26
-**´´ ½¨ ÈË£º¶Î½ğËÉ
+**æ–‡ä»¶è¯´æ˜ï¼šTFTæ¶²æ™¶å± ä½¿ç”¨FSMCä¸DMAé€šä¿¡ä¼ è¾“æ§åˆ¶å‡½æ•°
+**æ–‡ä»¶åç§°ï¼šFSMC_TFT.C
+**åˆ›å»ºæ—¥æœŸï¼š2013.6.26
+**åˆ› å»º äººï¼šæ®µé‡‘æ¾
 **----------------------------------------------------------------------------------
-**ĞŞ¸ÄÈÕÆÚ£º2013.
-**ĞŞ¸ÄËµÃ÷£º
+**ä¿®æ”¹æ—¥æœŸï¼š2013.
+**ä¿®æ”¹è¯´æ˜ï¼š
 *************************************************************************************
 */
 
@@ -16,11 +16,11 @@
 
 u16 DestTop_Color_Buffer[14] = {WHITE,BLACK,BLUE,BRED,GRED,GBLUE,RED,MAGENTA,GREEN,CYAN,YELLOW,BROWN,BRRED,GRAY};
 /********************************************************************************************
-*  Ãû    ³Æ£ºvoid TFT_FSMC_GPIO_Configuration(void)
-*  ¹¦    ÄÜ£ºTFTÆÁÄ»IO¿ÚÅäÖÃº¯Êı
-*  Èë¿Ú²ÎÊı£ºÎŞ
-*  ³ö¿Ú²ÎÊı£ºÎŞ
-*  Ëµ    Ã÷£º
+*  å    ç§°ï¼švoid TFT_FSMC_GPIO_Configuration(void)
+*  åŠŸ    èƒ½ï¼šTFTå±å¹•IOå£é…ç½®å‡½æ•°
+*  å…¥å£å‚æ•°ï¼šæ— 
+*  å‡ºå£å‚æ•°ï¼šæ— 
+*  è¯´    æ˜ï¼š
 ********************************************************************************************/
 void TFT_FSMC_GPIO_Configuration(void)
 {
@@ -40,11 +40,11 @@ void TFT_FSMC_GPIO_Configuration(void)
 	GPIO_Init(GPIOE,&GPIO_InitStructure);
 }
 /********************************************************************************************
-*  Ãû    ³Æ£ºvoid TFT_FSMC_Configuration(void)
-*  ¹¦    ÄÜ£ºTFTÆÁÄ» FSMC¹¦ÄÜÅäÖÃº¯Êı
-*  Èë¿Ú²ÎÊı£ºÎŞ
-*  ³ö¿Ú²ÎÊı£ºÎŞ
-*  Ëµ    Ã÷£º
+*  å    ç§°ï¼švoid TFT_FSMC_Configuration(void)
+*  åŠŸ    èƒ½ï¼šTFTå±å¹• FSMCåŠŸèƒ½é…ç½®å‡½æ•°
+*  å…¥å£å‚æ•°ï¼šæ— 
+*  å‡ºå£å‚æ•°ï¼šæ— 
+*  è¯´    æ˜ï¼š
 ********************************************************************************************/
 void TFT_FSMC_Configuration(void)
 {
@@ -78,44 +78,44 @@ void TFT_FSMC_Configuration(void)
 	FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM1, ENABLE);
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_WriteRAM_Prepare(void)
-* ¹¦    ÄÜ£ºĞ´RAMÃüÁî
-* Èë¿Ú²ÎÊı£ºÎŞ
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º¶ÔCGRAM²Ù×÷Ö®Ç°ÒªÏÈĞ´¸ÃÃüÁî
+* å    ç§°ï¼šTFT_WriteRAM_Prepare(void)
+* åŠŸ    èƒ½ï¼šå†™RAMå‘½ä»¤
+* å…¥å£å‚æ•°ï¼šæ— 
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šå¯¹CGRAMæ“ä½œä¹‹å‰è¦å…ˆå†™è¯¥å‘½ä»¤
 ************************************************************************************/
 void TFT_WriteRAM_Prepare(void)
 {
 	TFT_Write_Cmd(0X2C);
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_SetCursor(u16 Xpos,u16 Ypos)
-* ¹¦    ÄÜ£ºTFTÆÁÄ»ÏÔÊ¾ÆğÊ¼¹â±êÎ»ÖÃÉè¶¨
-* Èë¿Ú²ÎÊı£ºXpos   XÖá×ø±êÎ»ÖÃ
-*         	Ypos   YÖá×ø±êÎ»ÖÃ
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º
+* å    ç§°ï¼šTFT_SetCursor(u16 Xpos,u16 Ypos)
+* åŠŸ    èƒ½ï¼šTFTå±å¹•æ˜¾ç¤ºèµ·å§‹å…‰æ ‡ä½ç½®è®¾å®š
+* å…¥å£å‚æ•°ï¼šXpos   Xè½´åæ ‡ä½ç½®
+*         	Ypos   Yè½´åæ ‡ä½ç½®
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼š
 ************************************************************************************/
 void TFT_SetCursor(u16 Xpos, u16 Ypos)
 {
 	TFT_Write_Cmd(0X002A);	
-	TFT_Write_Date(Xpos >> 8);	    		  //ºáÏòÆğÊ¼Î»ÖÃ	 
+	TFT_Write_Date(Xpos >> 8);	    		  //æ¨ªå‘èµ·å§‹ä½ç½®	 
 	TFT_Write_Date(Xpos & 0X00FF);	    			  
-	TFT_Write_Date(TFT_7inch_XSize >> 8);	      //ºáÏòÖÕÖ¹Î»ÖÃ
+	TFT_Write_Date(TFT_7inch_XSize >> 8);	      //æ¨ªå‘ç»ˆæ­¢ä½ç½®
 	TFT_Write_Date(TFT_7inch_XSize & 0X00FF);
 
     TFT_Write_Cmd(0X002B);	
-	TFT_Write_Date(Ypos >> 8);	    			  //×İÏòÆğÊ¼Î»ÖÃ
+	TFT_Write_Date(Ypos >> 8);	    			  //çºµå‘èµ·å§‹ä½ç½®
 	TFT_Write_Date(Ypos & 0X00FF);
-	TFT_Write_Date(TFT_7inch_YSize >> 8);	      //×İÏòÖÕÖ¹Î»ÖÃ
+	TFT_Write_Date(TFT_7inch_YSize >> 8);	      //çºµå‘ç»ˆæ­¢ä½ç½®
 	TFT_Write_Date(TFT_7inch_YSize & 0X00FF);
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_Clear(u16 Color)
-* ¹¦    ÄÜ£ºTFT  ÇåÆÁº¯Êı
-* Èë¿Ú²ÎÊı£ºColor  ÇåÆÁÑÕÉ«
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º½«TFTÆÁÄ»Ë¢ĞÂ³ÉÌØ¶¨ÑÕÉ«
+* å    ç§°ï¼šTFT_Clear(u16 Color)
+* åŠŸ    èƒ½ï¼šTFT  æ¸…å±å‡½æ•°
+* å…¥å£å‚æ•°ï¼šColor  æ¸…å±é¢œè‰²
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šå°†TFTå±å¹•åˆ·æ–°æˆç‰¹å®šé¢œè‰²
 ************************************************************************************/
 void TFT_Clear(u16 Color)
 { 	
@@ -127,44 +127,44 @@ void TFT_Clear(u16 Color)
 		TFT_Write_Date(Color);			
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_Init(void)
-* ¹¦    ÄÜ£ºTFT  ÆÁ³õÊ¼»¯º¯Êı
-* Èë¿Ú²ÎÊı£ºÎŞ
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£ºÉÏµçºó¶Ô¸´Î»Òı½ÅµÄ²Ù×÷ºÜ¹Ø¼ü   ÖÁÉÙÒªÓĞÒ»¸ö¸ºÂö³å
+* å    ç§°ï¼šTFT_Init(void)
+* åŠŸ    èƒ½ï¼šTFT  å±åˆå§‹åŒ–å‡½æ•°
+* å…¥å£å‚æ•°ï¼šæ— 
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šä¸Šç”µåå¯¹å¤ä½å¼•è„šçš„æ“ä½œå¾ˆå…³é”®   è‡³å°‘è¦æœ‰ä¸€ä¸ªè´Ÿè„‰å†²
 ************************************************************************************/
 void TFT_Init(void)
 {
 	GPIO_ResetBits(GPIOD,GPIO_Pin_3);
 	GPIO_SetBits(GPIOD,GPIO_Pin_3);
 	TFT_Write_Cmd(0x00E2);		
-	TFT_Write_Date(0x0012);		//SSD1963Íâ²¿¾§ÕñÆµÂÊÎª10MHz,ÄÚºËÒªÇó´óÓÚ250MHz,Òò´Ë36±¶Æµ×îºóµÃ360MHz		   
-	TFT_Write_Date(0x0000);		//ÉèÖÃPLLÆµÂÊV = 2, PLL = 360 / (V + 1) = 120MHz								 
+	TFT_Write_Date(0x0012);		//SSD1963å¤–éƒ¨æ™¶æŒ¯é¢‘ç‡ä¸º10MHz,å†…æ ¸è¦æ±‚å¤§äº250MHz,å› æ­¤36å€é¢‘æœ€åå¾—360MHz		   
+	TFT_Write_Date(0x0000);		//è®¾ç½®PLLé¢‘ç‡V = 2, PLL = 360 / (V + 1) = 120MHz								 
 	TFT_Write_Date(0x0004);
 
-	TFT_Write_Cmd(0x00E0);  	//PLL¿ªÊ¼Ö¸Áî
-	TFT_Write_Date(0x0001);  	//Ê¹ÄÜPLL
+	TFT_Write_Cmd(0x00E0);  	//PLLå¼€å§‹æŒ‡ä»¤
+	TFT_Write_Date(0x0001);  	//ä½¿èƒ½PLL
 	delay_ms(1);
-	TFT_Write_Cmd(0x00E0);	  	//PLLÔÙ´Î¿ªÊ¼
-	TFT_Write_Date(0x0003);		//¸ÃÖ¸Áî¹ıºóPLLÊä³ö×÷ÎªÏµÍ³Ê±ÖÓ
+	TFT_Write_Cmd(0x00E0);	  	//PLLå†æ¬¡å¼€å§‹
+	TFT_Write_Date(0x0003);		//è¯¥æŒ‡ä»¤è¿‡åPLLè¾“å‡ºä½œä¸ºç³»ç»Ÿæ—¶é’Ÿ
 	delay_ms(5);
 
-	TFT_Write_Cmd(0x0001);   	//Èí¼ş¸´Î»ÃüÁî,Ã»ÓĞ²ÎÊı
+	TFT_Write_Cmd(0x0001);   	//è½¯ä»¶å¤ä½å‘½ä»¤,æ²¡æœ‰å‚æ•°
 	delay_ms(5);
-	TFT_Write_Cmd(0x00E6);	  	//ÉèÖÃÊı¾İÒÆÎ»ËÙ¶È
+	TFT_Write_Cmd(0x00E6);	  	//è®¾ç½®æ•°æ®ç§»ä½é€Ÿåº¦
 	TFT_Write_Date(0x0004);
 	TFT_Write_Date(0x0093);
 	TFT_Write_Date(0x00e0);
 
-	TFT_Write_Cmd(0x00B0);	    //Òº¾§ÆÁ¹¤×÷Ä£Ê½Éè¶¨
-//================ÏÂ±ßÕâÖ¸Áî£¬Èç¹ûÊÇ7´çÆÁ ÓÃ0X0000 5´çÓÃ0X0020
+	TFT_Write_Cmd(0x00B0);	    //æ¶²æ™¶å±å·¥ä½œæ¨¡å¼è®¾å®š
+//================ä¸‹è¾¹è¿™æŒ‡ä»¤ï¼Œå¦‚æœæ˜¯7å¯¸å± ç”¨0X0000 5å¯¸ç”¨0X0020
 	TFT_Write_Date(0x0020);
 	TFT_Write_Date(0x0000);		//TTL  mode
-	TFT_Write_Date((TFT_7inch_XSize >> 8) & 0x00ff);  //ÉèÖÃºáÏò¿í¶È  
+	TFT_Write_Date((TFT_7inch_XSize >> 8) & 0x00ff);  //è®¾ç½®æ¨ªå‘å®½åº¦  
 	TFT_Write_Date(TFT_7inch_XSize & 0X00FF);
-    TFT_Write_Date((TFT_7inch_YSize >> 8) & 0x00ff);  //ÉèÖÃ×İÏò¿í¶È 
+    TFT_Write_Date((TFT_7inch_YSize >> 8) & 0x00ff);  //è®¾ç½®çºµå‘å®½åº¦ 
 	TFT_Write_Date(TFT_7inch_YSize & 0X00FF); 
-    TFT_Write_Date(0x0000);		//RGBĞòÁĞ
+    TFT_Write_Date(0x0000);		//RGBåºåˆ—
 
 	TFT_Write_Cmd(0x00B4);	           
 	TFT_Write_Date((1000 >> 8) & 0X00FF);  
@@ -209,7 +209,7 @@ void TFT_Init(void)
 	TFT_Write_Date(0x0000);
 	TFT_Write_Date(0x0000);
 
-	TFT_Write_Cmd(0x00d0);//ÉèÖÃ¶¯Ì¬±³¹â¿ØÖÆÅäÖÃ 
+	TFT_Write_Cmd(0x00d0);//è®¾ç½®åŠ¨æ€èƒŒå…‰æ§åˆ¶é…ç½® 
 	TFT_Write_Date(0x000d);
 }
 void TFT_Prepare(void)
@@ -219,11 +219,11 @@ void TFT_Prepare(void)
 	TFT_Init();
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_FILL_DestTop(u8 Fill_Block)
-* ¹¦    ÄÜ£ºTFTÆÁÄ»·Ö¿éÌî³äÑÕÉ«
-* Èë¿Ú²ÎÊı£ºFill_Block  ·Ö¿éÊı
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º¸ù¾İFill_BlockµÄ´óĞ¡ ½«Õû¸öÆÁÄ»·Ö³ÉÈô¸É¿é ·Ö±ğÌî³ä²»Í¬µÄÑÕÉ«
+* å    ç§°ï¼šTFT_FILL_DestTop(u8 Fill_Block)
+* åŠŸ    èƒ½ï¼šTFTå±å¹•åˆ†å—å¡«å……é¢œè‰²
+* å…¥å£å‚æ•°ï¼šFill_Block  åˆ†å—æ•°
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šæ ¹æ®Fill_Blockçš„å¤§å° å°†æ•´ä¸ªå±å¹•åˆ†æˆè‹¥å¹²å— åˆ†åˆ«å¡«å……ä¸åŒçš„é¢œè‰²
 ************************************************************************************/
 void TFT_FILL_DestTop(u8 Fill_Block)
 {
@@ -239,13 +239,13 @@ void TFT_FILL_DestTop(u8 Fill_Block)
 			TFT_Write_Date(DestTop_Color_Buffer[i + 3]);
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_SetPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
-* ¹¦    ÄÜ£ºTFTÆÁÄ»Ö¸¶¨Î»ÖÃÉÏÏÔÊ¾Ò»¸öÌØ¶¨ÑÕÉ«µÄµã
-* Èë¿Ú²ÎÊı£ºPoint_x  		µãXÖá×ø±ê
-*           Point_y			µãYÖá×ø±ê
-*			Point_Color     µãÑÕÉ«
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º
+* å    ç§°ï¼šTFT_SetPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
+* åŠŸ    èƒ½ï¼šTFTå±å¹•æŒ‡å®šä½ç½®ä¸Šæ˜¾ç¤ºä¸€ä¸ªç‰¹å®šé¢œè‰²çš„ç‚¹
+* å…¥å£å‚æ•°ï¼šPoint_x  		ç‚¹Xè½´åæ ‡
+*           Point_y			ç‚¹Yè½´åæ ‡
+*			Point_Color     ç‚¹é¢œè‰²
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼š
 ************************************************************************************/
 void TFT_SetPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
 {
@@ -256,13 +256,13 @@ void TFT_SetPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
   TFT_Write_Date(Point_Color);
 }
 /****************************************************************************************************
-*  Ãû    ³Æ£ºvoid TFT_DrawBigPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
-*  ¹¦    ÄÜ£ºÔÚÆÁÄ»ÉÏÖ¸¶¨Î»ÖÃ»­Ò»¸öÍ¼ĞÎµã
-*  Èë¿Ú²ÎÊı£ºPoint_x    		ºáÖá×ø±ê
-*			 			 Point_y    		×İÖá×ø±ê
-*			 			 Point_Color  		Í¼ĞÎÑÕÉ«
-*  ³ö¿Ú²ÎÊı£ºÎŞ
-*  Ëµ    Ã÷£º
+*  å    ç§°ï¼švoid TFT_DrawBigPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
+*  åŠŸ    èƒ½ï¼šåœ¨å±å¹•ä¸ŠæŒ‡å®šä½ç½®ç”»ä¸€ä¸ªå›¾å½¢ç‚¹
+*  å…¥å£å‚æ•°ï¼šPoint_x    		æ¨ªè½´åæ ‡
+*			 			 Point_y    		çºµè½´åæ ‡
+*			 			 Point_Color  		å›¾å½¢é¢œè‰²
+*  å‡ºå£å‚æ•°ï¼šæ— 
+*  è¯´    æ˜ï¼š
 ****************************************************************************************************/
 void TFT_DrawBigPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
 {
@@ -275,25 +275,25 @@ void TFT_DrawBigPoint(u16 Point_x,u16 Point_y,u16 Point_Color)
 	TFT_DrawCircle(Point_x, Point_y, 6, Point_Color);
 }	
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_PutCharacter(u16 Char_PX,u16 Char_PY,u8 Put_Char,u8 Char_Size,u16 CharColor,u16 BkColor,u8 Cover)
-* ¹¦    ÄÜ£ºTFTÆÁÄ»ÉÏÖ¸¶¨Î»ÖÃ¿ªÊ¼ ÏÔÊ¾ÈÎÒâ´óĞ¡¸ñÊ½µÄ×Ö·û
-* Èë¿Ú²ÎÊı£ºChar_PX  		XÖáÆğÊ¼×ø±ê
-*           Char_PY			YÖáÆğÊ¼×ø±ê
-*						Put_Char        ĞèÒªÏÔÊ¾µÄ×Ö·û
-* 					Char_Size		×Ö·û´óĞ¡   Character_16_24     Character_16_32
-*						CharColor       ×Ö·ûÑÕÉ«
-*						BkColor			±³¾°ÑÕÉ«
-*						Cover           ±³¾°É«ÊÇ·ñÏÔÊ¾  1£º¸²¸ÇÔ­±³¾°É«  0£º²»¸²¸ÇÔ­±³¾°É«
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º
+* å    ç§°ï¼šTFT_PutCharacter(u16 Char_PX,u16 Char_PY,u8 Put_Char,u8 Char_Size,u16 CharColor,u16 BkColor,u8 Cover)
+* åŠŸ    èƒ½ï¼šTFTå±å¹•ä¸ŠæŒ‡å®šä½ç½®å¼€å§‹ æ˜¾ç¤ºä»»æ„å¤§å°æ ¼å¼çš„å­—ç¬¦
+* å…¥å£å‚æ•°ï¼šChar_PX  		Xè½´èµ·å§‹åæ ‡
+*           Char_PY			Yè½´èµ·å§‹åæ ‡
+*						Put_Char        éœ€è¦æ˜¾ç¤ºçš„å­—ç¬¦
+* 					Char_Size		å­—ç¬¦å¤§å°   Character_16_24     Character_16_32
+*						CharColor       å­—ç¬¦é¢œè‰²
+*						BkColor			èƒŒæ™¯é¢œè‰²
+*						Cover           èƒŒæ™¯è‰²æ˜¯å¦æ˜¾ç¤º  1ï¼šè¦†ç›–åŸèƒŒæ™¯è‰²  0ï¼šä¸è¦†ç›–åŸèƒŒæ™¯è‰²
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼š
 ************************************************************************************/
 void TFT_PutCharacter(u16 Char_PX,u16 Char_PY,u8 Put_Char,u8 Char_Size,u16 CharColor,u16 BkColor,u8 Cover)
 {
 	u8 i,j,k;
-  	u8 hor_size,ver_size;									//hor_size£ººáÏò¿í¶È  ver_size£º×İÏò¿í¶È
+  	u8 hor_size,ver_size;									//hor_sizeï¼šæ¨ªå‘å®½åº¦  ver_sizeï¼šçºµå‘å®½åº¦
 	u8 *Character_addr;
-												//ÏÈ½«ÏÔÊ¾Êı¾İ±£´æÖÁÊı×éÄÚ£¬Ö®ºóµ÷ÓÃÌî³äÍ¼Æ¬º¯Êı(±£Ö¤Ë¢ĞÂËÙ¶È)
-	Character_addr = (u8 *)ASCII[Char_Size][Put_Char];		//±£´æ×Ö·ûASCIIÊı¾İÆğÊ¼µØÖ·
+												//å…ˆå°†æ˜¾ç¤ºæ•°æ®ä¿å­˜è‡³æ•°ç»„å†…ï¼Œä¹‹åè°ƒç”¨å¡«å……å›¾ç‰‡å‡½æ•°(ä¿è¯åˆ·æ–°é€Ÿåº¦)
+	Character_addr = (u8 *)ASCII[Char_Size][Put_Char];		//ä¿å­˜å­—ç¬¦ASCIIæ•°æ®èµ·å§‹åœ°å€
   	switch(Char_Size)
 	{
 		case 0:hor_size = 16;ver_size = 24;break;			//16 * 24
@@ -302,16 +302,16 @@ void TFT_PutCharacter(u16 Char_PX,u16 Char_PY,u8 Put_Char,u8 Char_Size,u16 CharC
 		case 3:hor_size = 8;ver_size = 16;break;
 		default:break;
 	}
-  	k = hor_size >> 3;										//¼ÆËã×Ö³¤
+  	k = hor_size >> 3;										//è®¡ç®—å­—é•¿
 	for(i = 0;i < ver_size;i ++)
 	{
 		for(j = 0;j < hor_size;j ++)
 		{
-			if((Character_addr[i * k + j / 8] << (j % 8)) & 0x80)  //·ÇÁã±íÊ¾ÏÔÊ¾×Ö·ûÑÕÉ«
+			if((Character_addr[i * k + j / 8] << (j % 8)) & 0x80)  //éé›¶è¡¨ç¤ºæ˜¾ç¤ºå­—ç¬¦é¢œè‰²
 //				TFT_SetPoint(Char_PX + j,Char_PY + i,CharColor);
 				temp[i * hor_size + j] = CharColor;
 				
-			else if(Cover)										   //ÁãÏÔÊ¾±³¾°ÑÕÉ«  
+			else if(Cover)										   //é›¶æ˜¾ç¤ºèƒŒæ™¯é¢œè‰²  
 //				TFT_SetPoint(Char_PX + j,Char_PY + i,BkColor);
 				temp[i * hor_size + j] = BkColor;
 		}
@@ -319,17 +319,17 @@ void TFT_PutCharacter(u16 Char_PX,u16 Char_PY,u8 Put_Char,u8 Char_Size,u16 CharC
 	TFT_Fill_BMP_16(Char_PX,Char_PY,hor_size,ver_size,temp);
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_DisplayStringLine(u16 Str_PX,u16 Str_PY,u8 *Str_PTR,u8 Char_Size,u16 CharColor,u16 BkColor)
-* ¹¦    ÄÜ£ºTFTÆÁÄ»ÉÏÖ¸¶¨Î»ÖÃ¿ªÊ¼ ÏÔÊ¾ÈÎÒâ´óĞ¡¸ñÊ½µÄÒ»´®×Ö·û
-* Èë¿Ú²ÎÊı£ºStr_PX  		XÖáÆğÊ¼×ø±ê
-*           Str_PY			YÖáÆğÊ¼×ø±ê
-*						*Str_PTR        ×Ö·ûÊı×é
-* 					Char_Size		×Ö·û´óĞ¡	 Character_16_24     Character_16_32  Character_32_48
-*						CharColor       ×Ö·ûÑÕÉ«
-*						BkColor			±³¾°ÑÕÉ«
-*						Cover           ±³¾°É«ÊÇ·ñÏÔÊ¾  1£º¸²¸ÇÔ­±³¾°É«  0£º²»¸²¸ÇÔ­±³¾°É«
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º
+* å    ç§°ï¼šTFT_DisplayStringLine(u16 Str_PX,u16 Str_PY,u8 *Str_PTR,u8 Char_Size,u16 CharColor,u16 BkColor)
+* åŠŸ    èƒ½ï¼šTFTå±å¹•ä¸ŠæŒ‡å®šä½ç½®å¼€å§‹ æ˜¾ç¤ºä»»æ„å¤§å°æ ¼å¼çš„ä¸€ä¸²å­—ç¬¦
+* å…¥å£å‚æ•°ï¼šStr_PX  		Xè½´èµ·å§‹åæ ‡
+*           Str_PY			Yè½´èµ·å§‹åæ ‡
+*						*Str_PTR        å­—ç¬¦æ•°ç»„
+* 					Char_Size		å­—ç¬¦å¤§å°	 Character_16_24     Character_16_32  Character_32_48
+*						CharColor       å­—ç¬¦é¢œè‰²
+*						BkColor			èƒŒæ™¯é¢œè‰²
+*						Cover           èƒŒæ™¯è‰²æ˜¯å¦æ˜¾ç¤º  1ï¼šè¦†ç›–åŸèƒŒæ™¯è‰²  0ï¼šä¸è¦†ç›–åŸèƒŒæ™¯è‰²
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼š
 ************************************************************************************/
 void TFT_DisplayStringLine(u16 Str_PX,u16 Str_PY,u8 *Str_PTR,u8 Char_Size,u16 CharColor,u16 BkColor,u8 Cover)
 {
@@ -354,40 +354,40 @@ void TFT_DisplayStringLine(u16 Str_PX,u16 Str_PY,u8 *Str_PTR,u8 Char_Size,u16 Ch
   }
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_PutChineseLine(u16 Chinese_X, u16 Chinese_Y,u8 **ChineseLine_PTR,u8 Chinese_num,u8 Chinese_Size,u16 ChineseColor,u16 BkColor,u8 Cover)
-* ¹¦    ÄÜ£ºTFTÆÁÄ»ÉÏÖ¸¶¨Î»ÖÃ¿ªÊ¼ ÏÔÊ¾ÈÎÒâ´óĞ¡¸ñÊ½µÄÒ»´®ºº×Ö
-* Èë¿Ú²ÎÊı£ºChinese_X  				XÖáÆğÊ¼×ø±ê
-*           Chinese_Y				YÖáÆğÊ¼×ø±ê
-*						**ChineseLine_PTR       ºº×ÖÊı×é
-*						Chinese_num				ÏÔÊ¾ºº×Ö¸öÊı
-* 					Chinese_Size			ºº×Ö´óĞ¡	 Chinese_32_32     Chinese_48_48
-*						ChineseColor       		ºº×ÖÑÕÉ«
-*						BkColor					±³¾°ÑÕÉ«
-*						Cover           		±³¾°É«ÊÇ·ñÏÔÊ¾  1£º¸²¸ÇÔ­±³¾°É«  0£º²»¸²¸ÇÔ­±³¾°É«
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º
+* å    ç§°ï¼šTFT_PutChineseLine(u16 Chinese_X, u16 Chinese_Y,u8 **ChineseLine_PTR,u8 Chinese_num,u8 Chinese_Size,u16 ChineseColor,u16 BkColor,u8 Cover)
+* åŠŸ    èƒ½ï¼šTFTå±å¹•ä¸ŠæŒ‡å®šä½ç½®å¼€å§‹ æ˜¾ç¤ºä»»æ„å¤§å°æ ¼å¼çš„ä¸€ä¸²æ±‰å­—
+* å…¥å£å‚æ•°ï¼šChinese_X  				Xè½´èµ·å§‹åæ ‡
+*           Chinese_Y				Yè½´èµ·å§‹åæ ‡
+*						**ChineseLine_PTR       æ±‰å­—æ•°ç»„
+*						Chinese_num				æ˜¾ç¤ºæ±‰å­—ä¸ªæ•°
+* 					Chinese_Size			æ±‰å­—å¤§å°	 Chinese_32_32     Chinese_48_48
+*						ChineseColor       		æ±‰å­—é¢œè‰²
+*						BkColor					èƒŒæ™¯é¢œè‰²
+*						Cover           		èƒŒæ™¯è‰²æ˜¯å¦æ˜¾ç¤º  1ï¼šè¦†ç›–åŸèƒŒæ™¯è‰²  0ï¼šä¸è¦†ç›–åŸèƒŒæ™¯è‰²
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼š
 ************************************************************************************/
 void TFT_PutChineseLine(u16 Chinese_X, u16 Chinese_Y,u8 **ChineseLine_PTR,u8 Chinese_num,u8 Chinese_Size,u16 ChineseColor,u16 BkColor,u8 Cover)
 {
     u8 i,j,k,l;
-  	u8 hor_size,ver_size;									//hor_size£ººáÏò¿í¶È  ver_size£º×İÏò¿í¶È
+  	u8 hor_size,ver_size;									//hor_sizeï¼šæ¨ªå‘å®½åº¦  ver_sizeï¼šçºµå‘å®½åº¦
   	switch(Chinese_Size)
 	{
 		case 0:hor_size = 24;ver_size = 24;break;			//32 * 32
 		case 1:hor_size = 48;ver_size = 48;break;			//48 * 48
 		default:break;
 	}
-  	k = hor_size >> 3;										//¼ÆËã×Ö³¤
+  	k = hor_size >> 3;										//è®¡ç®—å­—é•¿
 	for(l = 0;l < Chinese_num;l ++)
 	{
 		for(i = 0;i < ver_size;i ++)
 		{
 			for(j = 0;j < hor_size;j ++)
 			{
-				if((ChineseLine_PTR[l][i * k + j / 8] << (j % 8)) & 0x80)  //·ÇÁã±íÊ¾ÏÔÊ¾×Ö·ûÑÕÉ«
+				if((ChineseLine_PTR[l][i * k + j / 8] << (j % 8)) & 0x80)  //éé›¶è¡¨ç¤ºæ˜¾ç¤ºå­—ç¬¦é¢œè‰²
 					TFT_SetPoint(Chinese_X + j + l * hor_size,Chinese_Y + i,ChineseColor);
 //					temp[i * hor_size + j] = ChineseColor;
-				else if(Cover)										       //ÁãÏÔÊ¾±³¾°ÑÕÉ«  
+				else if(Cover)										       //é›¶æ˜¾ç¤ºèƒŒæ™¯é¢œè‰²  
 					TFT_SetPoint(Chinese_X + j + l * hor_size,Chinese_Y + i,BkColor);
 //					temp[i * hor_size + j] = BkColor;
 			}
@@ -396,16 +396,16 @@ void TFT_PutChineseLine(u16 Chinese_X, u16 Chinese_Y,u8 **ChineseLine_PTR,u8 Chi
 	}
 }
 /************************************************************************************
-* Ãû    ³Æ£ºvoid TFT_WriteBMP(u8 Xpos, u16 Ypos, u8 Height, u16 Width, u8 *bitmap)
-* ¹¦    ÄÜ£ºTFTÆÁÄ»ÉÏÏÔÊ¾Í¼Æ¬
-* Èë¿Ú²ÎÊı£ºXpos        XÖáÆğÊ¼Î»ÖÃ
-*						Ypos		YÖáÆğÊ¼Î»ÖÃ
-*           Height		XÖáÔöÁ¿
-*						Width		YÖáÔöÁ¿
-*						*bitmap		Í¼Æ¬Êı×éÆğÊ¼Î»ÖÃ
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º´Ëº¯ÊıÖĞ½«Ö¸ÕëbitmapÇ¿ÖÆ×ª»»³É16½øÖÆ£¬Òò´ËÃ¿´ÎÈ¡*bitmap_ptrÊ±Êµ¼Ê
-*			È¡³öµÄÊÇÒ»¸ö16Î»Êı¾İ,·ûºÏRGB±ê×¼
+* å    ç§°ï¼švoid TFT_WriteBMP(u8 Xpos, u16 Ypos, u8 Height, u16 Width, u8 *bitmap)
+* åŠŸ    èƒ½ï¼šTFTå±å¹•ä¸Šæ˜¾ç¤ºå›¾ç‰‡
+* å…¥å£å‚æ•°ï¼šXpos        Xè½´èµ·å§‹ä½ç½®
+*						Ypos		Yè½´èµ·å§‹ä½ç½®
+*           Height		Xè½´å¢é‡
+*						Width		Yè½´å¢é‡
+*						*bitmap		å›¾ç‰‡æ•°ç»„èµ·å§‹ä½ç½®
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šæ­¤å‡½æ•°ä¸­å°†æŒ‡é’ˆbitmapå¼ºåˆ¶è½¬æ¢æˆ16è¿›åˆ¶ï¼Œå› æ­¤æ¯æ¬¡å–*bitmap_ptræ—¶å®é™…
+*			å–å‡ºçš„æ˜¯ä¸€ä¸ª16ä½æ•°æ®,ç¬¦åˆRGBæ ‡å‡†
 ************************************************************************************/
 void TFT_WriteBMP(u16 Xpos, u16 Ypos, u16 Width, u16 Height,u8 *bitmap)
 {
@@ -420,12 +420,12 @@ void TFT_WriteBMP(u16 Xpos, u16 Ypos, u16 Width, u16 Height,u8 *bitmap)
 	TFT_SetDisplayWindow(0,0,799,479);	  
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_ShowBMP_Formflash(u16 size,u8 *bitmap)
-* ¹¦    ÄÜ£ºTFTÆÁÄ»ÉÏÏÔÊ¾Í¼Æ¬  Êı¾İ´ÓÆ¬ÍâFlash(W25Q16)ÖĞ¶ÁÈ¡
-* Èë¿Ú²ÎÊı£ºsize  		Ò»´ÎÏÔÊ¾Êı¾İ¸öÊı
-*						*bitmap  	Í¼Æ¬Êı×éµØÖ·
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£ºµ÷ÓÃ´Ëº¯ÊıÖ®Ç° ÒªÉèÖÃ¹â±êÎ»ÖÃTFT_SetCursor  Ğ´GRAMÊ¹ÄÜTFT_WriteRAM_Prepare
+* å    ç§°ï¼šTFT_ShowBMP_Formflash(u16 size,u8 *bitmap)
+* åŠŸ    èƒ½ï¼šTFTå±å¹•ä¸Šæ˜¾ç¤ºå›¾ç‰‡  æ•°æ®ä»ç‰‡å¤–Flash(W25Q16)ä¸­è¯»å–
+* å…¥å£å‚æ•°ï¼šsize  		ä¸€æ¬¡æ˜¾ç¤ºæ•°æ®ä¸ªæ•°
+*						*bitmap  	å›¾ç‰‡æ•°ç»„åœ°å€
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šè°ƒç”¨æ­¤å‡½æ•°ä¹‹å‰ è¦è®¾ç½®å…‰æ ‡ä½ç½®TFT_SetCursor  å†™GRAMä½¿èƒ½TFT_WriteRAM_Prepare
 ************************************************************************************/
 void TFT_ShowBMP_Formflash(u32 size,u8 *bitmap)
 {
@@ -439,41 +439,41 @@ void TFT_ShowBMP_Formflash(u32 size,u8 *bitmap)
 	DMA_Cmd(DMA1_Channel1,DISABLE);  
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_SetDisplayWindow(u8 Xpos, u16 Ypos, u8 Height, u16 Width)
-* ¹¦    ÄÜ£ºÉè¶¨TFTÆÁÄ»ÉÏÌî³äÑÕÉ«µÄÇøÓò·¶Î§
-* Èë¿Ú²ÎÊı£ºXSta        ºáÏòÆğÊ¼Î»ÖÃ
-*						YSta		×İÏòÆğÊ¼Î»ÖÃ
-*           XEnd		ºáÏò½áÊøÎ»ÖÃ
-*						YEnd		×İÏò½áÊøÎ»ÖÃ	
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º
+* å    ç§°ï¼šTFT_SetDisplayWindow(u8 Xpos, u16 Ypos, u8 Height, u16 Width)
+* åŠŸ    èƒ½ï¼šè®¾å®šTFTå±å¹•ä¸Šå¡«å……é¢œè‰²çš„åŒºåŸŸèŒƒå›´
+* å…¥å£å‚æ•°ï¼šXSta        æ¨ªå‘èµ·å§‹ä½ç½®
+*						YSta		çºµå‘èµ·å§‹ä½ç½®
+*           XEnd		æ¨ªå‘ç»“æŸä½ç½®
+*						YEnd		çºµå‘ç»“æŸä½ç½®	
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼š
 ************************************************************************************/
 void TFT_SetDisplayWindow(u16 XSta,u16 YSta,u16 XEnd,u16 YEnd)
 {
 	if(XEnd >= 800 || YEnd >= 480)
 		return;
 	TFT_Write_Cmd(0X002A);	
-	TFT_Write_Date(XSta >> 8);	    			  //ºáÏòÆğÊ¼Î»ÖÃ
+	TFT_Write_Date(XSta >> 8);	    			  //æ¨ªå‘èµ·å§‹ä½ç½®
 	TFT_Write_Date(XSta & 0X00FF);
-	TFT_Write_Date(XEnd >> 8);	      			  //ºáÏòÖÕÖ¹Î»ÖÃ
+	TFT_Write_Date(XEnd >> 8);	      			  //æ¨ªå‘ç»ˆæ­¢ä½ç½®
 	TFT_Write_Date(XEnd & 0X00FF);
 
     TFT_Write_Cmd(0X002B);	
-	TFT_Write_Date(YSta >> 8);	    			  //×İÏòÆğÊ¼Î»ÖÃ
+	TFT_Write_Date(YSta >> 8);	    			  //çºµå‘èµ·å§‹ä½ç½®
 	TFT_Write_Date(YSta & 0X00FF);
-	TFT_Write_Date(YEnd >> 8);	      			  //×İÏòÖÕÖ¹Î»ÖÃ
+	TFT_Write_Date(YEnd >> 8);	      			  //çºµå‘ç»ˆæ­¢ä½ç½®
 	TFT_Write_Date(YEnd & 0X00FF);
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_Fill(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u16 Fill_Color)
-* ¹¦    ÄÜ£ºÔÚTFTÆÁÄ»ÉÏÖ¸¶¨ÇøÓòÄÚÌî³äÖ¸¶¨ÑÕÉ«
-* Èë¿Ú²ÎÊı£ºXSta        	ºáÏòÆğÊ¼Î»ÖÃ
-*						YSta			×İÏòÆğÊ¼Î»ÖÃ
-*           Xincrease		ºáÏòÔöÁ¿
-*						Yincrease		×İÏòÔöÁ¿
-*						Fill_Color  	Ìî³äµÄÑÕÉ«	
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º
+* å    ç§°ï¼šTFT_Fill(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u16 Fill_Color)
+* åŠŸ    èƒ½ï¼šåœ¨TFTå±å¹•ä¸ŠæŒ‡å®šåŒºåŸŸå†…å¡«å……æŒ‡å®šé¢œè‰²
+* å…¥å£å‚æ•°ï¼šXSta        	æ¨ªå‘èµ·å§‹ä½ç½®
+*						YSta			çºµå‘èµ·å§‹ä½ç½®
+*           Xincrease		æ¨ªå‘å¢é‡
+*						Yincrease		çºµå‘å¢é‡
+*						Fill_Color  	å¡«å……çš„é¢œè‰²	
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼š
 ************************************************************************************/
 void TFT_Fill(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u16 Fill_Color)
 {                    
@@ -489,16 +489,16 @@ void TFT_Fill(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u16 Fill_Color)
 		TFT_Write_Date(Fill_Color);	 
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_Fill_BMP(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u8 *Fill_BMP_STR)
-* ¹¦    ÄÜ£ºÔÚTFTÆÁÄ»ÉÏÖ¸¶¨ÇøÓòÄÚÌî³äÖ¸¶¨ÑÕÉ«
-* Èë¿Ú²ÎÊı£ºXSta        	ºáÏòÆğÊ¼Î»ÖÃ
-*						YSta			×İÏòÆğÊ¼Î»ÖÃ
-*           Xincrease		Í¼Æ¬ºáÏò¿í¶È
-*						Yincrease		Í¼Æ¬×İÏò¸ß¶È
-*						Fill_BMP_STR    Ìî³äÍ¼Æ¬Êı¾İµÄÊ×µØÖ·  Êı¾İ¸ñÊ½ÎªU8	
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£ºÏÈ½«u8ÀàĞÍµÄÍ¼Æ¬Êı×é×ª»»³Éu16ÀàĞÍµÄÊı×é£¬ÕâÑùÃ¿´Î¶ÁÈ¡Êı×éÄÚÈİÊ±ÊÇu16ÀàĞÍµÄ
-*			Ê¹ÓÃDMA·½Ê½ÏòFSMC·¢ËÍÊı¾İ
+* å    ç§°ï¼šTFT_Fill_BMP(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u8 *Fill_BMP_STR)
+* åŠŸ    èƒ½ï¼šåœ¨TFTå±å¹•ä¸ŠæŒ‡å®šåŒºåŸŸå†…å¡«å……æŒ‡å®šé¢œè‰²
+* å…¥å£å‚æ•°ï¼šXSta        	æ¨ªå‘èµ·å§‹ä½ç½®
+*						YSta			çºµå‘èµ·å§‹ä½ç½®
+*           Xincrease		å›¾ç‰‡æ¨ªå‘å®½åº¦
+*						Yincrease		å›¾ç‰‡çºµå‘é«˜åº¦
+*						Fill_BMP_STR    å¡«å……å›¾ç‰‡æ•°æ®çš„é¦–åœ°å€  æ•°æ®æ ¼å¼ä¸ºU8	
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šå…ˆå°†u8ç±»å‹çš„å›¾ç‰‡æ•°ç»„è½¬æ¢æˆu16ç±»å‹çš„æ•°ç»„ï¼Œè¿™æ ·æ¯æ¬¡è¯»å–æ•°ç»„å†…å®¹æ—¶æ˜¯u16ç±»å‹çš„
+*			ä½¿ç”¨DMAæ–¹å¼å‘FSMCå‘é€æ•°æ®
 ************************************************************************************/
 void TFT_Fill_BMP(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u8 *Fill_BMP_STR)
 {                    
@@ -514,15 +514,15 @@ void TFT_Fill_BMP(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u8 *Fill_BMP_STR
 	DMA_Cmd(DMA1_Channel1,DISABLE); 
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_Fill_BMP(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u8 *Fill_BMP_STR)
-* ¹¦    ÄÜ£ºÔÚTFTÆÁÄ»ÉÏÖ¸¶¨ÇøÓòÄÚÌî³äÖ¸¶¨ÑÕÉ«
-* Èë¿Ú²ÎÊı£ºXSta        	ºáÏòÆğÊ¼Î»ÖÃ
-*						YSta			×İÏòÆğÊ¼Î»ÖÃ
-*           Xincrease		Í¼Æ¬ºáÏò¿í¶È
-*						Yincrease		Í¼Æ¬×İÏò¸ß¶È
-*						Fill_BMP_STR    Ìî³äÍ¼Æ¬Êı¾İµÄÊ×µØÖ·  Êı¾İ¸ñÊ½Îªu16	
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£ºÊ¹ÓÃDMA·½Ê½ÏòFSMC·¢ËÍÊı¾İ
+* å    ç§°ï¼šTFT_Fill_BMP(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u8 *Fill_BMP_STR)
+* åŠŸ    èƒ½ï¼šåœ¨TFTå±å¹•ä¸ŠæŒ‡å®šåŒºåŸŸå†…å¡«å……æŒ‡å®šé¢œè‰²
+* å…¥å£å‚æ•°ï¼šXSta        	æ¨ªå‘èµ·å§‹ä½ç½®
+*						YSta			çºµå‘èµ·å§‹ä½ç½®
+*           Xincrease		å›¾ç‰‡æ¨ªå‘å®½åº¦
+*						Yincrease		å›¾ç‰‡çºµå‘é«˜åº¦
+*						Fill_BMP_STR    å¡«å……å›¾ç‰‡æ•°æ®çš„é¦–åœ°å€  æ•°æ®æ ¼å¼ä¸ºu16	
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šä½¿ç”¨DMAæ–¹å¼å‘FSMCå‘é€æ•°æ®
 ************************************************************************************/
 void TFT_Fill_BMP_16(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u16 *Fill_BMP_STR)
 {                    
@@ -535,41 +535,41 @@ void TFT_Fill_BMP_16(u16 XSta,u16 YSta,u16 Xincrease,u16 Yincrease,u16 *Fill_BMP
 	DMA_Cmd(DMA1_Channel1,DISABLE);	 
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_DrawLine(u16 XSta, u16 YSta, u16 XEnd, u16 YEnd, u16 Line_Color)
-* ¹¦    ÄÜ£ºÔÚTFTÆÁÄ»ÉÏÈÎÒâÁ½µãÖ®¼ä»­Ò»ÌõÖ±Ïß
-* Èë¿Ú²ÎÊı£ºXSta        ºáÏòÆğÊ¼Î»ÖÃ
-*						YSta		×İÏòÆğÊ¼Î»ÖÃ
-*           XEnd		ºáÏò½áÊøÎ»ÖÃ
-*						YEnd		×İÏò½áÊøÎ»ÖÃ
-*						Line_Color  ÏßµÄÑÕÉ«	
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£ºÈç¹ûÒ»ÌõÖ±Ïß¸Ğ¾õ²»¹»Ã÷ÏÔ£¬¿ÉÒÔÔÚÆğµãºÍÖÕµãµÄºáÖá·½ÏòÉÏÔö¼Ó1¸ñÔÙ»­¼¸ÌõÖ±Ïß
+* å    ç§°ï¼šTFT_DrawLine(u16 XSta, u16 YSta, u16 XEnd, u16 YEnd, u16 Line_Color)
+* åŠŸ    èƒ½ï¼šåœ¨TFTå±å¹•ä¸Šä»»æ„ä¸¤ç‚¹ä¹‹é—´ç”»ä¸€æ¡ç›´çº¿
+* å…¥å£å‚æ•°ï¼šXSta        æ¨ªå‘èµ·å§‹ä½ç½®
+*						YSta		çºµå‘èµ·å§‹ä½ç½®
+*           XEnd		æ¨ªå‘ç»“æŸä½ç½®
+*						YEnd		çºµå‘ç»“æŸä½ç½®
+*						Line_Color  çº¿çš„é¢œè‰²	
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šå¦‚æœä¸€æ¡ç›´çº¿æ„Ÿè§‰ä¸å¤Ÿæ˜æ˜¾ï¼Œå¯ä»¥åœ¨èµ·ç‚¹å’Œç»ˆç‚¹çš„æ¨ªè½´æ–¹å‘ä¸Šå¢åŠ 1æ ¼å†ç”»å‡ æ¡ç›´çº¿
 ************************************************************************************/
 void TFT_DrawLine(u16 XSta, u16 YSta, u16 XEnd, u16 YEnd, u16 Line_Color)
 {
     u16 i,j,temp;	 
-	if((XSta == XEnd)&&(YSta == YEnd))				  //ÆğÊ¼Î»ÖÃ = ÖÕÖ¹Î»ÖÃ
+	if((XSta == XEnd)&&(YSta == YEnd))				  //èµ·å§‹ä½ç½® = ç»ˆæ­¢ä½ç½®
 		TFT_SetPoint(XSta, YSta, Line_Color);
 	else
 	{ 
-		if(fabs(YEnd - YSta) > fabs(XEnd - XSta))		  //Ğ±ÂÊ´óÓÚ1 
+		if(fabs(YEnd - YSta) > fabs(XEnd - XSta))		  //æ–œç‡å¤§äº1 
 		{
 			if(YSta > YEnd) 
 			{
-				temp = YSta;						  //½»»»Æğµã/ÖÕµã×ø±ê
+				temp = YSta;						  //äº¤æ¢èµ·ç‚¹/ç»ˆç‚¹åæ ‡
 				YSta = YEnd;
 				YEnd = temp; 
 				temp = XSta;
 				XSta = XEnd;
 				XEnd = temp; 
 			}
-			for(j = YSta;j < YEnd;j ++)               //ÒÔyÖáÎª»ù×¼
+			for(j = YSta;j < YEnd;j ++)               //ä»¥yè½´ä¸ºåŸºå‡†
 			{
 				i = (u16)(j - YSta) * (XEnd - XSta) / (YEnd - YSta) + XSta;
 				TFT_SetPoint(i,j,Line_Color);  
 			}
 		}
-		else     									 //Ğ±ÂÊĞ¡ÓÚµÈÓÚ1
+		else     									 //æ–œç‡å°äºç­‰äº1
 		{
 			if(XSta > XEnd)
 			{
@@ -580,7 +580,7 @@ void TFT_DrawLine(u16 XSta, u16 YSta, u16 XEnd, u16 YEnd, u16 Line_Color)
 				XSta = XEnd;
 				XEnd = temp;
 			}   
-			for(i = XSta;i <= XEnd;i ++)  			//ÒÔxÖáÎª»ù×¼ 
+			for(i = XSta;i <= XEnd;i ++)  			//ä»¥xè½´ä¸ºåŸºå‡† 
 			{
 				j = (u16)(i - XSta) * (YEnd - YSta) / (XEnd - XSta) + YSta;
 				TFT_SetPoint(i,j,Line_Color); 
@@ -589,14 +589,14 @@ void TFT_DrawLine(u16 XSta, u16 YSta, u16 XEnd, u16 YEnd, u16 Line_Color)
 	} 
 }
 /************************************************************************************
-* Ãû    ³Æ£ºTFT_DrawCircle(u16 Xptr, u16 Yptr, u8 Radiu, u16 Color)
-* ¹¦    ÄÜ£ºÒÔTFTÆÁÄ»ÉÏÈÎÒâÒ»µãÎªÔ²ĞÄ »­ÈÎÒâ°ë¾¶µÄÔ²
-* Èë¿Ú²ÎÊı£ºXptr        ºáÏòÎ»ÖÃ
-*						Yptr		×İÏòÎ»ÖÃ
-*						Radiu		Ô²µÄ°ë¾¶
-*						Color       »­Ô²ÑÕÉ«
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£ºÈç¹û¸Ğ¾õÔ²Ïß²»¹»Ã÷ÏÔ£¬¿ÉÒÔÔÚ°ë¾¶ÉÏÔö¼Ó1£¬¶à»­¼¸¸öÔ²
+* å    ç§°ï¼šTFT_DrawCircle(u16 Xptr, u16 Yptr, u8 Radiu, u16 Color)
+* åŠŸ    èƒ½ï¼šä»¥TFTå±å¹•ä¸Šä»»æ„ä¸€ç‚¹ä¸ºåœ†å¿ƒ ç”»ä»»æ„åŠå¾„çš„åœ†
+* å…¥å£å‚æ•°ï¼šXptr        æ¨ªå‘ä½ç½®
+*						Yptr		çºµå‘ä½ç½®
+*						Radiu		åœ†çš„åŠå¾„
+*						Color       ç”»åœ†é¢œè‰²
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šå¦‚æœæ„Ÿè§‰åœ†çº¿ä¸å¤Ÿæ˜æ˜¾ï¼Œå¯ä»¥åœ¨åŠå¾„ä¸Šå¢åŠ 1ï¼Œå¤šç”»å‡ ä¸ªåœ†
 ************************************************************************************/
 void TFT_DrawCircle(u16 Xptr, u16 Yptr, u8 Radiu, u16 Color)
 {
@@ -607,7 +607,7 @@ void TFT_DrawCircle(u16 Xptr, u16 Yptr, u8 Radiu, u16 Color)
 		return;
 	a = 0;
 	b = Radiu;		  
-	di = 3 - (Radiu << 1);             				//ÅĞ¶ÏÏÂ¸öµãÎ»ÖÃµÄ±êÖ¾
+	di = 3 - (Radiu << 1);             				//åˆ¤æ–­ä¸‹ä¸ªç‚¹ä½ç½®çš„æ ‡å¿—
 	while(a <= b)
 	{
 		TFT_SetPoint(Xptr - b, Yptr - a, Color);             //3           
@@ -620,7 +620,7 @@ void TFT_DrawCircle(u16 Xptr, u16 Yptr, u8 Radiu, u16 Color)
 		TFT_SetPoint(Xptr + a, Yptr + b, Color);             //6 
 		TFT_SetPoint(Xptr - b, Yptr + a, Color); 
 		a ++;		     
-		if(di < 0)									  //Ê¹ÓÃBresenhamËã·¨»­Ô²
+		if(di < 0)									  //ä½¿ç”¨Bresenhamç®—æ³•ç”»åœ†
 			di += 4 * a + 6;	  					  
 		else
 		{
@@ -631,17 +631,17 @@ void TFT_DrawCircle(u16 Xptr, u16 Yptr, u8 Radiu, u16 Color)
 	}
 }
 /************************************************************************************
-* Ãû    ³Æ£ºvoid TFT_DrawRectangle(u16 XSta, u16 YSta, u16 Xincrease, u16 Yincrease, u16 Color)
-* ¹¦    ÄÜ£ºÒÔTFTÆÁÄ»ÉÏÈÎÒâÁ½µãÖ®¼ä»­Ò»¸ö³¤·½ĞÎ
-* Èë¿Ú²ÎÊı£ºXSta        		ºáÏòÆğÊ¼Î»ÖÃ
-*						YSta				×İÏòÆğÊ¼Î»ÖÃ
-*						Xincrease			ºáÏòÔöÁ¿
-*						Yincrease        	×İÏòÔöÁ¿
-*						Color       		³¤·½ĞÎÑÕÉ«
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£ºÈç¹û¸Ğ¾õ³¤·½ĞÎÑÕÉ«²»¹»Ã÷ÏÔ
-*			XÖáÆğÊ¼Î»ÖÃ-1£¬YÖáÆğÊ¼Î»ÖÃ-1
-*			XÖá½áÊøÎ»ÖÃ+1£¬YÖá½áÊøÎ»ÖÃ+1		 ÔÙ»­³¤·½ĞÎ
+* å    ç§°ï¼švoid TFT_DrawRectangle(u16 XSta, u16 YSta, u16 Xincrease, u16 Yincrease, u16 Color)
+* åŠŸ    èƒ½ï¼šä»¥TFTå±å¹•ä¸Šä»»æ„ä¸¤ç‚¹ä¹‹é—´ç”»ä¸€ä¸ªé•¿æ–¹å½¢
+* å…¥å£å‚æ•°ï¼šXSta        		æ¨ªå‘èµ·å§‹ä½ç½®
+*						YSta				çºµå‘èµ·å§‹ä½ç½®
+*						Xincrease			æ¨ªå‘å¢é‡
+*						Yincrease        	çºµå‘å¢é‡
+*						Color       		é•¿æ–¹å½¢é¢œè‰²
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šå¦‚æœæ„Ÿè§‰é•¿æ–¹å½¢é¢œè‰²ä¸å¤Ÿæ˜æ˜¾
+*			Xè½´èµ·å§‹ä½ç½®-1ï¼ŒYè½´èµ·å§‹ä½ç½®-1
+*			Xè½´ç»“æŸä½ç½®+1ï¼ŒYè½´ç»“æŸä½ç½®+1		 å†ç”»é•¿æ–¹å½¢
 ************************************************************************************/
 void TFT_DrawRectangle(u16 XSta, u16 YSta, u16 Xincrease, u16 Yincrease, u16 Color)
 {
@@ -651,11 +651,11 @@ void TFT_DrawRectangle(u16 XSta, u16 YSta, u16 Xincrease, u16 Yincrease, u16 Col
 	TFT_DrawLine((XSta + Xincrease), YSta, (XSta + Xincrease), (YSta + Yincrease), Color);
 } 	
 /******************************************************************************************
-* Ãû    ³Æ£ºvoid TFT_Show_Time(void)
-* ¹¦    ÄÜ£ºTFTÆÁÄ»ÉÏÏÔÊ¾µ±Ç°Ê±¼ä
-* Èë¿Ú²ÎÊı£ºÎŞ
-* ³ö¿Ú²ÎÊı£ºÎŞ
-* Ëµ    Ã÷£º¸ñÊ½20XX-XX-XX  XX:XX:XX
+* å    ç§°ï¼švoid TFT_Show_Time(void)
+* åŠŸ    èƒ½ï¼šTFTå±å¹•ä¸Šæ˜¾ç¤ºå½“å‰æ—¶é—´
+* å…¥å£å‚æ•°ï¼šæ— 
+* å‡ºå£å‚æ•°ï¼šæ— 
+* è¯´    æ˜ï¼šæ ¼å¼20XX-XX-XX  XX:XX:XX
 *******************************************************************************************/
 void TFT_Show_Time(void)
 {
@@ -681,5 +681,5 @@ void TFT_Show_Time(void)
 	TimeString[6] = CurrentTime.Second / 10 + '0';
 	TimeString[7] = CurrentTime.Second % 10 + '0';
 	TimeString[8] = '\0';
-	TFT_DisplayStringLine(640,55,TimeString,Character_16_24,BLUE,BACKGROND,1);	  //»­±ÊÑÕÉ«ºì
+	TFT_DisplayStringLine(640,55,TimeString,Character_16_24,BLUE,BACKGROND,1);	  //ç”»ç¬”é¢œè‰²çº¢
 }

@@ -1,4 +1,4 @@
-/******************** (C) COPYRIGHT 2009 STMicroelectronics ********************
+ï»¿/******************** (C) COPYRIGHT 2009 STMicroelectronics ********************
 * File Name          : usb_desc.c
 * Author             : MCD Application Team
 * Version            : V3.0.1
@@ -25,22 +25,22 @@
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-/* Éè±¸ÃèÊö·û */
+/* è®¾å¤‡æè¿°ç¬¦ */
 const uint8_t CustomHID_DeviceDescriptor[CUSTOMHID_SIZ_DEVICE_DESC] =
 {
-    0x12,                       /* Õû¸öDescriptorµÄ³¤¶È£º18×Ö½Ú*/
-    USB_DEVICE_DESCRIPTOR_TYPE, /* DescriptorµÄÀà±ð£ºDevice Descriptor(0x01) */
-    0x00,                       /* Éè±¸Ëù×ñÑ­µÄUSBÐ­ÒéµÄ°æ±¾ºÅ£º2.00 */
+    0x12,                       /* æ•´ä¸ªDescriptorçš„é•¿åº¦ï¼š18å­—èŠ‚*/
+    USB_DEVICE_DESCRIPTOR_TYPE, /* Descriptorçš„ç±»åˆ«ï¼šDevice Descriptor(0x01) */
+    0x00,                       /* è®¾å¤‡æ‰€éµå¾ªçš„USBåè®®çš„ç‰ˆæœ¬å·ï¼š2.00 */
     0x02,
-    0xff,                       /* Éè±¸ËùÊµÏÖµÄÀà£ºÓÉÃ¿¸ö½Ó¿ÚÃèÊö·ûÃèÊöËùÊµÏÖµÄÀà*/
-    0x00,                       /* Éè±¸ËùÊµÏÖµÄ×ÓÀà£ºÓÉÃ¿¸ö½Ó¿ÚÃèÊö·ûÃèÊö*/
-    0x00,                       /* Éè±¸Ëù×ñÑ­µÄÐ­ÒéÀà±ð£ºÓÉÃ¿¸ö½Ó¿ÚÃèÊö·ûÃèÊö*/
-    0x40,                       /* ¶Ëµã0µÄ×î´óÊý¾Ý°ü³¤¶È£º64×Ö½Ú*/
-    0xFF,                       /*idVendor (0x0483)  ³§ÉÌ±àºÅ*/
+    0xff,                       /* è®¾å¤‡æ‰€å®žçŽ°çš„ç±»ï¼šç”±æ¯ä¸ªæŽ¥å£æè¿°ç¬¦æè¿°æ‰€å®žçŽ°çš„ç±»*/
+    0x00,                       /* è®¾å¤‡æ‰€å®žçŽ°çš„å­ç±»ï¼šç”±æ¯ä¸ªæŽ¥å£æè¿°ç¬¦æè¿°*/
+    0x00,                       /* è®¾å¤‡æ‰€éµå¾ªçš„åè®®ç±»åˆ«ï¼šç”±æ¯ä¸ªæŽ¥å£æè¿°ç¬¦æè¿°*/
+    0x40,                       /* ç«¯ç‚¹0çš„æœ€å¤§æ•°æ®åŒ…é•¿åº¦ï¼š64å­—èŠ‚*/
+    0xFF,                       /*idVendor (0x0483)  åŽ‚å•†ç¼–å·*/
     0xDD,
-    0x25,                       /*idProduct = 0x5750  ²úÆ·±àºÅ*/
+    0x25,                       /*idProduct = 0x5750  äº§å“ç¼–å·*/
     0x30,
-    0x00,                       /*bcdDevice rel. 2.00  Éè±¸³ö³§±àºÅ*/
+    0x00,                       /*bcdDevice rel. 2.00  è®¾å¤‡å‡ºåŽ‚ç¼–å·*/
     0x02,
     1,                          /*Index of string descriptor describing
                                               manufacturer */
@@ -48,7 +48,7 @@ const uint8_t CustomHID_DeviceDescriptor[CUSTOMHID_SIZ_DEVICE_DESC] =
                                              product*/
     3,                          /*Index of string descriptor describing the
                                              device serial number */
-    0x01                        /* Éè±¸ËùÖ§³ÖµÄÅäÖÃÊýÄ¿£º1*/
+    0x01                        /* è®¾å¤‡æ‰€æ”¯æŒçš„é…ç½®æ•°ç›®ï¼š1*/
 }; 								/* CustomHID_DeviceDescriptor */
 
 
@@ -57,76 +57,76 @@ const uint8_t CustomHID_DeviceDescriptor[CUSTOMHID_SIZ_DEVICE_DESC] =
 
 const uint8_t CustomHID_ConfigDescriptor[CUSTOMHID_SIZ_CONFIG_DESC] =
   {
-    /************ÅäÖÃÃèÊö·û*****************/
-	0x09, /* ÃèÊö·ûµÄ³¤¶È£º9×Ö½Ú*/
-    USB_CONFIGURATION_DESCRIPTOR_TYPE, /* ÃèÊö·ûµÄÀàÐÍ: 0x02 ÅäÖÃÃèÊö·û(Configuration) */
-    CUSTOMHID_SIZ_CONFIG_DESC,	 /* ÍêÕûµÄÃèÊö·û°üÀ¨½Ó¿ÚÃèÊö·û¡¢¶ËµãÃèÊö·ûºÍÀàÃèÊö·ûµÄ³¤¶È*/
+    /************é…ç½®æè¿°ç¬¦*****************/
+	0x09, /* æè¿°ç¬¦çš„é•¿åº¦ï¼š9å­—èŠ‚*/
+    USB_CONFIGURATION_DESCRIPTOR_TYPE, /* æè¿°ç¬¦çš„ç±»åž‹: 0x02 é…ç½®æè¿°ç¬¦(Configuration) */
+    CUSTOMHID_SIZ_CONFIG_DESC,	 /* å®Œæ•´çš„æè¿°ç¬¦åŒ…æ‹¬æŽ¥å£æè¿°ç¬¦ã€ç«¯ç‚¹æè¿°ç¬¦å’Œç±»æè¿°ç¬¦çš„é•¿åº¦*/
     0x00,
-    0x01,         /* ÅäÖÃËùÖ§³ÖµÄ½Ó¿ÚÊýÄ¿£º1*/
-    0x01,         /* ÓÃSetConofiguration()Ñ¡Ôñ´ËÅäÖÃ£¬ËùÖ¸¶¨µÄÅäÖÃºÅ£º1*/
-    0x00,         /* ÓÃÓÚÃèÊö´ËÅäÖÃµÄ×Ö·ûÃèÊö·ûµÄË÷ÒýºÅ£º0 */
-    0xC0,         /* ¹©µçÅäÖÃ£ºB7(1 ±£Áô), B6(×Ô¹©µç), B5(Ô¶³Ì»½ÐÑ), B4-B0(0 ±£Áô) */
-    0x32,         /* ×î´ó¹¦ºÄ£¬ÒÔ2mAÎªµ¥Î»¼ÆËã£º0x32±íÊ¾50¡Á2 £½100mA */
+    0x01,         /* é…ç½®æ‰€æ”¯æŒçš„æŽ¥å£æ•°ç›®ï¼š1*/
+    0x01,         /* ç”¨SetConofiguration()é€‰æ‹©æ­¤é…ç½®ï¼Œæ‰€æŒ‡å®šçš„é…ç½®å·ï¼š1*/
+    0x00,         /* ç”¨äºŽæè¿°æ­¤é…ç½®çš„å­—ç¬¦æè¿°ç¬¦çš„ç´¢å¼•å·ï¼š0 */
+    0xC0,         /* ä¾›ç”µé…ç½®ï¼šB7(1 ä¿ç•™), B6(è‡ªä¾›ç”µ), B5(è¿œç¨‹å”¤é†’), B4-B0(0 ä¿ç•™) */
+    0x32,         /* æœ€å¤§åŠŸè€—ï¼Œä»¥2mAä¸ºå•ä½è®¡ç®—ï¼š0x32è¡¨ç¤º50Ã—2 ï¼100mA */
 
-    /************** ½Ó¿ÚÃèÊö·û ****************/
+    /************** æŽ¥å£æè¿°ç¬¦ ****************/
     /* 09 */
-    0x09,         /* ÃèÊö·ûµÄ³¤¶È£º9×Ö½Ú*/
-    USB_INTERFACE_DESCRIPTOR_TYPE,/* ÃèÊö·ûµÄÀàÐÍ£º0x04½Ó¿ÚÃèÊö·û(Interface) */
-    0x00,         /* Ñ¡Ôñ´Ë½Ó¿ÚµÄË÷ÒýºÅ£¬´Ó0¿ªÊ¼¼ÆËã£º0 */
-    0x00,         /* ÓÃÓÚÑ¡Ôñ´ËÉèÖÃµÄË÷ÒýºÅ£º0 */
-    0x04,         /* ÊµÏÖ´Ë½Ó¿ÚÐèÒªÊ¹ÓÃµÄ¶ËµãÊýÄ¿£º4 */
-    0x0a,         /* ´Ë½Ó¿ÚËù×ñÑ­µÄÀà£ºHID Class */
-    0x00,         /* ´Ë½Ó¿ÚËù×ñÑ­µÄ×ÓÀà£º1=BOOT, 0=no boot: requiring BIOS support */
-    0x00,         /* ´Ë½Ó¿ÚËùÖ§³ÖµÄÐ­Òé£º0£º×Ô¶¨Òå¡¢1£º¼üÅÌ¡¢2£ºÊó±ê*/
-    0,            /* ÓÃÓÚÃèÊö´Ë½Ó¿ÚµÄ×Ö·ûÃèÊö·ûµÄË÷ÒýºÅ*/
-    /******************** ÀàÃèÊö·û Descriptor of Custom HID HID ********************/
+    0x09,         /* æè¿°ç¬¦çš„é•¿åº¦ï¼š9å­—èŠ‚*/
+    USB_INTERFACE_DESCRIPTOR_TYPE,/* æè¿°ç¬¦çš„ç±»åž‹ï¼š0x04æŽ¥å£æè¿°ç¬¦(Interface) */
+    0x00,         /* é€‰æ‹©æ­¤æŽ¥å£çš„ç´¢å¼•å·ï¼Œä»Ž0å¼€å§‹è®¡ç®—ï¼š0 */
+    0x00,         /* ç”¨äºŽé€‰æ‹©æ­¤è®¾ç½®çš„ç´¢å¼•å·ï¼š0 */
+    0x04,         /* å®žçŽ°æ­¤æŽ¥å£éœ€è¦ä½¿ç”¨çš„ç«¯ç‚¹æ•°ç›®ï¼š4 */
+    0x0a,         /* æ­¤æŽ¥å£æ‰€éµå¾ªçš„ç±»ï¼šHID Class */
+    0x00,         /* æ­¤æŽ¥å£æ‰€éµå¾ªçš„å­ç±»ï¼š1=BOOT, 0=no boot: requiring BIOS support */
+    0x00,         /* æ­¤æŽ¥å£æ‰€æ”¯æŒçš„åè®®ï¼š0ï¼šè‡ªå®šä¹‰ã€1ï¼šé”®ç›˜ã€2ï¼šé¼ æ ‡*/
+    0,            /* ç”¨äºŽæè¿°æ­¤æŽ¥å£çš„å­—ç¬¦æè¿°ç¬¦çš„ç´¢å¼•å·*/
+    /******************** ç±»æè¿°ç¬¦ Descriptor of Custom HID HID ********************/
     /* 18 */
-    0x09,         /* ÃèÊö·û³¤¶È£º9×Ö½Ú*/
-    HID_DESCRIPTOR_TYPE, /* ÃèÊö·ûÀàÐÍ£ºHIDÀàÃèÊö·û*/
-    0x10,         /* Ëù×ñÑ­µÄHIDÐ­Òé°æ±¾£º1.10 */
+    0x09,         /* æè¿°ç¬¦é•¿åº¦ï¼š9å­—èŠ‚*/
+    HID_DESCRIPTOR_TYPE, /* æè¿°ç¬¦ç±»åž‹ï¼šHIDç±»æè¿°ç¬¦*/
+    0x10,         /* æ‰€éµå¾ªçš„HIDåè®®ç‰ˆæœ¬ï¼š1.10 */
     0x01,
-    0x00,         /* ¹ú¼Ò´úÂë£ºÎÞ*/
-    0x01,         /* °´ÕÕÀà¶¨Òå£¬ºóÐøËùÐèÒªµÄÃèÊö·ûµÄÊýÄ¿£º1*/
-    0x22,         /* ºóÐøµÄÃèÊö·ûµÄÀàÐÍ£º±¨¸æÃèÊö·û*/
-    CUSTOMHID_SIZ_REPORT_DESC,/* ºóÐøµÄÃèÊö·ûµÄ³¤¶È£º*/
+    0x00,         /* å›½å®¶ä»£ç ï¼šæ— */
+    0x01,         /* æŒ‰ç…§ç±»å®šä¹‰ï¼ŒåŽç»­æ‰€éœ€è¦çš„æè¿°ç¬¦çš„æ•°ç›®ï¼š1*/
+    0x22,         /* åŽç»­çš„æè¿°ç¬¦çš„ç±»åž‹ï¼šæŠ¥å‘Šæè¿°ç¬¦*/
+    CUSTOMHID_SIZ_REPORT_DESC,/* åŽç»­çš„æè¿°ç¬¦çš„é•¿åº¦ï¼š*/
     0x00,
-    /******************** ¶ËµãÃèÊö·û Descriptor of Custom HID endpoints ******************/
+    /******************** ç«¯ç‚¹æè¿°ç¬¦ Descriptor of Custom HID endpoints ******************/
     /* 27 */
-    0x07,         /* ÃèÊö·û³¤¶È£º7×Ö½Ú*/
-    USB_ENDPOINT_DESCRIPTOR_TYPE, /* ÃèÊö·ûÀàÐÍ£º¶ËµãÃèÊö·û*/
+    0x07,         /* æè¿°ç¬¦é•¿åº¦ï¼š7å­—èŠ‚*/
+    USB_ENDPOINT_DESCRIPTOR_TYPE, /* æè¿°ç¬¦ç±»åž‹ï¼šç«¯ç‚¹æè¿°ç¬¦*/
 
-    0x01,          /* ¶ËµãµÄÌØÐÔ£ºB3-B0(¶ËµãºÅ), B6-B4(0), B7(1=IN, 0=OUT): 0x01£ºEndpoint1/ OUT*/
-    0x03,          /* ¶ËµãµÄÀàÐÍ£ºB1-B0(00=¿ØÖÆ01=Í¬²½10=´óÈÝÁ¿11=ÖÐ¶Ï): 0x03£ºÖÐ¶Ï¶Ëµã*/
-    0x10,          /* ´Ë¶ËµãµÄ×î´óÓÐÐ§Êý¾Ý³¤¶È£º16×Ö½Ú*/
+    0x01,          /* ç«¯ç‚¹çš„ç‰¹æ€§ï¼šB3-B0(ç«¯ç‚¹å·), B6-B4(0), B7(1=IN, 0=OUT): 0x01ï¼šEndpoint1/ OUT*/
+    0x03,          /* ç«¯ç‚¹çš„ç±»åž‹ï¼šB1-B0(00=æŽ§åˆ¶01=åŒæ­¥10=å¤§å®¹é‡11=ä¸­æ–­): 0x03ï¼šä¸­æ–­ç«¯ç‚¹*/
+    0x10,          /* æ­¤ç«¯ç‚¹çš„æœ€å¤§æœ‰æ•ˆæ•°æ®é•¿åº¦ï¼š16å­—èŠ‚*/
     0x00,
-    0x20,          /* Ö÷»ú²éÑ¯´Ë¶ËµãÊý¾ÝµÄ¼ä¸ôÊ±¼ä£º(1ms»ò125usµ¥Î»): 0x20£º32 ms */
+    0x20,          /* ä¸»æœºæŸ¥è¯¢æ­¤ç«¯ç‚¹æ•°æ®çš„é—´éš”æ—¶é—´ï¼š(1msæˆ–125uså•ä½): 0x20ï¼š32 ms */
     /* 34 */
     	
-    0x07,	/* ÃèÊö·û³¤¶È£º7×Ö½Ú*/
-    USB_ENDPOINT_DESCRIPTOR_TYPE,	/* ÃèÊö·ûÀàÐÍ£º¶ËµãÃèÊö·û*/
-    0x81,	/* ¶ËµãµÄÌØÐÔ£ºB3-B0(¶ËµãºÅ), B6-B4(0), B7(1=IN, 0=OUT): 0x81£ºEndpoint1/ IN */
-    0x03,	/* ¶ËµãµÄÀàÐÍ£ºB1-B0(00=¿ØÖÆ01=Í¬²½10=´óÈÝÁ¿11=ÖÐ¶Ï): 0x03£ºÖÐ¶Ï¶Ëµã*/
-    0x10,	/* ´Ë¶ËµãµÄ×î´óÓÐÐ§Êý¾Ý³¤¶È£º16×Ö½Ú*/
+    0x07,	/* æè¿°ç¬¦é•¿åº¦ï¼š7å­—èŠ‚*/
+    USB_ENDPOINT_DESCRIPTOR_TYPE,	/* æè¿°ç¬¦ç±»åž‹ï¼šç«¯ç‚¹æè¿°ç¬¦*/
+    0x81,	/* ç«¯ç‚¹çš„ç‰¹æ€§ï¼šB3-B0(ç«¯ç‚¹å·), B6-B4(0), B7(1=IN, 0=OUT): 0x81ï¼šEndpoint1/ IN */
+    0x03,	/* ç«¯ç‚¹çš„ç±»åž‹ï¼šB1-B0(00=æŽ§åˆ¶01=åŒæ­¥10=å¤§å®¹é‡11=ä¸­æ–­): 0x03ï¼šä¸­æ–­ç«¯ç‚¹*/
+    0x10,	/* æ­¤ç«¯ç‚¹çš„æœ€å¤§æœ‰æ•ˆæ•°æ®é•¿åº¦ï¼š16å­—èŠ‚*/
     0x00,
-    0x20,	/* Ö÷»ú²éÑ¯´Ë¶ËµãÊý¾ÝµÄ¼ä¸ôÊ±¼ä£º(1ms»ò125usµ¥Î»): 0x20£º32 ms */
+    0x20,	/* ä¸»æœºæŸ¥è¯¢æ­¤ç«¯ç‚¹æ•°æ®çš„é—´éš”æ—¶é—´ï¼š(1msæˆ–125uså•ä½): 0x20ï¼š32 ms */
     /* 41 */
-	0x07,          /* ÃèÊö·û³¤¶È£º7×Ö½Ú*/
-    USB_ENDPOINT_DESCRIPTOR_TYPE, /* ÃèÊö·ûÀàÐÍ£º¶ËµãÃèÊö·û*/
+	0x07,          /* æè¿°ç¬¦é•¿åº¦ï¼š7å­—èŠ‚*/
+    USB_ENDPOINT_DESCRIPTOR_TYPE, /* æè¿°ç¬¦ç±»åž‹ï¼šç«¯ç‚¹æè¿°ç¬¦*/
 
-    0x02,          /* ¶ËµãµÄÌØÐÔ£ºB3-B0(¶ËµãºÅ), B6-B4(0), B7(1=IN, 0=OUT): 0x02£ºEndpoint2/ OUT */
-    0x02,          /* ¶ËµãµÄÀàÐÍ£ºB1-B0(00=¿ØÖÆ01=Í¬²½10=´óÈÝÁ¿11=ÖÐ¶Ï): 0x02£º´óÈÝÁ¿¶Ëµã*/
-    0x40,          /* ´Ë¶ËµãµÄ×î´óÓÐÐ§Êý¾Ý³¤¶È£º64×Ö½Ú*/
+    0x02,          /* ç«¯ç‚¹çš„ç‰¹æ€§ï¼šB3-B0(ç«¯ç‚¹å·), B6-B4(0), B7(1=IN, 0=OUT): 0x02ï¼šEndpoint2/ OUT */
+    0x02,          /* ç«¯ç‚¹çš„ç±»åž‹ï¼šB1-B0(00=æŽ§åˆ¶01=åŒæ­¥10=å¤§å®¹é‡11=ä¸­æ–­): 0x02ï¼šå¤§å®¹é‡ç«¯ç‚¹*/
+    0x40,          /* æ­¤ç«¯ç‚¹çš„æœ€å¤§æœ‰æ•ˆæ•°æ®é•¿åº¦ï¼š64å­—èŠ‚*/
     0x00,
-    0x20,          /* Ö÷»ú²éÑ¯´Ë¶ËµãÊý¾ÝµÄ¼ä¸ôÊ±¼ä£º(1ms»ò125usµ¥Î»): 0x20£º32 ms */
+    0x20,          /* ä¸»æœºæŸ¥è¯¢æ­¤ç«¯ç‚¹æ•°æ®çš„é—´éš”æ—¶é—´ï¼š(1msæˆ–125uså•ä½): 0x20ï¼š32 ms */
 	/* 48 */
-	0x07,          /* ÃèÊö·û³¤¶È£º7×Ö½Ú*/
-    USB_ENDPOINT_DESCRIPTOR_TYPE, /* ÃèÊö·ûÀàÐÍ£º¶ËµãÃèÊö·û*/
+	0x07,          /* æè¿°ç¬¦é•¿åº¦ï¼š7å­—èŠ‚*/
+    USB_ENDPOINT_DESCRIPTOR_TYPE, /* æè¿°ç¬¦ç±»åž‹ï¼šç«¯ç‚¹æè¿°ç¬¦*/
 
-    0x82,          /* ¶ËµãµÄÌØÐÔ£ºB3-B0(¶ËµãºÅ), B6-B4(0), B7(1=IN, 0=OUT): 0x82£ºEndpoint2/ IN */
-    0x02,          /* ¶ËµãµÄÀàÐÍ£ºB1-B0(00=¿ØÖÆ01=Í¬²½10=´óÈÝÁ¿11=ÖÐ¶Ï): 0x03£ºÖÐ¶Ï¶Ëµã*/
-    0x40,          /* ´Ë¶ËµãµÄ×î´óÓÐÐ§Êý¾Ý³¤¶È£º64×Ö½Ú*/
+    0x82,          /* ç«¯ç‚¹çš„ç‰¹æ€§ï¼šB3-B0(ç«¯ç‚¹å·), B6-B4(0), B7(1=IN, 0=OUT): 0x82ï¼šEndpoint2/ IN */
+    0x02,          /* ç«¯ç‚¹çš„ç±»åž‹ï¼šB1-B0(00=æŽ§åˆ¶01=åŒæ­¥10=å¤§å®¹é‡11=ä¸­æ–­): 0x03ï¼šä¸­æ–­ç«¯ç‚¹*/
+    0x40,          /* æ­¤ç«¯ç‚¹çš„æœ€å¤§æœ‰æ•ˆæ•°æ®é•¿åº¦ï¼š64å­—èŠ‚*/
     0x00,
-    0x20,          /* Ö÷»ú²éÑ¯´Ë¶ËµãÊý¾ÝµÄ¼ä¸ôÊ±¼ä£º(1ms»ò125usµ¥Î»): 0x20£º32 ms */
+    0x20,          /* ä¸»æœºæŸ¥è¯¢æ­¤ç«¯ç‚¹æ•°æ®çš„é—´éš”æ—¶é—´ï¼š(1msæˆ–125uså•ä½): 0x20ï¼š32 ms */
 	/* 55 */
   }
   ; /* CustomHID_ConfigDescriptor */

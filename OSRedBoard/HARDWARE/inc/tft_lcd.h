@@ -1,4 +1,4 @@
-#ifndef __TFT_LCD_H__
+ï»¿#ifndef __TFT_LCD_H__
 #define __TFT_LCD_H__
 #include "stm32f10x.h"
 
@@ -11,7 +11,7 @@ extern u16 DestTop_Color_Buffer[14];
 #define TFT_DateL GPIOC
 #define TFT_Control_Port GPIOA
 #define TFT_CS GPIO_Pin_0
-#define TFT_A0 GPIO_Pin_1		   //1:Êı¾İ  0£ºÖ¸Áî
+#define TFT_A0 GPIO_Pin_1		   //1:æ•°æ®  0ï¼šæŒ‡ä»¤
 #define TFT_WR GPIO_Pin_2
 #define TFT_RD GPIO_Pin_3
 #define TFT_RST GPIO_Pin_8 
@@ -26,7 +26,7 @@ extern u16 DestTop_Color_Buffer[14];
 #define TFT_Read_Enalbe()      GPIO_ResetBits(TFT_Control_Port,TFT_RD)
 #define TFT_Read_Disable()     GPIO_SetBits(TFT_Control_Port,TFT_RD)
 
-/*--------16Î»ÑÕÉ«Öµ---------------*/
+/*--------16ä½é¢œè‰²å€¼---------------*/
 #define WHITE         	 0xFFFF
 #define BLACK         	 0x0000	  
 #define BLUE         	 0x001F  
@@ -38,9 +38,9 @@ extern u16 DestTop_Color_Buffer[14];
 #define GREEN         	 0x07E0
 #define CYAN          	 0x7FFF
 #define YELLOW        	 0xFFE0
-#define BROWN 			 0XBC40 //×ØÉ«
-#define BRRED 			 0XFC07 //×ØºìÉ«
-#define GRAY  			 0X8430 //»ÒÉ«
+#define BROWN 			 0XBC40 //æ£•è‰²
+#define BRRED 			 0XFC07 //æ£•çº¢è‰²
+#define GRAY  			 0X8430 //ç°è‰²
 
 
 void TFT_GPIO_Configuration(void);

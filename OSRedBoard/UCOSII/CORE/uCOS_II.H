@@ -1,207 +1,207 @@
-/*
+ï»¿/*
 *********************************************************************************************************
-* uC/OS-IIÊµÊ±¿ØÖÆÄÚºË
-* Ö÷ÒªµÄ°üº¬ÎÄ¼ş
-* ÎÄ ¼ş: uCOS_II.H ucosÄÚ²¿º¯Êı²ÎÊıÉè¶¨
-* ×÷ Õß: Jean J. Labrosse
+* uC/OS-IIå®æ—¶æ§åˆ¶å†…æ ¸
+* ä¸»è¦çš„åŒ…å«æ–‡ä»¶
+* æ–‡ ä»¶: uCOS_II.H ucoså†…éƒ¨å‡½æ•°å‚æ•°è®¾å®š
+* ä½œ è€…: Jean J. Labrosse
 *********************************************************************************************************
 */
 #include "includes.h"
 #include "os_cpu.h"
 #include "os_cfg.h"
 
-//»ìÔÓµÄ¶¨Òå
-#define  OS_VERSION              252       //¶¨ÒåUCOSIIµÄ°æ±¾ºÅ,ÕâÀïÊÇ2.52°æ±¾
+//æ··æ‚çš„å®šä¹‰
+#define  OS_VERSION              252       //å®šä¹‰UCOSIIçš„ç‰ˆæœ¬å·,è¿™é‡Œæ˜¯2.52ç‰ˆæœ¬
 
-#ifdef   OS_GLOBALS						   //Èç¹û OS_GLOBALS ÒÑ±»ÉùÃ÷¶¨Òå, ½ôËæ´úÂë½«»á±»±àÒë
-#define  OS_EXT							   //Ôò¶¨Òå OS_EXT
+#ifdef   OS_GLOBALS						   //å¦‚æœ OS_GLOBALS å·²è¢«å£°æ˜å®šä¹‰, ç´§éšä»£ç å°†ä¼šè¢«ç¼–è¯‘
+#define  OS_EXT							   //åˆ™å®šä¹‰ OS_EXT
 #else
-#define  OS_EXT  extern					   //·ñÔò£¬¶¨Òå OS_EXT Îª extern
+#define  OS_EXT  extern					   //å¦åˆ™ï¼Œå®šä¹‰ OS_EXT ä¸º extern
 #endif
 
 
-//ÕâÀïÔÚstm32f10x_type.hÀïÃæÓÃÃ¶¾ÙµÄ·½Ê½¶¨ÒåÁË£¬ËùÒÔ²»ĞèÒªÔÙ¶¨ÒåÁË
-//#ifndef  FALSE						   //ÊÇ·ñÎ´¶¨Òå FALSE
-//#define  FALSE                     0	   //Èç¹ûÃ»¶¨ÒåÔò¶¨Òå FALSE Îª 0
+//è¿™é‡Œåœ¨stm32f10x_type.hé‡Œé¢ç”¨æšä¸¾çš„æ–¹å¼å®šä¹‰äº†ï¼Œæ‰€ä»¥ä¸éœ€è¦å†å®šä¹‰äº†
+//#ifndef  FALSE						   //æ˜¯å¦æœªå®šä¹‰ FALSE
+//#define  FALSE                     0	   //å¦‚æœæ²¡å®šä¹‰åˆ™å®šä¹‰ FALSE ä¸º 0
 //#endif
 //
-//#ifndef  TRUE							   //ÊÇ·ñÎ´¶¨Òå TRUE
-//#define  TRUE                      1	   //Èç¹ûÃ»¶¨ÒåÔò¶¨Òå TRUE Îª 1
+//#ifndef  TRUE							   //æ˜¯å¦æœªå®šä¹‰ TRUE
+//#define  TRUE                      1	   //å¦‚æœæ²¡å®šä¹‰åˆ™å®šä¹‰ TRUE ä¸º 1
 //#endif
 
-#define  OS_PRIO_SELF           0xFF       //¶¨Òå OS_PRIO_SELF Îª 0xFF
+#define  OS_PRIO_SELF           0xFF       //å®šä¹‰ OS_PRIO_SELF ä¸º 0xFF
 
 #if OS_TASK_STAT_EN > 0
-#define  OS_N_SYS_TASKS            2       //ÏµÍ³ÈÎÎñÊıÎª2   
+#define  OS_N_SYS_TASKS            2       //ç³»ç»Ÿä»»åŠ¡æ•°ä¸º2   
 #else
-#define  OS_N_SYS_TASKS            1	   //ÏµÍ³ÈÎÎñÊıÎª1 
+#define  OS_N_SYS_TASKS            1	   //ç³»ç»Ÿä»»åŠ¡æ•°ä¸º1 
 #endif
 
-#define  OS_STAT_PRIO       (OS_LOWEST_PRIO - 1)        //Í³¼ÆÈÎÎñÓÅÏÈ¼¶
-#define  OS_IDLE_PRIO       (OS_LOWEST_PRIO)            //¿ÕÏĞÈÎÎñÓÅÏÈ¼¶ 
+#define  OS_STAT_PRIO       (OS_LOWEST_PRIO - 1)        //ç»Ÿè®¡ä»»åŠ¡ä¼˜å…ˆçº§
+#define  OS_IDLE_PRIO       (OS_LOWEST_PRIO)            //ç©ºé—²ä»»åŠ¡ä¼˜å…ˆçº§ 
 
-#define  OS_EVENT_TBL_SIZE ((OS_LOWEST_PRIO) / 8 + 1)   //ÊÂ¼şÁĞ±í´óĞ¡
-#define  OS_RDY_TBL_SIZE   ((OS_LOWEST_PRIO) / 8 + 1)   //¾ÍĞ÷ÁĞ±í´óĞ¡
+#define  OS_EVENT_TBL_SIZE ((OS_LOWEST_PRIO) / 8 + 1)   //äº‹ä»¶åˆ—è¡¨å¤§å°
+#define  OS_RDY_TBL_SIZE   ((OS_LOWEST_PRIO) / 8 + 1)   //å°±ç»ªåˆ—è¡¨å¤§å°
 
-#define  OS_TASK_IDLE_ID       65535                    //¶¨ÒåÁ½¸öÏµÍ³ÈÎÎñµÄID
+#define  OS_TASK_IDLE_ID       65535                    //å®šä¹‰ä¸¤ä¸ªç³»ç»Ÿä»»åŠ¡çš„ID
 #define  OS_TASK_STAT_ID       65534
 
 #define  OS_EVENT_EN       (((OS_Q_EN > 0) && (OS_MAX_QS > 0)) || (OS_MBOX_EN > 0) || (OS_SEM_EN > 0) || (OS_MUTEX_EN > 0))
 
 //*********************************************************************************************************
-//ÈÎÎñ×´Ì¬×Ö TASK STATUS (OSTCBStatµÄÎ»¶¨Òå)       
-#define  OS_STAT_RDY            0x00        // (½«ÈÎÎñµÄ×´Ì¬×Ö)´¦ÓÚ¾ÍĞ÷×´Ì¬
-#define  OS_STAT_SEM            0x01        // (½«ÈÎÎñµÄ×´Ì¬×Ö)´¦ÓÚĞÅºÅÁ¿×´Ì¬                               
-#define  OS_STAT_MBOX           0x02        // (½«ÈÎÎñµÄ×´Ì¬×Ö)´¦ÓÚÓÊÏä×´Ì¬  
-#define  OS_STAT_Q              0x04        // (½«ÈÎÎñµÄ×´Ì¬×Ö)´¦ÓÚQ×´Ì¬
-#define  OS_STAT_SUSPEND        0x08        // ±íÊ¾ÈÎÎñ±»¹ÒÆğ
-#define  OS_STAT_MUTEX          0x10        // (½«ÈÎÎñµÄ×´Ì¬×Ö)´¦ÓÚMUTEX×´Ì¬
-#define  OS_STAT_FLAG           0x20        // (½«ÈÎÎñµÄ×´Ì¬×Ö)´¦ÓÚFLAG×´Ì¬
+//ä»»åŠ¡çŠ¶æ€å­— TASK STATUS (OSTCBStatçš„ä½å®šä¹‰)       
+#define  OS_STAT_RDY            0x00        // (å°†ä»»åŠ¡çš„çŠ¶æ€å­—)å¤„äºå°±ç»ªçŠ¶æ€
+#define  OS_STAT_SEM            0x01        // (å°†ä»»åŠ¡çš„çŠ¶æ€å­—)å¤„äºä¿¡å·é‡çŠ¶æ€                               
+#define  OS_STAT_MBOX           0x02        // (å°†ä»»åŠ¡çš„çŠ¶æ€å­—)å¤„äºé‚®ç®±çŠ¶æ€  
+#define  OS_STAT_Q              0x04        // (å°†ä»»åŠ¡çš„çŠ¶æ€å­—)å¤„äºQçŠ¶æ€
+#define  OS_STAT_SUSPEND        0x08        // è¡¨ç¤ºä»»åŠ¡è¢«æŒ‚èµ·
+#define  OS_STAT_MUTEX          0x10        // (å°†ä»»åŠ¡çš„çŠ¶æ€å­—)å¤„äºMUTEXçŠ¶æ€
+#define  OS_STAT_FLAG           0x20        // (å°†ä»»åŠ¡çš„çŠ¶æ€å­—)å¤„äºFLAGçŠ¶æ€
 
 //*********************************************************************************************************
-//ÊÂ¼şÀàĞÍ(OS_EVENT types)
-#define  OS_EVENT_TYPE_UNUSED      0        // ¶¨ÒåÊÂ¼şÀàĞÍµÄÖÖÀà(ÎŞÊÂ¼şÀàĞÍ------------0)
-#define  OS_EVENT_TYPE_MBOX        1		// ¶¨ÒåÊÂ¼şÀàĞÍµÄÖÖÀà(ÓÊÏäÎªÊı×ÖĞòÁĞ--------1)
-#define  OS_EVENT_TYPE_Q           2		// ¶¨ÒåÊÂ¼şÀàĞÍµÄÖÖÀà(ÏûÏ¢¶ÓÁĞÎªÊı×ÖĞòÁĞ----2)
-#define  OS_EVENT_TYPE_SEM         3	    // ¶¨ÒåÊÂ¼şÀàĞÍµÄÖÖÀà(ĞÅºÅÁ¿ÎªÊı×ÖĞòÁĞ------3)
-#define  OS_EVENT_TYPE_MUTEX       4	    // ¶¨ÒåÊÂ¼şÀàĞÍµÄÖÖÀà(»¥³âĞÍĞÅºÅÁ¿ÎªÊı×ÖĞòÁĞ4)
-#define  OS_EVENT_TYPE_FLAG        5		// ¶¨ÒåÊÂ¼şÀàĞÍµÄÖÖÀà(ÊÂ¼ş±êÖ¾×éÎªÊı×ÖĞòÁĞ--5)
+//äº‹ä»¶ç±»å‹(OS_EVENT types)
+#define  OS_EVENT_TYPE_UNUSED      0        // å®šä¹‰äº‹ä»¶ç±»å‹çš„ç§ç±»(æ— äº‹ä»¶ç±»å‹------------0)
+#define  OS_EVENT_TYPE_MBOX        1		// å®šä¹‰äº‹ä»¶ç±»å‹çš„ç§ç±»(é‚®ç®±ä¸ºæ•°å­—åºåˆ—--------1)
+#define  OS_EVENT_TYPE_Q           2		// å®šä¹‰äº‹ä»¶ç±»å‹çš„ç§ç±»(æ¶ˆæ¯é˜Ÿåˆ—ä¸ºæ•°å­—åºåˆ—----2)
+#define  OS_EVENT_TYPE_SEM         3	    // å®šä¹‰äº‹ä»¶ç±»å‹çš„ç§ç±»(ä¿¡å·é‡ä¸ºæ•°å­—åºåˆ—------3)
+#define  OS_EVENT_TYPE_MUTEX       4	    // å®šä¹‰äº‹ä»¶ç±»å‹çš„ç§ç±»(äº’æ–¥å‹ä¿¡å·é‡ä¸ºæ•°å­—åºåˆ—4)
+#define  OS_EVENT_TYPE_FLAG        5		// å®šä¹‰äº‹ä»¶ç±»å‹çš„ç§ç±»(äº‹ä»¶æ ‡å¿—ç»„ä¸ºæ•°å­—åºåˆ—--5)
 
 //*********************************************************************************************************
-//ÊÂ¼ş±êÖ¾(EVENT FLAGS)
-#define  OS_FLAG_WAIT_CLR_ALL      0        // ¶¨ÒåËùÓĞÖ¸¶¨ÊÂ¼ş±êÖ¾Î»Çå0 ------ 0
+//äº‹ä»¶æ ‡å¿—(EVENT FLAGS)
+#define  OS_FLAG_WAIT_CLR_ALL      0        // å®šä¹‰æ‰€æœ‰æŒ‡å®šäº‹ä»¶æ ‡å¿—ä½æ¸…0 ------ 0
 #define  OS_FLAG_WAIT_CLR_AND      0
 
-#define  OS_FLAG_WAIT_CLR_ANY      1        // ¶¨ÒåÈÎÒâÖ¸¶¨ÊÂ¼ş±êÖ¾Î»Çå0 ------ 1
+#define  OS_FLAG_WAIT_CLR_ANY      1        // å®šä¹‰ä»»æ„æŒ‡å®šäº‹ä»¶æ ‡å¿—ä½æ¸…0 ------ 1
 #define  OS_FLAG_WAIT_CLR_OR       1
 
-#define  OS_FLAG_WAIT_SET_ALL      2        // ¶¨ÒåËùÓĞÖ¸¶¨ÊÂ¼ş±êÖ¾Î»ÖÃ1 ------ 2
+#define  OS_FLAG_WAIT_SET_ALL      2        // å®šä¹‰æ‰€æœ‰æŒ‡å®šäº‹ä»¶æ ‡å¿—ä½ç½®1 ------ 2
 #define  OS_FLAG_WAIT_SET_AND      2
 
-#define  OS_FLAG_WAIT_SET_ANY      3        // ¶¨ÒåÈÎÒâÖ¸¶¨ÊÂ¼ş±êÖ¾Î»ÖÃ1 ------ 3
+#define  OS_FLAG_WAIT_SET_ANY      3        // å®šä¹‰ä»»æ„æŒ‡å®šäº‹ä»¶æ ‡å¿—ä½ç½®1 ------ 3
 #define  OS_FLAG_WAIT_SET_OR       3
 
-// Èç¹ûĞèÒªÔÚµÃµ½ÆÚÍû±êÖ¾ºó£¬»Ö¸´¸ÃÊÂ¼ş±êÖ¾£¬¼ÓÈë´Ë³£Á¿
-#define  OS_FLAG_CONSUME        0x80        // ¶¨Òå³£Á¿OS_FLAG_CONSUMEÎª0x80
+// å¦‚æœéœ€è¦åœ¨å¾—åˆ°æœŸæœ›æ ‡å¿—åï¼Œæ¢å¤è¯¥äº‹ä»¶æ ‡å¿—ï¼ŒåŠ å…¥æ­¤å¸¸é‡
+#define  OS_FLAG_CONSUME        0x80        // å®šä¹‰å¸¸é‡OS_FLAG_CONSUMEä¸º0x80
 
 											
-#define  OS_FLAG_CLR               0		// ¶¨Òå OS_FLAG_CLR ÎªÇå0
-#define  OS_FLAG_SET               1	    // ¶¨Òå OS_FLAG_SET ÎªÖÃ1
+#define  OS_FLAG_CLR               0		// å®šä¹‰ OS_FLAG_CLR ä¸ºæ¸…0
+#define  OS_FLAG_SET               1	    // å®šä¹‰ OS_FLAG_SET ä¸ºç½®1
 
 //*********************************************************************************************************
-//ÉèÖÃ×ÖÔÚ'opt'ÖĞ£¬ÊÊÓÃÓÚ OSSemDel(), OSMboxDel(), OSQDel() ºÍ OSMutexDel()º¯Êı
-#define  OS_DEL_NO_PEND            0		// ¿ÉÒÔÑ¡ÔñÖ»ÄÜÔÚÒÑ¾­Ã»ÓĞÈÎºÎÈÎÎñÔÚµÈ´ı¸ÃĞÅºÅÁ¿Ê±£¬²ÅÄÜÉ¾³ı¸ÃĞÅºÅÁ¿
-#define  OS_DEL_ALWAYS             1		// ²»¹ÜÓĞÃ»ÓĞÈÎÎñÔÚµÈ´ı¸ÃĞÅºÅÁ¿£¬Á¢¼´É¾³ı¸ÃĞÅºÅÁ¿
+//è®¾ç½®å­—åœ¨'opt'ä¸­ï¼Œé€‚ç”¨äº OSSemDel(), OSMboxDel(), OSQDel() å’Œ OSMutexDel()å‡½æ•°
+#define  OS_DEL_NO_PEND            0		// å¯ä»¥é€‰æ‹©åªèƒ½åœ¨å·²ç»æ²¡æœ‰ä»»ä½•ä»»åŠ¡åœ¨ç­‰å¾…è¯¥ä¿¡å·é‡æ—¶ï¼Œæ‰èƒ½åˆ é™¤è¯¥ä¿¡å·é‡
+#define  OS_DEL_ALWAYS             1		// ä¸ç®¡æœ‰æ²¡æœ‰ä»»åŠ¡åœ¨ç­‰å¾…è¯¥ä¿¡å·é‡ï¼Œç«‹å³åˆ é™¤è¯¥ä¿¡å·é‡
 
 //*********************************************************************************************************
-//OS???PostOpt() OPTIONS(ÉèÖÃ)
-//ÕâĞ©ÉèÖÃÊÊÓÃÓÃ OSMboxPostOpt() ºÍ OSQPostOpt()Á½¸öº¯Êı.	 
-#define  OS_POST_OPT_NONE       0x00       	// ·¢ËÍÒ»¸öÏûÏ¢(»òÓÊÏä)¸øÒ»¸öµÈ´ıÏûÏ¢µÄÓÅÏÈ¼¶×î¸ßµÄÈÎÎñ
-#define  OS_POST_OPT_BROADCAST  0x01        // ·¢ËÍÏûÏ¢¸øËùÓĞµÈ´ı¶ÓÁĞÏûÏ¢µÄÈÎÎñ 
-#define  OS_POST_OPT_FRONT      0x02        // ÒÔºó½øÏÈ³ö·½Ê½·¢ÏûÏ¢(·ÂÕæOSQPostFront())
+//OS???PostOpt() OPTIONS(è®¾ç½®)
+//è¿™äº›è®¾ç½®é€‚ç”¨ç”¨ OSMboxPostOpt() å’Œ OSQPostOpt()ä¸¤ä¸ªå‡½æ•°.	 
+#define  OS_POST_OPT_NONE       0x00       	// å‘é€ä¸€ä¸ªæ¶ˆæ¯(æˆ–é‚®ç®±)ç»™ä¸€ä¸ªç­‰å¾…æ¶ˆæ¯çš„ä¼˜å…ˆçº§æœ€é«˜çš„ä»»åŠ¡
+#define  OS_POST_OPT_BROADCAST  0x01        // å‘é€æ¶ˆæ¯ç»™æ‰€æœ‰ç­‰å¾…é˜Ÿåˆ—æ¶ˆæ¯çš„ä»»åŠ¡ 
+#define  OS_POST_OPT_FRONT      0x02        // ä»¥åè¿›å…ˆå‡ºæ–¹å¼å‘æ¶ˆæ¯(ä»¿çœŸOSQPostFront())
 
 //*********************************************************************************************************
-//ÈÎÎñÉèÖÃ TASK OPTIONS (²é¿´OSTaskCreateExt())   
-#define  OS_TASK_OPT_STK_CHK  0x0001        // ¾ö¶¨ÊÇ·ñ½øĞĞÈÎÎñ¶ÑÕ»¼ì²é
-#define  OS_TASK_OPT_STK_CLR  0x0002        // ¾ö¶¨ÊÇ·ñÇå¿Õ¶ÑÕ»
-#define  OS_TASK_OPT_SAVE_FP  0x0004        // ¾ö¶¨ÊÇ·ñ±£´æ¸¡µã¼Ä´æÆ÷µÄÊıÖµ¡£´ËÏî²Ù×÷½öµ±´¦ÀíÆ÷ÓĞ¸¡µã¼şÊ±ÓĞĞ§¡£±£´æ²Ù×÷ÓÉÓ²¼şÏà¹ØµÄ´úÂëÍê³É
+//ä»»åŠ¡è®¾ç½® TASK OPTIONS (æŸ¥çœ‹OSTaskCreateExt())   
+#define  OS_TASK_OPT_STK_CHK  0x0001        // å†³å®šæ˜¯å¦è¿›è¡Œä»»åŠ¡å †æ ˆæ£€æŸ¥
+#define  OS_TASK_OPT_STK_CLR  0x0002        // å†³å®šæ˜¯å¦æ¸…ç©ºå †æ ˆ
+#define  OS_TASK_OPT_SAVE_FP  0x0004        // å†³å®šæ˜¯å¦ä¿å­˜æµ®ç‚¹å¯„å­˜å™¨çš„æ•°å€¼ã€‚æ­¤é¡¹æ“ä½œä»…å½“å¤„ç†å™¨æœ‰æµ®ç‚¹ä»¶æ—¶æœ‰æ•ˆã€‚ä¿å­˜æ“ä½œç”±ç¡¬ä»¶ç›¸å…³çš„ä»£ç å®Œæˆ
 
 //*********************************************************************************************************
-//´íÎó´úÂë ERROR CODES
-#define OS_NO_ERR                 0			// º¯Êı·µ»Ø³É¹¦;
+//é”™è¯¯ä»£ç  ERROR CODES
+#define OS_NO_ERR                 0			// å‡½æ•°è¿”å›æˆåŠŸ;
 
-#define OS_ERR_EVENT_TYPE         1			// ²»ÊÇÖ¸ÏòÊÂ¼ş(Ïà¹Ø)ÀàĞÍµÄÖ¸Õë;
-#define OS_ERR_PEND_ISR           2			// ÔÚÖĞ¶Ï·şÎñ×Ó³ÌĞòÖĞµ÷ÓÃ OS¸÷ÖÖĞÅºÅÀàAccept()º¯Êı.
-#define OS_ERR_POST_NULL_PTR      3			// ÓÃ»§·¢³ö¿ÕÖ¸Õë¡£¸ù¾İ¹æÔò£¬ÕâÀï²»Ö§³Ö¿ÕÖ¸Õë;
-#define OS_ERR_PEVENT_NULL        4			// 'pevent'ÊÇÖ¸¿ÕÖ¸Õë;
-#define OS_ERR_POST_ISR           5			// ÊÔÍ¼ÔÚÖĞ¶Ï·şÎñ×Ó³ÌĞòÖĞµ÷ÓÃOSMutexPost()º¯Êı[ÊÍ·ÅÒ»¸ömutex];
-#define OS_ERR_QUERY_ISR          6			// ÊÔÍ¼ÔÚÖĞ¶Ï×Ó³ÌĞòÖĞµ÷ÓÃOSMutexQuery()[µÃµ½mutexµ±Ç°×´Ì¬ĞÅÏ¢]
-#define OS_ERR_INVALID_OPT        7			// ¶¨ÒåµÄopt²ÎÊıÎŞĞ§;
-#define OS_ERR_TASK_WAITING       8			// ÓĞÒ»¸ö»òÒ»¸öÒÔÉÏµÄÈÎÎñÔÚµÈ´ıÏûÏ¢¶ÓÁĞÖĞµÄÏûÏ¢;
+#define OS_ERR_EVENT_TYPE         1			// ä¸æ˜¯æŒ‡å‘äº‹ä»¶(ç›¸å…³)ç±»å‹çš„æŒ‡é’ˆ;
+#define OS_ERR_PEND_ISR           2			// åœ¨ä¸­æ–­æœåŠ¡å­ç¨‹åºä¸­è°ƒç”¨ OSå„ç§ä¿¡å·ç±»Accept()å‡½æ•°.
+#define OS_ERR_POST_NULL_PTR      3			// ç”¨æˆ·å‘å‡ºç©ºæŒ‡é’ˆã€‚æ ¹æ®è§„åˆ™ï¼Œè¿™é‡Œä¸æ”¯æŒç©ºæŒ‡é’ˆ;
+#define OS_ERR_PEVENT_NULL        4			// 'pevent'æ˜¯æŒ‡ç©ºæŒ‡é’ˆ;
+#define OS_ERR_POST_ISR           5			// è¯•å›¾åœ¨ä¸­æ–­æœåŠ¡å­ç¨‹åºä¸­è°ƒç”¨OSMutexPost()å‡½æ•°[é‡Šæ”¾ä¸€ä¸ªmutex];
+#define OS_ERR_QUERY_ISR          6			// è¯•å›¾åœ¨ä¸­æ–­å­ç¨‹åºä¸­è°ƒç”¨OSMutexQuery()[å¾—åˆ°mutexå½“å‰çŠ¶æ€ä¿¡æ¯]
+#define OS_ERR_INVALID_OPT        7			// å®šä¹‰çš„optå‚æ•°æ— æ•ˆ;
+#define OS_ERR_TASK_WAITING       8			// æœ‰ä¸€ä¸ªæˆ–ä¸€ä¸ªä»¥ä¸Šçš„ä»»åŠ¡åœ¨ç­‰å¾…æ¶ˆæ¯é˜Ÿåˆ—ä¸­çš„æ¶ˆæ¯;
 
-#define OS_TIMEOUT               10			// ÏûÏ¢Ã»ÓĞÔÚÖ¸¶¨µÄÖÜÆÚÊıÄÚËÍµ½;
-#define OS_TASK_NOT_EXIST        11			// Ö¸¶¨µÄÈÎÎñ²»´æ;
+#define OS_TIMEOUT               10			// æ¶ˆæ¯æ²¡æœ‰åœ¨æŒ‡å®šçš„å‘¨æœŸæ•°å†…é€åˆ°;
+#define OS_TASK_NOT_EXIST        11			// æŒ‡å®šçš„ä»»åŠ¡ä¸å­˜;
 
-#define OS_MBOX_FULL             20			// ÏûÏ¢ÓÊÏäÒÑ¾­°üº¬ÁËÆäËûÏûÏ¢£¬²»¿Õ;
+#define OS_MBOX_FULL             20			// æ¶ˆæ¯é‚®ç®±å·²ç»åŒ…å«äº†å…¶ä»–æ¶ˆæ¯ï¼Œä¸ç©º;
 
-#define OS_Q_FULL                30			// ÏûÏ¢¶ÓÁĞÖĞÒÑ¾­´æÂú;
+#define OS_Q_FULL                30			// æ¶ˆæ¯é˜Ÿåˆ—ä¸­å·²ç»å­˜æ»¡;
 
-#define OS_PRIO_EXIST            40			// ÓÅÏÈ¼¶ÎªPIPµÄÈÎÎñÒÑ¾­´æÔÚ;
-#define OS_PRIO_ERR              41			// ²ÎÊıÖĞµÄÈÎÎñÔ­ÏÈÓÅÏÈ¼¶²»´æÔÚ;
-#define OS_PRIO_INVALID          42			// ²ÎÊıÖ¸¶¨µÄÓÅÏÈ¼¶´óÓÚOS_LOWEST_PRIO;
+#define OS_PRIO_EXIST            40			// ä¼˜å…ˆçº§ä¸ºPIPçš„ä»»åŠ¡å·²ç»å­˜åœ¨;
+#define OS_PRIO_ERR              41			// å‚æ•°ä¸­çš„ä»»åŠ¡åŸå…ˆä¼˜å…ˆçº§ä¸å­˜åœ¨;
+#define OS_PRIO_INVALID          42			// å‚æ•°æŒ‡å®šçš„ä¼˜å…ˆçº§å¤§äºOS_LOWEST_PRIO;
 
-#define OS_SEM_OVF               50			// ĞÅºÅÁ¿µÄÖµÒç³ö;
+#define OS_SEM_OVF               50			// ä¿¡å·é‡çš„å€¼æº¢å‡º;
 
-#define OS_TASK_DEL_ERR          60			// Ö¸¶¨ÒªÉ¾³ıµÄÈÎÎñ²»´æÔÚ
-#define OS_TASK_DEL_IDLE         61			// ´íÎó²Ù×÷£¬ÊÔÍ¼É¾³ı¿ÕÏĞÈÎÎñ(Idle task);
-#define OS_TASK_DEL_REQ          62			// µ±Ç°ÈÎÎñÊÕµ½À´×ÔÆäËûÈÎÎñµÄÉ¾³ıÇëÇó;
-#define OS_TASK_DEL_ISR          63			// ´íÎó²Ù×÷£¬ÊÔÍ¼ÔÚÖĞ¶Ï´¦Àí³ÌĞòÖĞÉ¾³ıÈÎÎñ;
+#define OS_TASK_DEL_ERR          60			// æŒ‡å®šè¦åˆ é™¤çš„ä»»åŠ¡ä¸å­˜åœ¨
+#define OS_TASK_DEL_IDLE         61			// é”™è¯¯æ“ä½œï¼Œè¯•å›¾åˆ é™¤ç©ºé—²ä»»åŠ¡(Idle task);
+#define OS_TASK_DEL_REQ          62			// å½“å‰ä»»åŠ¡æ”¶åˆ°æ¥è‡ªå…¶ä»–ä»»åŠ¡çš„åˆ é™¤è¯·æ±‚;
+#define OS_TASK_DEL_ISR          63			// é”™è¯¯æ“ä½œï¼Œè¯•å›¾åœ¨ä¸­æ–­å¤„ç†ç¨‹åºä¸­åˆ é™¤ä»»åŠ¡;
 
-#define OS_NO_MORE_TCB           70			// ÏµÍ³ÖĞÃ»ÓĞOS_TCB¿ÉÒÔ·ÖÅä¸øÈÎÎñÁË;
+#define OS_NO_MORE_TCB           70			// ç³»ç»Ÿä¸­æ²¡æœ‰OS_TCBå¯ä»¥åˆ†é…ç»™ä»»åŠ¡äº†;
 
-#define OS_TIME_NOT_DLY          80			// Òª»½ĞÑµÄÈÎÎñ²»ÔÚÑÓÊ±×´Ì¬;
-#define OS_TIME_INVALID_MINUTES  81			// ²ÎÊı´íÎó£¬·ÖÖÓÊı´óÓÚ59;
-#define OS_TIME_INVALID_SECONDS  82			// ²ÎÊı´íÎó£¬ÃëÊı´óÓÚ59
-#define OS_TIME_INVALID_MILLI    83			// Ôò·µ»Ø²ÎÊı´íÎó£¬ºÁÃëÊı´óÓÚ999;
-#define OS_TIME_ZERO_DLY         84		    // ËÄ¸ö²ÎÊıÈ«Îª0
+#define OS_TIME_NOT_DLY          80			// è¦å”¤é†’çš„ä»»åŠ¡ä¸åœ¨å»¶æ—¶çŠ¶æ€;
+#define OS_TIME_INVALID_MINUTES  81			// å‚æ•°é”™è¯¯ï¼Œåˆ†é’Ÿæ•°å¤§äº59;
+#define OS_TIME_INVALID_SECONDS  82			// å‚æ•°é”™è¯¯ï¼Œç§’æ•°å¤§äº59
+#define OS_TIME_INVALID_MILLI    83			// åˆ™è¿”å›å‚æ•°é”™è¯¯ï¼Œæ¯«ç§’æ•°å¤§äº999;
+#define OS_TIME_ZERO_DLY         84		    // å››ä¸ªå‚æ•°å…¨ä¸º0
 
-#define OS_TASK_SUSPEND_PRIO     90			// Òª¹ÒÆğµÄÈÎÎñ²»´æÔÚ
-#define OS_TASK_SUSPEND_IDLE     91			// ÊÔÍ¼¹ÒÆğuC/OS-IIÖĞµÄ¿ÕÏĞÈÎÎñ(Idle task)
+#define OS_TASK_SUSPEND_PRIO     90			// è¦æŒ‚èµ·çš„ä»»åŠ¡ä¸å­˜åœ¨
+#define OS_TASK_SUSPEND_IDLE     91			// è¯•å›¾æŒ‚èµ·uC/OS-IIä¸­çš„ç©ºé—²ä»»åŠ¡(Idle task)
 
-#define OS_TASK_RESUME_PRIO     100		    // Òª»½ĞÑµÄÈÎÎñ²»´æÔÚ;
-#define OS_TASK_NOT_SUSPENDED   101			// Òª»½ĞÑµÄÈÎÎñ²»ÔÚ¹ÒÆğ×´Ì¬
+#define OS_TASK_RESUME_PRIO     100		    // è¦å”¤é†’çš„ä»»åŠ¡ä¸å­˜åœ¨;
+#define OS_TASK_NOT_SUSPENDED   101			// è¦å”¤é†’çš„ä»»åŠ¡ä¸åœ¨æŒ‚èµ·çŠ¶æ€
 
-#define OS_MEM_INVALID_PART     110			// Ã»ÓĞ¿ÕÏĞµÄÄÚ´æÇø;
-#define OS_MEM_INVALID_BLKS     111			// Ã»ÓĞÎªÃ¿Ò»¸öÄÚ´æÇø½¨Á¢ÖÁÉÙ2¸öÄÚ´æ¿é;
-#define OS_MEM_INVALID_SIZE     112			// ÄÚ´æ¿é´óĞ¡²»×ãÒÔÈİÄÉÒ»¸öÖ¸Õë±äÁ¿;
-#define OS_MEM_NO_FREE_BLKS     113			// ÄÚ´æÇøÒÑ¾­Ã»ÓĞ¿Õ¼ä·ÖÅä¸øÄÚ´æ¿é;
-#define OS_MEM_FULL             114			// ÄÚ´æÇøÒÑ¾­²»ÄÜÔÙ½ÓÊÜ¸ü¶àÊÍ·ÅµÄÄÚ´æ¿é¡£ÕâÖÖÇé¿öËµÃ÷ÓÃ»§³ÌĞò³öÏÖ
+#define OS_MEM_INVALID_PART     110			// æ²¡æœ‰ç©ºé—²çš„å†…å­˜åŒº;
+#define OS_MEM_INVALID_BLKS     111			// æ²¡æœ‰ä¸ºæ¯ä¸€ä¸ªå†…å­˜åŒºå»ºç«‹è‡³å°‘2ä¸ªå†…å­˜å—;
+#define OS_MEM_INVALID_SIZE     112			// å†…å­˜å—å¤§å°ä¸è¶³ä»¥å®¹çº³ä¸€ä¸ªæŒ‡é’ˆå˜é‡;
+#define OS_MEM_NO_FREE_BLKS     113			// å†…å­˜åŒºå·²ç»æ²¡æœ‰ç©ºé—´åˆ†é…ç»™å†…å­˜å—;
+#define OS_MEM_FULL             114			// å†…å­˜åŒºå·²ç»ä¸èƒ½å†æ¥å—æ›´å¤šé‡Šæ”¾çš„å†…å­˜å—ã€‚è¿™ç§æƒ…å†µè¯´æ˜ç”¨æˆ·ç¨‹åºå‡ºç°
 #define OS_MEM_INVALID_PBLK     115
-#define OS_MEM_INVALID_PMEM     116		    // 'pmem'ÊÇ¿ÕÖ¸Õë;
-#define OS_MEM_INVALID_PDATA    117			// pdataÊÇ¿ÕÖ¸Õë;
-#define OS_MEM_INVALID_ADDR     118			// ·Ç·¨µØÖ·£¬¼´µØÖ·Îª¿ÕÖ¸Õë;
+#define OS_MEM_INVALID_PMEM     116		    // 'pmem'æ˜¯ç©ºæŒ‡é’ˆ;
+#define OS_MEM_INVALID_PDATA    117			// pdataæ˜¯ç©ºæŒ‡é’ˆ;
+#define OS_MEM_INVALID_ADDR     118			// éæ³•åœ°å€ï¼Œå³åœ°å€ä¸ºç©ºæŒ‡é’ˆ;
 
-#define OS_ERR_NOT_MUTEX_OWNER  120			// ·¢³ömutexµÄÈÎÎñÊµ¼ÊÉÏ²¢²»Õ¼ÓÃmutex;
+#define OS_ERR_NOT_MUTEX_OWNER  120			// å‘å‡ºmutexçš„ä»»åŠ¡å®é™…ä¸Šå¹¶ä¸å ç”¨mutex;
 
-#define OS_TASK_OPT_ERR         130			// ÈÎÎñÓÃOSTaskCreateExt()º¯Êı½¨Á¢µÄÊ±ºòÃ»ÓĞÖ¸¶¨
+#define OS_TASK_OPT_ERR         130			// ä»»åŠ¡ç”¨OSTaskCreateExt()å‡½æ•°å»ºç«‹çš„æ—¶å€™æ²¡æœ‰æŒ‡å®š
 
-#define OS_ERR_DEL_ISR          140			// ÊÔÍ¼ÔÚÖĞ¶Ï·şÎñ×Ó³ÌĞòÖĞÉ¾³ı(ÏûÏ¢¡¢ÓÊÏä¡¢ĞÅºÅÁ¿¡¢ÏûÏ¢¶ÔÁĞ¡¢»¥³âĞÍĞÅºÅÁ¿)
-#define OS_ERR_CREATE_ISR       141			// ÊÔÍ¼ÔÚÖĞ¶Ï·şÎñ×Ó³ÌĞòÖĞ½¨Á¢(ÊÂ¼ş±êÖ¾×é¡¢»¥³âĞÍĞÅºÅÁ¿);
+#define OS_ERR_DEL_ISR          140			// è¯•å›¾åœ¨ä¸­æ–­æœåŠ¡å­ç¨‹åºä¸­åˆ é™¤(æ¶ˆæ¯ã€é‚®ç®±ã€ä¿¡å·é‡ã€æ¶ˆæ¯å¯¹åˆ—ã€äº’æ–¥å‹ä¿¡å·é‡)
+#define OS_ERR_CREATE_ISR       141			// è¯•å›¾åœ¨ä¸­æ–­æœåŠ¡å­ç¨‹åºä¸­å»ºç«‹(äº‹ä»¶æ ‡å¿—ç»„ã€äº’æ–¥å‹ä¿¡å·é‡);
 
-#define OS_FLAG_INVALID_PGRP    150			// pgrpÊÇÒ»¸ö¿ÕÖ¸Õë;
-#define OS_FLAG_ERR_WAIT_TYPE   151			// 'wait_type'²»ÊÇÖ¸¶¨µÄ²ÎÊıÖ®Ò»;
-#define OS_FLAG_ERR_NOT_RDY     152			// Ö¸¶¨µÄÊÂ¼ş±êÖ¾Ã»ÓĞ·¢Éú;
-#define OS_FLAG_INVALID_OPT     153		    // opt²»ÊÇÖ¸¶¨µÄ²ÎÊıÖ®Ò»;
-#define OS_FLAG_GRP_DEPLETED    154			// ÏµÍ³Ã»ÓĞÊ£ÓàµÄ¿ÕÏĞÊÂ¼ş±êÖ¾×é£¬ĞèÒª¸ü¸ÄOS_CFG.HÖĞµÄÊÂ¼ş±êÖ¾×éÊıÄ¿ÅäÖÃ
+#define OS_FLAG_INVALID_PGRP    150			// pgrpæ˜¯ä¸€ä¸ªç©ºæŒ‡é’ˆ;
+#define OS_FLAG_ERR_WAIT_TYPE   151			// 'wait_type'ä¸æ˜¯æŒ‡å®šçš„å‚æ•°ä¹‹ä¸€;
+#define OS_FLAG_ERR_NOT_RDY     152			// æŒ‡å®šçš„äº‹ä»¶æ ‡å¿—æ²¡æœ‰å‘ç”Ÿ;
+#define OS_FLAG_INVALID_OPT     153		    // optä¸æ˜¯æŒ‡å®šçš„å‚æ•°ä¹‹ä¸€;
+#define OS_FLAG_GRP_DEPLETED    154			// ç³»ç»Ÿæ²¡æœ‰å‰©ä½™çš„ç©ºé—²äº‹ä»¶æ ‡å¿—ç»„ï¼Œéœ€è¦æ›´æ”¹OS_CFG.Hä¸­çš„äº‹ä»¶æ ‡å¿—ç»„æ•°ç›®é…ç½®
 
 //*********************************************************************************************************
-//ÊÂ¼ş¿ØÖÆ¿é(EVENT CONTROL BLOCK)
+//äº‹ä»¶æ§åˆ¶å—(EVENT CONTROL BLOCK)
 #if (OS_EVENT_EN > 0) && (OS_MAX_EVENTS > 0)
-typedef struct {						   // ¶¨ÒåÒ»¸öÊÂ¼ş¿ØÖÆ¿é½á¹¹(OS_EVENT)
-    INT8U   OSEventType;                   // ÊÂ¼şÀàĞÍ
-    INT8U   OSEventGrp;                    // µÈ´ıÈÎÎñËùÔÚµÄ×é
-    INT16U  OSEventCnt;                    // ¼ÆÊıÆ÷(µ±ÊÂ¼şÊÇĞÅºÅÁ¿Ê±)
-    void   *OSEventPtr;                    // Ö¸ÏòÏûÏ¢»òÕßÏûÏ¢¶ÓÁĞµÄÖ¸Õë
-    INT8U   OSEventTbl[OS_EVENT_TBL_SIZE]; // µÈ´ıÈÎÎñÁĞ±í
+typedef struct {						   // å®šä¹‰ä¸€ä¸ªäº‹ä»¶æ§åˆ¶å—ç»“æ„(OS_EVENT)
+    INT8U   OSEventType;                   // äº‹ä»¶ç±»å‹
+    INT8U   OSEventGrp;                    // ç­‰å¾…ä»»åŠ¡æ‰€åœ¨çš„ç»„
+    INT16U  OSEventCnt;                    // è®¡æ•°å™¨(å½“äº‹ä»¶æ˜¯ä¿¡å·é‡æ—¶)
+    void   *OSEventPtr;                    // æŒ‡å‘æ¶ˆæ¯æˆ–è€…æ¶ˆæ¯é˜Ÿåˆ—çš„æŒ‡é’ˆ
+    INT8U   OSEventTbl[OS_EVENT_TBL_SIZE]; // ç­‰å¾…ä»»åŠ¡åˆ—è¡¨
 } OS_EVENT;
 #endif
 
 //*********************************************************************************************************
-//ÊÂ¼ş±êÖ¾¿ØÖÆ¿é (EVENT FLAGS CONTROL BLOCK)
-#if (OS_VERSION >= 251) && (OS_FLAG_EN > 0) && (OS_MAX_FLAGS > 0)//µ±°æ±¾Îª2.51 ÇÒ ÊÂ¼ş±êÖ¾ÔÊĞí ÇÒ×î´óÊÂ¼ş±êÖ¾´óÓÚ0Ê±
-typedef struct {                             // ¶¨ÒåÒ»¸öOS_FLAG_GRP½á¹¹                                   
-    INT8U         OSFlagType;                // ÓÃÀ´¼ìÑéÖ¸ÕëµÄÀàĞÍÊÇ·ñÊÇÖ¸ÏòÊÂ¼ş±êÖ¾×éµÄÖ¸Õë
-    void         *OSFlagWaitList;            // °üº¬ÁËÒ»¸öµÈ´ıÊÂ¼şµÄÈÎÎñÁĞ±í
-    OS_FLAGS      OSFlagFlags;               // °üº¬ÁËÒ»ÏµÁĞ±íÃ÷µ±Ç°ÊÂ¼ş±êÖ¾×´Ì¬µÄÎ»               
-} OS_FLAG_GRP;    							 // ÊÂ¼ş±êÖ¾×é
+//äº‹ä»¶æ ‡å¿—æ§åˆ¶å— (EVENT FLAGS CONTROL BLOCK)
+#if (OS_VERSION >= 251) && (OS_FLAG_EN > 0) && (OS_MAX_FLAGS > 0)//å½“ç‰ˆæœ¬ä¸º2.51 ä¸” äº‹ä»¶æ ‡å¿—å…è®¸ ä¸”æœ€å¤§äº‹ä»¶æ ‡å¿—å¤§äº0æ—¶
+typedef struct {                             // å®šä¹‰ä¸€ä¸ªOS_FLAG_GRPç»“æ„                                   
+    INT8U         OSFlagType;                // ç”¨æ¥æ£€éªŒæŒ‡é’ˆçš„ç±»å‹æ˜¯å¦æ˜¯æŒ‡å‘äº‹ä»¶æ ‡å¿—ç»„çš„æŒ‡é’ˆ
+    void         *OSFlagWaitList;            // åŒ…å«äº†ä¸€ä¸ªç­‰å¾…äº‹ä»¶çš„ä»»åŠ¡åˆ—è¡¨
+    OS_FLAGS      OSFlagFlags;               // åŒ…å«äº†ä¸€ç³»åˆ—è¡¨æ˜å½“å‰äº‹ä»¶æ ‡å¿—çŠ¶æ€çš„ä½               
+} OS_FLAG_GRP;    							 // äº‹ä»¶æ ‡å¿—ç»„
 											      
-typedef struct {                            // ¶¨ÒåÒ»¸öÊÂ¼ş±êÖ¾µÈ´ıÁĞ±í½Úµã(OS_FLAG_NODE)½á¹¹
-    void         *OSFlagNodeNext;           // ¹¹½¨Ë«ÏòOS_FLAG_NODEÊı¾İ½á¹¹Á´±íµÄºóÒ»¸öÁ´½Ó
-    void         *OSFlagNodePrev;           // ¹¹½¨Ë«ÏòOS_FLAG_NODEÊı¾İ½á¹¹Á´±íµÄÇ°Ò»¸öÁ´½Ó
-    void         *OSFlagNodeTCB;            // Ö¸ÏòÄ³¸öµÈ´ıÊÂ¼ş±êÖ¾×éÖĞµÄÊÂ¼ş±êÖ¾ÈÎÎñµÄ¿ØÖÆ¿é
-    void         *OSFlagNodeFlagGrp;        // ÊÇÒ»¸ö·´ÏòÖ¸»ØÊÂ¼ş±êÖ¾×éµÄÖ¸Õë 
-    OS_FLAGS      OSFlagNodeFlags;          // ÓÃÀ´Ö¸Ã÷ÈÎÎñµÈ´ıÊÂ¼ş±êÖ¾×éÖĞµÄÄÄĞ©ÊÂ¼ş±êÖ¾
-    INT8U         OSFlagNodeWaitType;       // Ö¸Ã÷µÈ´ıÊÂ¼ş±êÖ¾×éÖĞµÄËùÓĞÊÂ¼ş±êÖ¾µÄ·¢Éú(Óë¡¢»ò)
+typedef struct {                            // å®šä¹‰ä¸€ä¸ªäº‹ä»¶æ ‡å¿—ç­‰å¾…åˆ—è¡¨èŠ‚ç‚¹(OS_FLAG_NODE)ç»“æ„
+    void         *OSFlagNodeNext;           // æ„å»ºåŒå‘OS_FLAG_NODEæ•°æ®ç»“æ„é“¾è¡¨çš„åä¸€ä¸ªé“¾æ¥
+    void         *OSFlagNodePrev;           // æ„å»ºåŒå‘OS_FLAG_NODEæ•°æ®ç»“æ„é“¾è¡¨çš„å‰ä¸€ä¸ªé“¾æ¥
+    void         *OSFlagNodeTCB;            // æŒ‡å‘æŸä¸ªç­‰å¾…äº‹ä»¶æ ‡å¿—ç»„ä¸­çš„äº‹ä»¶æ ‡å¿—ä»»åŠ¡çš„æ§åˆ¶å—
+    void         *OSFlagNodeFlagGrp;        // æ˜¯ä¸€ä¸ªåå‘æŒ‡å›äº‹ä»¶æ ‡å¿—ç»„çš„æŒ‡é’ˆ 
+    OS_FLAGS      OSFlagNodeFlags;          // ç”¨æ¥æŒ‡æ˜ä»»åŠ¡ç­‰å¾…äº‹ä»¶æ ‡å¿—ç»„ä¸­çš„å“ªäº›äº‹ä»¶æ ‡å¿—
+    INT8U         OSFlagNodeWaitType;       // æŒ‡æ˜ç­‰å¾…äº‹ä»¶æ ‡å¿—ç»„ä¸­çš„æ‰€æœ‰äº‹ä»¶æ ‡å¿—çš„å‘ç”Ÿ(ä¸ã€æˆ–)
                                             /*      OS_FLAG_WAIT_AND                                   */
                                             /*      OS_FLAG_WAIT_ALL                                   */
                                             /*      OS_FLAG_WAIT_OR                                    */
@@ -211,72 +211,72 @@ typedef struct {                            // ¶¨ÒåÒ»¸öÊÂ¼ş±êÖ¾µÈ´ıÁĞ±í½Úµã(OS_F
 
 
 //*********************************************************************************************************
-// Éè¶¨Ò»¸öÏûÏ¢¶ÓÁĞµÄÊı¾İ½á¹¹ (MESSAGE MAILBOX DATA)
+// è®¾å®šä¸€ä¸ªæ¶ˆæ¯é˜Ÿåˆ—çš„æ•°æ®ç»“æ„ (MESSAGE MAILBOX DATA)
 #if OS_MBOX_EN > 0
-typedef struct {						   // ¶¨ÒåÒ»¸öOS_MBOX_DATA½á¹¹
-    void   *OSMsg;                         // Èç¹ûÏûÏ¢¶ÓÁĞÖĞÓĞÏûÏ¢£¬Ëü°üº¬Ö¸Õë.OSQOutËùÖ¸ÏòµÄ¶ÓÁĞµ¥ÔªÖĞ
-										   // µÄÄÚÈİ¡£Èç¹û¶ÓÁĞÊÇ¿ÕµÄ£¬.OSMsg°üº¬Ò»¸öNULLÖ¸Õë
-    INT8U   OSEventTbl[OS_EVENT_TBL_SIZE]; // ÏûÏ¢¶ÓÁĞµÄµÈ´ıÈÎÎñÁĞ±í
-    INT8U   OSEventGrp;                    // ÓëOSEventTbl[]ÅäºÏÊ¹ÓÃ
+typedef struct {						   // å®šä¹‰ä¸€ä¸ªOS_MBOX_DATAç»“æ„
+    void   *OSMsg;                         // å¦‚æœæ¶ˆæ¯é˜Ÿåˆ—ä¸­æœ‰æ¶ˆæ¯ï¼Œå®ƒåŒ…å«æŒ‡é’ˆ.OSQOutæ‰€æŒ‡å‘çš„é˜Ÿåˆ—å•å…ƒä¸­
+										   // çš„å†…å®¹ã€‚å¦‚æœé˜Ÿåˆ—æ˜¯ç©ºçš„ï¼Œ.OSMsgåŒ…å«ä¸€ä¸ªNULLæŒ‡é’ˆ
+    INT8U   OSEventTbl[OS_EVENT_TBL_SIZE]; // æ¶ˆæ¯é˜Ÿåˆ—çš„ç­‰å¾…ä»»åŠ¡åˆ—è¡¨
+    INT8U   OSEventGrp;                    // ä¸OSEventTbl[]é…åˆä½¿ç”¨
 } OS_MBOX_DATA;
 #endif
 
 //*********************************************************************************************************
-//Éè¶¨Ò»¸öÄÚ´æµÄÊı¾İ½á¹¹ (MEMORY PARTITION DATA STRUCTURES)
+//è®¾å®šä¸€ä¸ªå†…å­˜çš„æ•°æ®ç»“æ„ (MEMORY PARTITION DATA STRUCTURES)
 #if (OS_MEM_EN > 0) && (OS_MAX_MEM_PART > 0)
-typedef struct {                       // Ê¹ÓÃÄÚ´æ¿ØÖÆ¿é£¨memory control blocks£©µÄÊı¾İ½á¹¹À´¸ú×ÙÃ¿Ò»
-									   // ¸öÄÚ´æ·ÖÇø£¬ÏµÍ³ÖĞµÄÃ¿¸öÄÚ´æ·ÖÇø¶¼ÓĞËü×Ô¼ºµÄÄÚ´æ¿ØÖÆ¿é¡£
-    void   *OSMemAddr;                 // Ö¸ÏòÄÚ´æ·ÖÇøÆğÊ¼µØÖ·µÄÖ¸Õë
-    void   *OSMemFreeList;             // Ö¸ÏòÏÂÒ»¸ö¿ÕÏĞÄÚ´æ¿ØÖÆ¿é»òÕßÏÂÒ»¸ö¿ÕÏĞµÄÄÚ´æ¿éµÄÖ¸Õë
-    INT32U  OSMemBlkSize;              // ÄÚ´æ·ÖÇøÖĞÄÚ´æ¿éµÄ´óĞ¡£¬ÊÇÓÃ»§½¨Á¢¸ÃÄÚ´æ·ÖÇøÊ±Ö¸¶¨µÄ
-    INT32U  OSMemNBlks;                // ÄÚ´æ·ÖÇøÖĞ×ÜµÄÄÚ´æ¿éÊıÁ¿£¬Ò²ÊÇÓÃ»§½¨Á¢¸ÃÄÚ´æ·ÖÇøÊ±Ö¸¶¨µÄ
-    INT32U  OSMemNFree;                // ÄÚ´æ·ÖÇøÖĞµ±Ç°¿ÉÒÔµÃ¿ÕÏĞÄÚ´æ¿éÊıÁ¿
+typedef struct {                       // ä½¿ç”¨å†…å­˜æ§åˆ¶å—ï¼ˆmemory control blocksï¼‰çš„æ•°æ®ç»“æ„æ¥è·Ÿè¸ªæ¯ä¸€
+									   // ä¸ªå†…å­˜åˆ†åŒºï¼Œç³»ç»Ÿä¸­çš„æ¯ä¸ªå†…å­˜åˆ†åŒºéƒ½æœ‰å®ƒè‡ªå·±çš„å†…å­˜æ§åˆ¶å—ã€‚
+    void   *OSMemAddr;                 // æŒ‡å‘å†…å­˜åˆ†åŒºèµ·å§‹åœ°å€çš„æŒ‡é’ˆ
+    void   *OSMemFreeList;             // æŒ‡å‘ä¸‹ä¸€ä¸ªç©ºé—²å†…å­˜æ§åˆ¶å—æˆ–è€…ä¸‹ä¸€ä¸ªç©ºé—²çš„å†…å­˜å—çš„æŒ‡é’ˆ
+    INT32U  OSMemBlkSize;              // å†…å­˜åˆ†åŒºä¸­å†…å­˜å—çš„å¤§å°ï¼Œæ˜¯ç”¨æˆ·å»ºç«‹è¯¥å†…å­˜åˆ†åŒºæ—¶æŒ‡å®šçš„
+    INT32U  OSMemNBlks;                // å†…å­˜åˆ†åŒºä¸­æ€»çš„å†…å­˜å—æ•°é‡ï¼Œä¹Ÿæ˜¯ç”¨æˆ·å»ºç«‹è¯¥å†…å­˜åˆ†åŒºæ—¶æŒ‡å®šçš„
+    INT32U  OSMemNFree;                // å†…å­˜åˆ†åŒºä¸­å½“å‰å¯ä»¥å¾—ç©ºé—²å†…å­˜å—æ•°é‡
 } OS_MEM;
 
 
 typedef struct {
-    void   *OSAddr;                    // Ö¸ÏòÄÚ´æÇøÆğÊ¼µØÖ·µÄÖ¸Õë
-    void   *OSFreeList;                /// Ö¸Ïò¿ÕÏĞÄÚ´æ¿éÁĞ±íÆğÊ¼µØÖ·µÄÖ¸Õë
-    INT32U  OSBlkSize;                 // Ã¿¸öÄÚ´æ¿éµÄ´óĞ¡
-    INT32U  OSNBlks;                   // ¸ÃÄÚ´æÇøµÄÄÚ´æ¿é×ÜÊı
-    INT32U  OSNFree;                   // ¿ÕÏĞµÄÄÚ´æ¿éÊıÄ¿
-    INT32U  OSNUsed;                   // Ê¹ÓÃµÄÄÚ´æ¿éÊıÄ¿
+    void   *OSAddr;                    // æŒ‡å‘å†…å­˜åŒºèµ·å§‹åœ°å€çš„æŒ‡é’ˆ
+    void   *OSFreeList;                /// æŒ‡å‘ç©ºé—²å†…å­˜å—åˆ—è¡¨èµ·å§‹åœ°å€çš„æŒ‡é’ˆ
+    INT32U  OSBlkSize;                 // æ¯ä¸ªå†…å­˜å—çš„å¤§å°
+    INT32U  OSNBlks;                   // è¯¥å†…å­˜åŒºçš„å†…å­˜å—æ€»æ•°
+    INT32U  OSNFree;                   // ç©ºé—²çš„å†…å­˜å—æ•°ç›®
+    INT32U  OSNUsed;                   // ä½¿ç”¨çš„å†…å­˜å—æ•°ç›®
 } OS_MEM_DATA;
 #endif
 
 //*********************************************************************************************************
-//»¥³âĞÍĞÅºÅÁ¿Êı¾İ(MUTUAL EXCLUSION SEMAPHORE DATA)
-#if OS_MUTEX_EN > 0	// ÔÊĞí(1)»òÕß²úÉú»¥³âĞÍĞÅºÅÁ¿Ïà¹Ø´úÂë
-typedef struct {	// ¶¨ÒåÖ¸ÏòÀàĞÍÎª(OS_MUTEX_DATA)µÄÊı¾İ½á¹¹µÄÖ¸Õë
+//äº’æ–¥å‹ä¿¡å·é‡æ•°æ®(MUTUAL EXCLUSION SEMAPHORE DATA)
+#if OS_MUTEX_EN > 0	// å…è®¸(1)æˆ–è€…äº§ç”Ÿäº’æ–¥å‹ä¿¡å·é‡ç›¸å…³ä»£ç 
+typedef struct {	// å®šä¹‰æŒ‡å‘ç±»å‹ä¸º(OS_MUTEX_DATA)çš„æ•°æ®ç»“æ„çš„æŒ‡é’ˆ
     INT8U   OSEventTbl[OS_EVENT_TBL_SIZE];  /* List of tasks waiting for event to occur                */
-    INT8U   OSEventGrp;                     // ¸´ÖÆµÈ´ımutexµÄÈÎÎñÁĞ±í
-    INT8U   OSValue;                        // µ±Ç°mutexµÄÖµ.1±íÊ¾¿ÉÒÔÊ¹ÓÃ£¬0±íÊ¾²»ÄÜÊ¹ÓÃ
-    INT8U   OSOwnerPrio;                    // Õ¼ÓÃmutexÈÎÎñµÄÓÅÏÈ¼¶
-    INT8U   OSMutexPIP;                     // mutexµÄÓÅÏÈ¼¶¼Ì³ĞÓÅÏÈ¼¶PIP
+    INT8U   OSEventGrp;                     // å¤åˆ¶ç­‰å¾…mutexçš„ä»»åŠ¡åˆ—è¡¨
+    INT8U   OSValue;                        // å½“å‰mutexçš„å€¼.1è¡¨ç¤ºå¯ä»¥ä½¿ç”¨ï¼Œ0è¡¨ç¤ºä¸èƒ½ä½¿ç”¨
+    INT8U   OSOwnerPrio;                    // å ç”¨mutexä»»åŠ¡çš„ä¼˜å…ˆçº§
+    INT8U   OSMutexPIP;                     // mutexçš„ä¼˜å…ˆçº§ç»§æ‰¿ä¼˜å…ˆçº§PIP
 } OS_MUTEX_DATA;
 #endif
 
 //*********************************************************************************************************
-// ÏûÏ¢¶ÓÁĞÊı¾İ (MESSAGE QUEUE DATA)
+// æ¶ˆæ¯é˜Ÿåˆ—æ•°æ® (MESSAGE QUEUE DATA)
 /*
-¶ÓÁĞ¿ØÖÆ¿éÊÇÒ»¸öÓÃÓÚÎ¬»¤ÏûÏ¢¶ÓÁĞĞÅÏ¢µÄÊı¾İ½á¹¹£¬Ëü°üº¬ÁËÒÔÏÂµÄÒ»Ğ©Óò¡£ÕâÀï£¬ÈÔÈ»ÔÚ¸÷¸ö±äÁ¿Ç°¼ÓÈë
-Ò»¸ö[.]À´±íÊ¾ËüÃÇÊÇÊı¾İ½á¹¹ÖĞµÄÒ»¸öÓò¡£
-1).OSQPtr: ÔÚ¿ÕÏĞ¶ÓÁĞ¿ØÖÆ¿éÖĞÁ´½ÓËùÓĞµÄ¶ÓÁĞ¿ØÖÆ¿é¡£Ò»µ©½¨Á¢ÁËÏûÏ¢¶ÓÁĞ£¬¸ÃÓò¾Í²»ÔÙÓĞÓÃÁË¡£
-2).OSQStart: ÊÇÖ¸ÏòÏûÏ¢¶ÓÁĞµÄÖ¸ÕëÊı×éµÄÆğÊ¼µØÖ·µÄÖ¸Õë¡£ÓÃ»§Ó¦ÓÃ³ÌĞòÔÚÊ¹ÓÃÏûÏ¢¶ÓÁĞÖ®Ç°±ØĞëÏÈ¶¨Òå¸ÃÊı×é
-¡£
-3).OSQEnd: ÊÇÖ¸ÏòÏûÏ¢¶ÓÁĞ½áÊøµ¥ÔªµÄÏÂÒ»¸öµØÖ·µÄÖ¸Õë¡£¸ÃÖ¸ÕëÊ¹µÃÏûÏ¢¶ÓÁĞ¹¹³ÉÒ»¸öÑ­»·µÄ»º³åÇø¡£
-4).OSQIn: ÊÇÖ¸ÏòÏûÏ¢¶ÓÁĞÖĞ²åÈëÏÂÒ»ÌõÏûÏ¢µÄÎ»ÖÃµÄÖ¸Õë¡£µ±.OSQInºÍ.OSQEndÏàµÈÊ±£¬.OSQIn±»µ÷ÕûÖ¸Ïò
-ÏûÏ¢¶ÓÁĞµÄÆğÊ¼µ¥Ôª¡£
-5).OSQOut: ÊÇÖ¸ÏòÏûÏ¢¶ÓÁĞÖĞÏÂÒ»¸öÈ¡³öÏûÏ¢µÄÎ»ÖÃµÄÖ¸Õë¡£µ±.OSQOutºÍ.OSQEndÏàµÈÊ±£¬.OSQOut±»µ÷ÕûÖ¸
-ÏòÏûÏ¢¶ÓÁĞµÄÆğÊ¼µ¥Ôª¡£
-6).OSQSize: ÊÇÏûÏ¢¶ÓÁĞÖĞ×ÜµÄµ¥ÔªÊı¡£¸ÃÖµÊÇÔÚ½¨Á¢ÏûÏ¢¶ÓÁĞÊ±ÓÉÓÃ»§Ó¦ÓÃ³ÌĞò¾ö¶¨µÄ¡£ÔÚuC/OS-IIÖĞ,¸ÃÖµ×î
-´ó¿ÉÒÔÊÇ65,535¡£
-7).OSQEntries: ÊÇÏûÏ¢¶ÓÁĞÖĞµ±Ç°µÄÏûÏ¢ÊıÁ¿¡£µ±ÏûÏ¢¶ÓÁĞÊÇ¿ÕµÄÊ±£¬¸ÃÖµÎª0¡£µ±ÏûÏ¢¶ÓÁĞÂúÁËÒÔºó£¬¸ÃÖµºÍ
-.OSQSizeÖµÒ»Ñù¡£ ÔÚÏûÏ¢¶ÓÁĞ¸Õ¸Õ½¨Á¢Ê±£¬¸ÃÖµÎª0¡£
+é˜Ÿåˆ—æ§åˆ¶å—æ˜¯ä¸€ä¸ªç”¨äºç»´æŠ¤æ¶ˆæ¯é˜Ÿåˆ—ä¿¡æ¯çš„æ•°æ®ç»“æ„ï¼Œå®ƒåŒ…å«äº†ä»¥ä¸‹çš„ä¸€äº›åŸŸã€‚è¿™é‡Œï¼Œä»ç„¶åœ¨å„ä¸ªå˜é‡å‰åŠ å…¥
+ä¸€ä¸ª[.]æ¥è¡¨ç¤ºå®ƒä»¬æ˜¯æ•°æ®ç»“æ„ä¸­çš„ä¸€ä¸ªåŸŸã€‚
+1).OSQPtr: åœ¨ç©ºé—²é˜Ÿåˆ—æ§åˆ¶å—ä¸­é“¾æ¥æ‰€æœ‰çš„é˜Ÿåˆ—æ§åˆ¶å—ã€‚ä¸€æ—¦å»ºç«‹äº†æ¶ˆæ¯é˜Ÿåˆ—ï¼Œè¯¥åŸŸå°±ä¸å†æœ‰ç”¨äº†ã€‚
+2).OSQStart: æ˜¯æŒ‡å‘æ¶ˆæ¯é˜Ÿåˆ—çš„æŒ‡é’ˆæ•°ç»„çš„èµ·å§‹åœ°å€çš„æŒ‡é’ˆã€‚ç”¨æˆ·åº”ç”¨ç¨‹åºåœ¨ä½¿ç”¨æ¶ˆæ¯é˜Ÿåˆ—ä¹‹å‰å¿…é¡»å…ˆå®šä¹‰è¯¥æ•°ç»„
+ã€‚
+3).OSQEnd: æ˜¯æŒ‡å‘æ¶ˆæ¯é˜Ÿåˆ—ç»“æŸå•å…ƒçš„ä¸‹ä¸€ä¸ªåœ°å€çš„æŒ‡é’ˆã€‚è¯¥æŒ‡é’ˆä½¿å¾—æ¶ˆæ¯é˜Ÿåˆ—æ„æˆä¸€ä¸ªå¾ªç¯çš„ç¼“å†²åŒºã€‚
+4).OSQIn: æ˜¯æŒ‡å‘æ¶ˆæ¯é˜Ÿåˆ—ä¸­æ’å…¥ä¸‹ä¸€æ¡æ¶ˆæ¯çš„ä½ç½®çš„æŒ‡é’ˆã€‚å½“.OSQInå’Œ.OSQEndç›¸ç­‰æ—¶ï¼Œ.OSQInè¢«è°ƒæ•´æŒ‡å‘
+æ¶ˆæ¯é˜Ÿåˆ—çš„èµ·å§‹å•å…ƒã€‚
+5).OSQOut: æ˜¯æŒ‡å‘æ¶ˆæ¯é˜Ÿåˆ—ä¸­ä¸‹ä¸€ä¸ªå–å‡ºæ¶ˆæ¯çš„ä½ç½®çš„æŒ‡é’ˆã€‚å½“.OSQOutå’Œ.OSQEndç›¸ç­‰æ—¶ï¼Œ.OSQOutè¢«è°ƒæ•´æŒ‡
+å‘æ¶ˆæ¯é˜Ÿåˆ—çš„èµ·å§‹å•å…ƒã€‚
+6).OSQSize: æ˜¯æ¶ˆæ¯é˜Ÿåˆ—ä¸­æ€»çš„å•å…ƒæ•°ã€‚è¯¥å€¼æ˜¯åœ¨å»ºç«‹æ¶ˆæ¯é˜Ÿåˆ—æ—¶ç”±ç”¨æˆ·åº”ç”¨ç¨‹åºå†³å®šçš„ã€‚åœ¨uC/OS-IIä¸­,è¯¥å€¼æœ€
+å¤§å¯ä»¥æ˜¯65,535ã€‚
+7).OSQEntries: æ˜¯æ¶ˆæ¯é˜Ÿåˆ—ä¸­å½“å‰çš„æ¶ˆæ¯æ•°é‡ã€‚å½“æ¶ˆæ¯é˜Ÿåˆ—æ˜¯ç©ºçš„æ—¶ï¼Œè¯¥å€¼ä¸º0ã€‚å½“æ¶ˆæ¯é˜Ÿåˆ—æ»¡äº†ä»¥åï¼Œè¯¥å€¼å’Œ
+.OSQSizeå€¼ä¸€æ ·ã€‚ åœ¨æ¶ˆæ¯é˜Ÿåˆ—åˆšåˆšå»ºç«‹æ—¶ï¼Œè¯¥å€¼ä¸º0ã€‚
 */
 
 #if OS_Q_EN > 0
-typedef struct os_q {                   // ¶¨ÒåÒ»¸öOS_Q¶ÓÁĞ¿ØÖÆ¿é                                    */
+typedef struct os_q {                   // å®šä¹‰ä¸€ä¸ªOS_Qé˜Ÿåˆ—æ§åˆ¶å—                                    */
     struct os_q   *OSQPtr;              /* Link to next queue control block in list of free blocks     */
     void         **OSQStart;            /* Pointer to start of queue data                              */
     void         **OSQEnd;              /* Pointer to end   of queue data                              */
@@ -286,162 +286,162 @@ typedef struct os_q {                   // ¶¨ÒåÒ»¸öOS_Q¶ÓÁĞ¿ØÖÆ¿é               
     INT16U         OSQEntries;          /* Current number of entries in the queue                      */
 } OS_Q;								 
 
-typedef struct {						// ¶¨ÒåÒ»¸öÏûÏ¢¶ÓÁĞÊı¾İ(OS_Q_DATA)½á¹¹
-    void          *OSMsg;               // Èç¹ûÏûÏ¢¶ÓÁĞÖĞÓĞÏûÏ¢£¬Ëü°üº¬Ö¸Õë
-    INT16U         OSNMsgs;             // ÏûÏ¢¶ÓÁĞÖĞµÄÏûÏ¢Êı
-    INT16U         OSQSize;             // ÏûÏ¢¶ÓÁĞµÄ×ÜµÄÈİÁ¿                                      */
+typedef struct {						// å®šä¹‰ä¸€ä¸ªæ¶ˆæ¯é˜Ÿåˆ—æ•°æ®(OS_Q_DATA)ç»“æ„
+    void          *OSMsg;               // å¦‚æœæ¶ˆæ¯é˜Ÿåˆ—ä¸­æœ‰æ¶ˆæ¯ï¼Œå®ƒåŒ…å«æŒ‡é’ˆ
+    INT16U         OSNMsgs;             // æ¶ˆæ¯é˜Ÿåˆ—ä¸­çš„æ¶ˆæ¯æ•°
+    INT16U         OSQSize;             // æ¶ˆæ¯é˜Ÿåˆ—çš„æ€»çš„å®¹é‡                                      */
     INT8U          OSEventTbl[OS_EVENT_TBL_SIZE];  /* List of tasks waiting for event to occur         */
-    INT8U          OSEventGrp;          //ºÍOSEventTbl[]Ò»Æğ½áºÏ£¬ÊÇÏûÏ¢¶ÓÁĞµÄµÈ´ıÈÎÎñÁĞ±í
+    INT8U          OSEventGrp;          //å’ŒOSEventTbl[]ä¸€èµ·ç»“åˆï¼Œæ˜¯æ¶ˆæ¯é˜Ÿåˆ—çš„ç­‰å¾…ä»»åŠ¡åˆ—è¡¨
 } OS_Q_DATA;
 #endif
 
 //*********************************************************************************************************
-//ĞÅºÅÁ¿Êı¾İ½á¹¹ (SEMAPHORE DATA)
+//ä¿¡å·é‡æ•°æ®ç»“æ„ (SEMAPHORE DATA)
 #if OS_SEM_EN > 0
-typedef struct {						    // ¶¨ÒåÒ»¸öĞÅºÅÁ¿Êı¾İ½á¹¹(OS_SEM_DATA)
-    INT16U  OSCnt;                          // ¶¨ÒåĞÅºÅÁ¿¼ÆÊıÖµ                                      
-    INT8U   OSEventTbl[OS_EVENT_TBL_SIZE];  // ¶¨ÒåÈÎÎñµÈ´ıÁĞ±í
-    INT8U   OSEventGrp;                     // ¶¨ÒåµÈ´ıÊÂ¼şµÄÈÎÎñ×é
+typedef struct {						    // å®šä¹‰ä¸€ä¸ªä¿¡å·é‡æ•°æ®ç»“æ„(OS_SEM_DATA)
+    INT16U  OSCnt;                          // å®šä¹‰ä¿¡å·é‡è®¡æ•°å€¼                                      
+    INT8U   OSEventTbl[OS_EVENT_TBL_SIZE];  // å®šä¹‰ä»»åŠ¡ç­‰å¾…åˆ—è¡¨
+    INT8U   OSEventGrp;                     // å®šä¹‰ç­‰å¾…äº‹ä»¶çš„ä»»åŠ¡ç»„
 } OS_SEM_DATA;
 #endif
 
 //*********************************************************************************************************
-//ÈÎÎñ¶ÑÕ»Êı¾İ (TASK STACK DATA)
+//ä»»åŠ¡å †æ ˆæ•°æ® (TASK STACK DATA)
 #if OS_TASK_CREATE_EXT_EN > 0
-typedef struct {					   // ¶¨ÒåÒ»¸ö¶ÑÕ»Êı¾İ½á¹¹(OS_STK_DATA)
-    INT32U  OSFree;                    // ¶ÑÕ»ÖĞÎ´Ê¹ÓÃµÄ×Ö½ÚÊı
-    INT32U  OSUsed;                    // ¶ÑÕ»ÖĞÒÑÊ¹ÓÃµÄ×Ö½ÚÊı                
+typedef struct {					   // å®šä¹‰ä¸€ä¸ªå †æ ˆæ•°æ®ç»“æ„(OS_STK_DATA)
+    INT32U  OSFree;                    // å †æ ˆä¸­æœªä½¿ç”¨çš„å­—èŠ‚æ•°
+    INT32U  OSUsed;                    // å †æ ˆä¸­å·²ä½¿ç”¨çš„å­—èŠ‚æ•°                
 } OS_STK_DATA;
 #endif
 
 //*********************************************************************************************************
-//ÈÎÎñ¿ØÖÆ¿é (TASK CONTROL BLOCK)
+//ä»»åŠ¡æ§åˆ¶å— (TASK CONTROL BLOCK)
 typedef struct os_tcb {
-    OS_STK        *OSTCBStkPtr;        //µ±Ç°TCBµÄÕ»¶¥Ö¸Õë
+    OS_STK        *OSTCBStkPtr;        //å½“å‰TCBçš„æ ˆé¡¶æŒ‡é’ˆ
 
-#if OS_TASK_CREATE_EXT_EN > 0		   //ÔÊĞíÉú³ÉOSTaskCreateExt()º¯Êı
-    void          *OSTCBExtPtr;        //Ö¸ÏòÓÃ»§¶¨ÒåµÄÈÎÎñ¿ØÖÆ¿é(À©Õ¹Ö¸Õë)
-    OS_STK        *OSTCBStkBottom;     //Ö¸ÏòÖ¸ÏòÕ»µ×µÄÖ¸Õë
-    INT32U         OSTCBStkSize;       //Éè¶¨¶ÑÕ»µÄÈİÁ¿
-    INT16U         OSTCBOpt;           //±£´æOS_TCBµÄÑ¡ÔñÏî
-    INT16U         OSTCBId;            //ÈÎÎñID  (0..65535)             
+#if OS_TASK_CREATE_EXT_EN > 0		   //å…è®¸ç”ŸæˆOSTaskCreateExt()å‡½æ•°
+    void          *OSTCBExtPtr;        //æŒ‡å‘ç”¨æˆ·å®šä¹‰çš„ä»»åŠ¡æ§åˆ¶å—(æ‰©å±•æŒ‡é’ˆ)
+    OS_STK        *OSTCBStkBottom;     //æŒ‡å‘æŒ‡å‘æ ˆåº•çš„æŒ‡é’ˆ
+    INT32U         OSTCBStkSize;       //è®¾å®šå †æ ˆçš„å®¹é‡
+    INT16U         OSTCBOpt;           //ä¿å­˜OS_TCBçš„é€‰æ‹©é¡¹
+    INT16U         OSTCBId;            //ä»»åŠ¡ID  (0..65535)             
 #endif
 
-    struct os_tcb *OSTCBNext;          //¶¨ÒåÖ¸ÏòTCBµÄË«ÏòÁ´½ÓµÄºóÁ´½Ó
-    struct os_tcb *OSTCBPrev;          //¶¨ÒåÖ¸ÏòTCBµÄË«ÏòÁ´½ÓµÄÇ°Á´½Ó
+    struct os_tcb *OSTCBNext;          //å®šä¹‰æŒ‡å‘TCBçš„åŒå‘é“¾æ¥çš„åé“¾æ¥
+    struct os_tcb *OSTCBPrev;          //å®šä¹‰æŒ‡å‘TCBçš„åŒå‘é“¾æ¥çš„å‰é“¾æ¥
 
 #if ((OS_Q_EN > 0) && (OS_MAX_QS > 0)) || (OS_MBOX_EN > 0) || (OS_SEM_EN > 0) || (OS_MUTEX_EN > 0)
-//µ±ÒÔÉÏ¸÷ÖÖÊÂ¼şÔÊĞíÊ±
-    OS_EVENT      *OSTCBEventPtr;      //¶¨ÒåÖ¸ÏòÊÂ¼ş¿ØÖÆ¿éµÄÖ¸Õë
+//å½“ä»¥ä¸Šå„ç§äº‹ä»¶å…è®¸æ—¶
+    OS_EVENT      *OSTCBEventPtr;      //å®šä¹‰æŒ‡å‘äº‹ä»¶æ§åˆ¶å—çš„æŒ‡é’ˆ
 #endif
 
 #if ((OS_Q_EN > 0) && (OS_MAX_QS > 0)) || (OS_MBOX_EN > 0)
-//Âú×ãÒÔÉÏÌõ¼ş,¶¨Òå´«µİ¸øÈÎÎñµÄÏûÏ¢Ö¸Õë
+//æ»¡è¶³ä»¥ä¸Šæ¡ä»¶,å®šä¹‰ä¼ é€’ç»™ä»»åŠ¡çš„æ¶ˆæ¯æŒ‡é’ˆ
     void          *OSTCBMsg;           /* Message received from OSMboxPost() or OSQPost()              */
 #endif
 
 #if (OS_VERSION >= 251) && (OS_FLAG_EN > 0) && (OS_MAX_FLAGS > 0)
 #if OS_TASK_DEL_EN > 0
-    OS_FLAG_NODE  *OSTCBFlagNode;      ///¶¨ÒåÊÂ¼ş±êÖ¾½ÚµãµÄÖ¸Õë
+    OS_FLAG_NODE  *OSTCBFlagNode;      ///å®šä¹‰äº‹ä»¶æ ‡å¿—èŠ‚ç‚¹çš„æŒ‡é’ˆ
 #endif    
-    OS_FLAGS       OSTCBFlagsRdy;      //¶¨ÒåÔËĞĞ×¼±¸Íê±ÏµÄÈÎÎñ¿ØÖÆ¿éÖĞµÄÈÎÎñ?
+    OS_FLAGS       OSTCBFlagsRdy;      //å®šä¹‰è¿è¡Œå‡†å¤‡å®Œæ¯•çš„ä»»åŠ¡æ§åˆ¶å—ä¸­çš„ä»»åŠ¡?
 #endif
 
-    INT16U         OSTCBDly;           //¶¨ÒåÔÊĞíÈÎÎñµÈ´ıÊ±µÄ×î¶à½ÚÅÄÊı
-    INT8U          OSTCBStat;          //¶¨ÒåÈÎÎñµÄ×´Ì¬×Ö        
-    INT8U          OSTCBPrio;          //¶¨ÒåÈÎÎñµÄÓÅÏÈ¼¶(0 == highest, 63 == lowest)                 
+    INT16U         OSTCBDly;           //å®šä¹‰å…è®¸ä»»åŠ¡ç­‰å¾…æ—¶çš„æœ€å¤šèŠ‚æ‹æ•°
+    INT8U          OSTCBStat;          //å®šä¹‰ä»»åŠ¡çš„çŠ¶æ€å­—        
+    INT8U          OSTCBPrio;          //å®šä¹‰ä»»åŠ¡çš„ä¼˜å…ˆçº§(0 == highest, 63 == lowest)                 
 
-    INT8U          OSTCBX;             //¶¨ÒåÖ¸ÏòÈÎÎñÓÅÏÈ¼¶µÄµÍ3Î»£¬¼´=priority&0x07
-    INT8U          OSTCBY;             //¶¨ÒåÖ¸ÏòÈÎÎñÓÅÏÈ¼¶µÄ¸ß3Î»£¬¼´=priority>>3
-    INT8U          OSTCBBitX;          //¶¨ÒåµÍ3Î»¾ÍĞ÷±í¶ÔÓ¦Öµ£¨0¡«7£©£¬¼´£½OSMapTbl[priority&0x07]
-    INT8U          OSTCBBitY;          //¶¨Òå¸ß3Î»¾ÍĞ÷±í¶ÔÓ¦Öµ£¨0¡«7£©£¬¼´£½OSMapTbl[priority>>3]
+    INT8U          OSTCBX;             //å®šä¹‰æŒ‡å‘ä»»åŠ¡ä¼˜å…ˆçº§çš„ä½3ä½ï¼Œå³=priority&0x07
+    INT8U          OSTCBY;             //å®šä¹‰æŒ‡å‘ä»»åŠ¡ä¼˜å…ˆçº§çš„é«˜3ä½ï¼Œå³=priority>>3
+    INT8U          OSTCBBitX;          //å®šä¹‰ä½3ä½å°±ç»ªè¡¨å¯¹åº”å€¼ï¼ˆ0ï½7ï¼‰ï¼Œå³ï¼OSMapTbl[priority&0x07]
+    INT8U          OSTCBBitY;          //å®šä¹‰é«˜3ä½å°±ç»ªè¡¨å¯¹åº”å€¼ï¼ˆ0ï½7ï¼‰ï¼Œå³ï¼OSMapTbl[priority>>3]
 
-#if OS_TASK_DEL_EN > 0				   //ÔÊĞíÉú³É OSTaskDel() º¯Êı´úÂëº¯Êı
-    BOOLEAN        OSTCBDelReq;        //¶¨ÒåÓÃÓÚ±íÊ¾¸ÃÈÎÎñÊÇ·ñĞëÉ¾³ı
+#if OS_TASK_DEL_EN > 0				   //å…è®¸ç”Ÿæˆ OSTaskDel() å‡½æ•°ä»£ç å‡½æ•°
+    BOOLEAN        OSTCBDelReq;        //å®šä¹‰ç”¨äºè¡¨ç¤ºè¯¥ä»»åŠ¡æ˜¯å¦é¡»åˆ é™¤
 #endif
 } OS_TCB;
 
 //*********************************************************************************************************
-//È«¾Ö±äÁ¿ (GLOBAL VARIABLES)
-OS_EXT  INT32U            OSCtxSwCtr;               //ÉÏÏÂÎÄÇĞ»»µÄ´ÎÊı(Í³¼ÆÈÎÎñ¼ÆÊıÆ÷)
+//å…¨å±€å˜é‡ (GLOBAL VARIABLES)
+OS_EXT  INT32U            OSCtxSwCtr;               //ä¸Šä¸‹æ–‡åˆ‡æ¢çš„æ¬¡æ•°(ç»Ÿè®¡ä»»åŠ¡è®¡æ•°å™¨)
 
-#if (OS_EVENT_EN > 0) && (OS_MAX_EVENTS > 0)	    //Èç¹ûÓĞÏûÏ¢ÊÂ¼ş£¬²¢ÇÒ×î´óÏûÏ¢ÊÂ¼şÊı>0
-OS_EXT  OS_EVENT         *OSEventFreeList;          //¿ÕÓàÊÂ¼ş¹ÜÀíÁĞ±íÖ¸Õë
-OS_EXT  OS_EVENT          OSEventTbl[OS_MAX_EVENTS];//ÊÂ¼ş¿ØÖÆ¿é±í
+#if (OS_EVENT_EN > 0) && (OS_MAX_EVENTS > 0)	    //å¦‚æœæœ‰æ¶ˆæ¯äº‹ä»¶ï¼Œå¹¶ä¸”æœ€å¤§æ¶ˆæ¯äº‹ä»¶æ•°>0
+OS_EXT  OS_EVENT         *OSEventFreeList;          //ç©ºä½™äº‹ä»¶ç®¡ç†åˆ—è¡¨æŒ‡é’ˆ
+OS_EXT  OS_EVENT          OSEventTbl[OS_MAX_EVENTS];//äº‹ä»¶æ§åˆ¶å—è¡¨
 #endif
-//µ±Âú×ã°æ±¾´óÓÚ2.51ÇÒÊÂ¼ş±êÖ¾ÔÊĞíÇÒÓĞ×î´óÊÂ¼ş±êÖ¾
+//å½“æ»¡è¶³ç‰ˆæœ¬å¤§äº2.51ä¸”äº‹ä»¶æ ‡å¿—å…è®¸ä¸”æœ‰æœ€å¤§äº‹ä»¶æ ‡å¿—
 #if (OS_VERSION >= 251) && (OS_FLAG_EN > 0) && (OS_MAX_FLAGS > 0)
-OS_EXT  OS_FLAG_GRP       OSFlagTbl[OS_MAX_FLAGS];  //¶¨ÒåÒ»¸öÊÂ¼ş±êÖ¾ÁĞ±í
-OS_EXT  OS_FLAG_GRP      *OSFlagFreeList;           //¶¨ÒåÒ»¸ö¿ÕÏĞµÄÊÂ¼ş±êÖ¾×é
+OS_EXT  OS_FLAG_GRP       OSFlagTbl[OS_MAX_FLAGS];  //å®šä¹‰ä¸€ä¸ªäº‹ä»¶æ ‡å¿—åˆ—è¡¨
+OS_EXT  OS_FLAG_GRP      *OSFlagFreeList;           //å®šä¹‰ä¸€ä¸ªç©ºé—²çš„äº‹ä»¶æ ‡å¿—ç»„
 #endif
 
-#if OS_TASK_STAT_EN > 0							    //¶¨ÒåÔÊĞíÉú²úOS_TaskStat()º¯Êı
-OS_EXT  INT8S             OSCPUUsage;               //¶¨ÒåCPU Ê¹ÓÃÂÊ                        
-OS_EXT  INT32U            OSIdleCtrMax;             //¶¨Òå×î´ó¿ÕÏĞ¼ÆÊıÖµ
-OS_EXT  INT32U            OSIdleCtrRun;             //¶¨Òåµ±Ç°µÄ¿ÕÏĞ¼ÆÊıÖµ
-OS_EXT  BOOLEAN           OSStatRdy;                //¶¨ÒåÍ³¼ÆÈÎÎñ¾ÍĞ÷±êÖ¾
+#if OS_TASK_STAT_EN > 0							    //å®šä¹‰å…è®¸ç”Ÿäº§OS_TaskStat()å‡½æ•°
+OS_EXT  INT8S             OSCPUUsage;               //å®šä¹‰CPU ä½¿ç”¨ç‡                        
+OS_EXT  INT32U            OSIdleCtrMax;             //å®šä¹‰æœ€å¤§ç©ºé—²è®¡æ•°å€¼
+OS_EXT  INT32U            OSIdleCtrRun;             //å®šä¹‰å½“å‰çš„ç©ºé—²è®¡æ•°å€¼
+OS_EXT  BOOLEAN           OSStatRdy;                //å®šä¹‰ç»Ÿè®¡ä»»åŠ¡å°±ç»ªæ ‡å¿—
 OS_EXT  OS_STK            OSTaskStatStk[OS_TASK_STAT_STK_SIZE];/* Statistics task stack          */
 #endif
 
-OS_EXT  INT8U             OSIntNesting;             //¶¨ÒåÖĞ¶ÏÇ¶Ì×²ãÊı
-OS_EXT  INT8U             OSIntExitY;				//ÓÃÓÚº¯ÊıOSInieExt( )
+OS_EXT  INT8U             OSIntNesting;             //å®šä¹‰ä¸­æ–­åµŒå¥—å±‚æ•°
+OS_EXT  INT8U             OSIntExitY;				//ç”¨äºå‡½æ•°OSInieExt( )
 
-OS_EXT  INT8U             OSLockNesting;            //¶¨ÒåËø¶¨Ç¶Ì×¼ÆÊıÆ÷
+OS_EXT  INT8U             OSLockNesting;            //å®šä¹‰é”å®šåµŒå¥—è®¡æ•°å™¨
 
-OS_EXT  INT8U             OSPrioCur;                //¶¨ÒåÕıÔÚÔËĞĞµÄÈÎÎñµÄÓÅÏÈ¼¶
-OS_EXT  INT8U             OSPrioHighRdy;            //¶¨Òå¾ßÓĞ×î¸ßÓÅÏÈ¼¶±ğµÄ¾ÍĞ÷ÈÎÎñµÄÓÅÏÈ¼¶
+OS_EXT  INT8U             OSPrioCur;                //å®šä¹‰æ­£åœ¨è¿è¡Œçš„ä»»åŠ¡çš„ä¼˜å…ˆçº§
+OS_EXT  INT8U             OSPrioHighRdy;            //å®šä¹‰å…·æœ‰æœ€é«˜ä¼˜å…ˆçº§åˆ«çš„å°±ç»ªä»»åŠ¡çš„ä¼˜å…ˆçº§
 
 OS_EXT  INT8U             OSRdyGrp;                        /* Ready list group                         */
-OS_EXT  INT8U             OSRdyTbl[OS_RDY_TBL_SIZE];       //¼´½«ÒªÔËĞĞµÄÈÎÎñÁĞ±í
+OS_EXT  INT8U             OSRdyTbl[OS_RDY_TBL_SIZE];       //å³å°†è¦è¿è¡Œçš„ä»»åŠ¡åˆ—è¡¨
 
-OS_EXT  BOOLEAN           OSRunning;                       //¶àÈÎÎñÒÑ¾­¿ªÊ¼=1,ÈÎÎñ´¦ÓÚ²»ÔËĞĞ×´Ì¬=0
+OS_EXT  BOOLEAN           OSRunning;                       //å¤šä»»åŠ¡å·²ç»å¼€å§‹=1,ä»»åŠ¡å¤„äºä¸è¿è¡ŒçŠ¶æ€=0
 
-OS_EXT  INT8U             OSTaskCtr;                       //¶¨ÒåÈÎÎñ¼ÆÊıÆ÷
+OS_EXT  INT8U             OSTaskCtr;                       //å®šä¹‰ä»»åŠ¡è®¡æ•°å™¨
 
-OS_EXT  volatile  INT32U  OSIdleCtr;                        //¶¨Òå32Î»¿ÕÏĞÈÎÎñµÄ¼ÆÊıÆ÷
+OS_EXT  volatile  INT32U  OSIdleCtr;                        //å®šä¹‰32ä½ç©ºé—²ä»»åŠ¡çš„è®¡æ•°å™¨
 
-OS_EXT  OS_STK            OSTaskIdleStk[OS_TASK_IDLE_STK_SIZE];//·ÖÅä¿ÕÏĞÈÎÎñ¶ÑÕ»Õ»¶¥Ö¸Õë
+OS_EXT  OS_STK            OSTaskIdleStk[OS_TASK_IDLE_STK_SIZE];//åˆ†é…ç©ºé—²ä»»åŠ¡å †æ ˆæ ˆé¡¶æŒ‡é’ˆ
 
 
-OS_EXT  OS_TCB           *OSTCBCur;                        //¶¨ÒåÖ¸ÏòÕıÔÚÔËĞĞÈÎÎñ¿ØÖÆ¿éµÄÖ¸Õë
-OS_EXT  OS_TCB           *OSTCBFreeList;                   //¶¨Òå¿ÕÈÎÎñ¿ØÖÆ¿éÖ¸Õë  
-OS_EXT  OS_TCB           *OSTCBHighRdy;                    //¶¨ÒåÖ¸Ïò×î¸ß¼¶ÓÅÏÈ¼¶¾ÍĞ÷ÈÎÎñ¿ØÖÆ¿éµÄÖ¸Õë
-OS_EXT  OS_TCB           *OSTCBList;                       //¶¨ÒåÈÎÎñ¿ØÖÆ¿éÁĞ±íÊ×µØÖ·
-OS_EXT  OS_TCB           *OSTCBPrioTbl[OS_LOWEST_PRIO + 1];//¶¨ÒåÈÎÎñ¿ØÖÆ¿éÓÅÏÈ¼¶±í
-OS_EXT  OS_TCB            OSTCBTbl[OS_MAX_TASKS + OS_N_SYS_TASKS];//¶¨Òåµ±Ç°ÈÎÎñ¿ØÖÆ¿éÁĞ±í
+OS_EXT  OS_TCB           *OSTCBCur;                        //å®šä¹‰æŒ‡å‘æ­£åœ¨è¿è¡Œä»»åŠ¡æ§åˆ¶å—çš„æŒ‡é’ˆ
+OS_EXT  OS_TCB           *OSTCBFreeList;                   //å®šä¹‰ç©ºä»»åŠ¡æ§åˆ¶å—æŒ‡é’ˆ  
+OS_EXT  OS_TCB           *OSTCBHighRdy;                    //å®šä¹‰æŒ‡å‘æœ€é«˜çº§ä¼˜å…ˆçº§å°±ç»ªä»»åŠ¡æ§åˆ¶å—çš„æŒ‡é’ˆ
+OS_EXT  OS_TCB           *OSTCBList;                       //å®šä¹‰ä»»åŠ¡æ§åˆ¶å—åˆ—è¡¨é¦–åœ°å€
+OS_EXT  OS_TCB           *OSTCBPrioTbl[OS_LOWEST_PRIO + 1];//å®šä¹‰ä»»åŠ¡æ§åˆ¶å—ä¼˜å…ˆçº§è¡¨
+OS_EXT  OS_TCB            OSTCBTbl[OS_MAX_TASKS + OS_N_SYS_TASKS];//å®šä¹‰å½“å‰ä»»åŠ¡æ§åˆ¶å—åˆ—è¡¨
 
-//Ìõ¼ş±àÒë£ºÈôÁ½¸öÌõ¼şÂú×ãÊ±£¬²úÉúÒÔÏÂ´úÂë
-//OS_MEM_ENÔÊĞí (1) »òÕß½ûÖ¹ (0) ²úÉúÄÚ´æÏà¹Ø´úÂë
-//OS_MAX_MEM_PART ×î¶àÄÚ´æ¿éµÄÊıÄ¿
+//æ¡ä»¶ç¼–è¯‘ï¼šè‹¥ä¸¤ä¸ªæ¡ä»¶æ»¡è¶³æ—¶ï¼Œäº§ç”Ÿä»¥ä¸‹ä»£ç 
+//OS_MEM_ENå…è®¸ (1) æˆ–è€…ç¦æ­¢ (0) äº§ç”Ÿå†…å­˜ç›¸å…³ä»£ç 
+//OS_MAX_MEM_PART æœ€å¤šå†…å­˜å—çš„æ•°ç›®
 #if (OS_MEM_EN > 0) && (OS_MAX_MEM_PART > 0)
-OS_EXT  OS_MEM           *OSMemFreeList;            //¿ÕÓàÄÚ´æ¿ØÖÆ¿é(Á´½Ó)Ö¸Õë
+OS_EXT  OS_MEM           *OSMemFreeList;            //ç©ºä½™å†…å­˜æ§åˆ¶å—(é“¾æ¥)æŒ‡é’ˆ
 OS_EXT  OS_MEM            OSMemTbl[OS_MAX_MEM_PART];/* Storage for memory partition manager            */
 #endif
 
-#if (OS_Q_EN > 0) && (OS_MAX_QS > 0)				//Ìõ¼ş±àÒë£ºOS_Q_EN ÔÊĞí (1)²úÉúÏûÏ¢¶ÓÁĞÏà¹Ø´úÂë
-//Ìõ¼ş±àÒë£ºÓ¦ÓÃÖĞ×î¶à¶ÔÁĞ¿ØÖÆ¿éµÄÊıÄ¿ > 0			
+#if (OS_Q_EN > 0) && (OS_MAX_QS > 0)				//æ¡ä»¶ç¼–è¯‘ï¼šOS_Q_EN å…è®¸ (1)äº§ç”Ÿæ¶ˆæ¯é˜Ÿåˆ—ç›¸å…³ä»£ç 
+//æ¡ä»¶ç¼–è¯‘ï¼šåº”ç”¨ä¸­æœ€å¤šå¯¹åˆ—æ§åˆ¶å—çš„æ•°ç›® > 0			
 OS_EXT  OS_Q             *OSQFreeList;              /* Pointer to list of free QUEUE control blocks    */
 OS_EXT  OS_Q              OSQTbl[OS_MAX_QS];        /* Table of QUEUE control blocks                   */
 #endif
 
-#if OS_TIME_GET_SET_EN > 0   					    //ÔÊĞíÉú³ÉOSTimeGet() º¯Êı´úÂë	 
-OS_EXT  volatile  INT32U  OSTime;                   //µ±Ç°ÏµÍ³Ê±ÖÓÊıÖµ(in ticks)        
+#if OS_TIME_GET_SET_EN > 0   					    //å…è®¸ç”ŸæˆOSTimeGet() å‡½æ•°ä»£ç 	 
+OS_EXT  volatile  INT32U  OSTime;                   //å½“å‰ç³»ç»Ÿæ—¶é’Ÿæ•°å€¼(in ticks)        
 #endif
 
 extern  INT8U  const      OSMapTbl[];               /* Priority->Bit Mask lookup table                 */
 extern  INT8U  const      OSUnMapTbl[];             /* Priority->Index    lookup table                 */
 
 //*********************************************************************************************************
-//¹¦ÄÜÔ­ĞÍ (FUNCTION PROTOTYPES)
-//²»ÊÜÔ¼ÊøµÄº¯Êı (Target Independent Functions)
-//ÊÂ¼ş±êÖ¾¹ÜÀí (EVENT FLAGS MANAGEMENT)
-//OSFlagAccept() ¼ì²éÊÂ¼ş±êÖ¾×éº¯Êı(±êÖ¾×éµÄÖ¸Õë¡¢ÊÂ¼ş±êÖ¾Î»¡¢µÈ´ıÊÂ¼ş±êÖ¾Î»µÄ·½Ê½¡¢´íÎóÂëÖ¸Õë)
-//OSFlagCreate() ½¨Á¢Ò»¸öÊÂ¼ş±êÖ¾×é(³õÖµ¡¢´íÎóÂë)
-//OSFlagDel() É¾³ıÒ»¸öÊÂ¼ş±êÖ¾×é(Ö¸Õë¡¢Ìõ¼şÖµ¡¢´íÎóÖµ)
-//OSFlagPend() µÈ´ıÊÂ¼ş±êÖ¾×éµÄÊÂ¼ş±êÖ¾Î»(ÊÂ¼ş×éÖ¸Õë¡¢ĞèÒª¼ì²éµÄ±êÖ¾Î»¡¢µÈ´ıÊÂ¼ş±êÖ¾Î»µÄ·½Ê½¡¢
-//ÔÊĞíµÈ´ıµÄÊ±ÖÓ½ÚÅÄ¡¢³ö´í´úÂëµÄÊ±ÖÓ½ÚÅÄ)
-//OSFlagPost() ÖÃÎ»»òÇå0ÊÂ¼ş±êÖ¾×éÖĞµÄ±êÖ¾Î»(Ö¸Õë¡¢±êÖ¾Î»¡¢Ìõ¼şÖµ¡¢´íÎóÂë)
-//OSFlagQuery() ²éÑ¯ÊÂ¼ş±êÖ¾×éµÄµ±Ç°ÊÂ¼ş±êÖ¾×´Ì¬(ÊÂ¼ş±êÖ¾×éµÄÖ¸Õë¡¢´íÎó´úÂëµÄÖ¸Õë)
+//åŠŸèƒ½åŸå‹ (FUNCTION PROTOTYPES)
+//ä¸å—çº¦æŸçš„å‡½æ•° (Target Independent Functions)
+//äº‹ä»¶æ ‡å¿—ç®¡ç† (EVENT FLAGS MANAGEMENT)
+//OSFlagAccept() æ£€æŸ¥äº‹ä»¶æ ‡å¿—ç»„å‡½æ•°(æ ‡å¿—ç»„çš„æŒ‡é’ˆã€äº‹ä»¶æ ‡å¿—ä½ã€ç­‰å¾…äº‹ä»¶æ ‡å¿—ä½çš„æ–¹å¼ã€é”™è¯¯ç æŒ‡é’ˆ)
+//OSFlagCreate() å»ºç«‹ä¸€ä¸ªäº‹ä»¶æ ‡å¿—ç»„(åˆå€¼ã€é”™è¯¯ç )
+//OSFlagDel() åˆ é™¤ä¸€ä¸ªäº‹ä»¶æ ‡å¿—ç»„(æŒ‡é’ˆã€æ¡ä»¶å€¼ã€é”™è¯¯å€¼)
+//OSFlagPend() ç­‰å¾…äº‹ä»¶æ ‡å¿—ç»„çš„äº‹ä»¶æ ‡å¿—ä½(äº‹ä»¶ç»„æŒ‡é’ˆã€éœ€è¦æ£€æŸ¥çš„æ ‡å¿—ä½ã€ç­‰å¾…äº‹ä»¶æ ‡å¿—ä½çš„æ–¹å¼ã€
+//å…è®¸ç­‰å¾…çš„æ—¶é’ŸèŠ‚æ‹ã€å‡ºé”™ä»£ç çš„æ—¶é’ŸèŠ‚æ‹)
+//OSFlagPost() ç½®ä½æˆ–æ¸…0äº‹ä»¶æ ‡å¿—ç»„ä¸­çš„æ ‡å¿—ä½(æŒ‡é’ˆã€æ ‡å¿—ä½ã€æ¡ä»¶å€¼ã€é”™è¯¯ç )
+//OSFlagQuery() æŸ¥è¯¢äº‹ä»¶æ ‡å¿—ç»„çš„å½“å‰äº‹ä»¶æ ‡å¿—çŠ¶æ€(äº‹ä»¶æ ‡å¿—ç»„çš„æŒ‡é’ˆã€é”™è¯¯ä»£ç çš„æŒ‡é’ˆ)
 
 #if (OS_VERSION >= 251) && (OS_FLAG_EN > 0) && (OS_MAX_FLAGS > 0)
 
@@ -464,14 +464,14 @@ OS_FLAGS      OSFlagQuery(OS_FLAG_GRP *pgrp, INT8U *err);
 #endif
 
 //*********************************************************************************************************
-//ÏûÏ¢ÓÊÏä¹ÜÀí (MESSAGE MAILBOX MANAGEMENT)
-//OSMboxAccept () ²é¿´ÏûÏ¢ÓÊÏä(ÏûÏ¢ÓÊÏäÖ¸Õë)
-//OSMboxCreate () ½¨Á¢²¢³õÊ¼»¯Ò»¸öÏûÏ¢ÓÊÏä(msg ²ÎÊı²»Îª¿Õº¬ÄÚÈİ)
-//OSMboxDel () É¾³ıÏûÏ¢ÓÊÏä(ÏûÏ¢ÓÊÏäÖ¸Õë¡¢É¾³ıÌõ¼ş¡¢³ö´í´úÂëÖ¸Õë)
-//OSMboxPend () µÈ´ıÒ»¸öÏûÏ¢ÓÊÏäº¯Êı(ÏûÏ¢ÓÊÏäÖ¸Õë¡¢ÔÊĞíµÈ´ıµÄÊ±ÖÓ½ÚÅÄ¡¢´úÂë´íÎóÖ¸Õë)
-//OSMboxPost () ·¢ËÍÏûÏ¢º¯Êı(ÏûÏ¢ÓÊÏäÖ¸Õë¡¢¼´½«Êµ¼Ê·¢ËÍ¸øÈÎÎñµÄÏûÏ¢)
-//OSMboxPostOpt () ÏòÓÊÏä·¢ËÍÒ»ÔòÏûÏ¢(ÓÊÏäÖ¸Õë¡¢ÏûÏ¢¡¢Ìõ¼ş)
-//OSMboxQuery () ²éÑ¯Ò»¸öÓÊÏäµÄµ±Ç°×´Ì¬(ĞÅºÅÁ¿Ö¸Õë¡¢×´Ì¬Êı¾İ½á¹¹Ö¸Õë)
+//æ¶ˆæ¯é‚®ç®±ç®¡ç† (MESSAGE MAILBOX MANAGEMENT)
+//OSMboxAccept () æŸ¥çœ‹æ¶ˆæ¯é‚®ç®±(æ¶ˆæ¯é‚®ç®±æŒ‡é’ˆ)
+//OSMboxCreate () å»ºç«‹å¹¶åˆå§‹åŒ–ä¸€ä¸ªæ¶ˆæ¯é‚®ç®±(msg å‚æ•°ä¸ä¸ºç©ºå«å†…å®¹)
+//OSMboxDel () åˆ é™¤æ¶ˆæ¯é‚®ç®±(æ¶ˆæ¯é‚®ç®±æŒ‡é’ˆã€åˆ é™¤æ¡ä»¶ã€å‡ºé”™ä»£ç æŒ‡é’ˆ)
+//OSMboxPend () ç­‰å¾…ä¸€ä¸ªæ¶ˆæ¯é‚®ç®±å‡½æ•°(æ¶ˆæ¯é‚®ç®±æŒ‡é’ˆã€å…è®¸ç­‰å¾…çš„æ—¶é’ŸèŠ‚æ‹ã€ä»£ç é”™è¯¯æŒ‡é’ˆ)
+//OSMboxPost () å‘é€æ¶ˆæ¯å‡½æ•°(æ¶ˆæ¯é‚®ç®±æŒ‡é’ˆã€å³å°†å®é™…å‘é€ç»™ä»»åŠ¡çš„æ¶ˆæ¯)
+//OSMboxPostOpt () å‘é‚®ç®±å‘é€ä¸€åˆ™æ¶ˆæ¯(é‚®ç®±æŒ‡é’ˆã€æ¶ˆæ¯ã€æ¡ä»¶)
+//OSMboxQuery () æŸ¥è¯¢ä¸€ä¸ªé‚®ç®±çš„å½“å‰çŠ¶æ€(ä¿¡å·é‡æŒ‡é’ˆã€çŠ¶æ€æ•°æ®ç»“æ„æŒ‡é’ˆ)
 
 
 #if OS_MBOX_EN > 0
@@ -502,11 +502,11 @@ INT8U         OSMboxQuery(OS_EVENT *pevent, OS_MBOX_DATA *pdata);
 #endif
 
 //*********************************************************************************************************
-//ÄÚ´æ¹ÜÀíÏî (MEMORY MANAGEMENT)	  
-//OSMemCreate () ½¨Á¢²¢³õÊ¼»¯Ò»¿éÄÚ´æÇø(ÆğÊ¼µØÖ·¡¢ĞèÒªµÄÄÚ´æ¿éÊıÄ¿¡¢ÄÚ´æ¿é´óĞ¡¡¢·µ»Ø´íÎóµÄÖ¸Õë)
-//OSMemGet () ´ÓÄÚ´æÇø·ÖÅäÒ»¸öÄÚ´æ¿é
-//OSMemPut () ÊÍ·ÅÒ»¸öÄÚ´æ¿é£¬ÄÚ´æ¿é±ØĞëÊÍ·Å»ØÔ­ÏÈÉêÇëµÄÄÚ´æÇø
-//OSMemQuery () µÃµ½ÄÚ´æÇøµÄĞÅÏ¢
+//å†…å­˜ç®¡ç†é¡¹ (MEMORY MANAGEMENT)	  
+//OSMemCreate () å»ºç«‹å¹¶åˆå§‹åŒ–ä¸€å—å†…å­˜åŒº(èµ·å§‹åœ°å€ã€éœ€è¦çš„å†…å­˜å—æ•°ç›®ã€å†…å­˜å—å¤§å°ã€è¿”å›é”™è¯¯çš„æŒ‡é’ˆ)
+//OSMemGet () ä»å†…å­˜åŒºåˆ†é…ä¸€ä¸ªå†…å­˜å—
+//OSMemPut () é‡Šæ”¾ä¸€ä¸ªå†…å­˜å—ï¼Œå†…å­˜å—å¿…é¡»é‡Šæ”¾å›åŸå…ˆç”³è¯·çš„å†…å­˜åŒº
+//OSMemQuery () å¾—åˆ°å†…å­˜åŒºçš„ä¿¡æ¯
 
 
 #if (OS_MEM_EN > 0) && (OS_MAX_MEM_PART > 0)
@@ -522,13 +522,13 @@ INT8U         OSMemQuery(OS_MEM *pmem, OS_MEM_DATA *pdata);
 #endif
 
 //*********************************************************************************************************
-//»¥³âĞÍĞÅºÅÁ¿Ïî¹ÜÀí (MUTUAL EXCLUSION SEMAPHORE MANAGEMENT) 
-//OSMutexAccept () ÎŞµÈ´ıµØ»ñÈ¡»¥³âĞÍĞÅºÅÁ¿[ÈÎÎñ²»¹ÒÆğ](ĞÅºÅÁ¿Ö¸Õë¡¢´íÎó´úÂë)
-//OSMutexCreate () ½¨Á¢²¢³õÊ¼»¯Ò»¸ö»¥³âĞÍĞÅºÅÁ¿(ÓÅÏÈ¼¶¼Ì³ĞÓÅÏÈ¼¶(PIP)¡¢³ö´í´úÂëÖ¸Õë)
-//OSMutexDel () É¾³ı»¥³âĞÍĞÅºÅÁ¿(ĞÅºÅÖ¸Õë¡¢É¾³ıÌõ¼ş¡¢´íÎóÖ¸Õë)
-//OSMutexPend () µÈ´ıÒ»¸ö»¥³âĞÍĞÅºÅÁ¿(Ö¸Õë¡¢µÈ´ı³¬Ê±Ê±ÏŞ¡¢³ö´í´úÂëÖ¸Õë)
-//OSMutexPost () ÊÍ·ÅÒ»¸ö»¥³âĞÍĞÅºÅÁ¿(»¥³âĞÍĞÅºÅÁ¿Ö¸Õë)
-//OSMutexQuery () ²éÑ¯Ò»¸ö»¥³âĞÍĞÅºÅÁ¿µÄµ±Ç°×´Ì¬(»¥³âĞÍĞÅºÅÁ¿Ö¸Õë¡¢×´Ì¬Êı¾İ½á¹¹Ö¸Õë)
+//äº’æ–¥å‹ä¿¡å·é‡é¡¹ç®¡ç† (MUTUAL EXCLUSION SEMAPHORE MANAGEMENT) 
+//OSMutexAccept () æ— ç­‰å¾…åœ°è·å–äº’æ–¥å‹ä¿¡å·é‡[ä»»åŠ¡ä¸æŒ‚èµ·](ä¿¡å·é‡æŒ‡é’ˆã€é”™è¯¯ä»£ç )
+//OSMutexCreate () å»ºç«‹å¹¶åˆå§‹åŒ–ä¸€ä¸ªäº’æ–¥å‹ä¿¡å·é‡(ä¼˜å…ˆçº§ç»§æ‰¿ä¼˜å…ˆçº§(PIP)ã€å‡ºé”™ä»£ç æŒ‡é’ˆ)
+//OSMutexDel () åˆ é™¤äº’æ–¥å‹ä¿¡å·é‡(ä¿¡å·æŒ‡é’ˆã€åˆ é™¤æ¡ä»¶ã€é”™è¯¯æŒ‡é’ˆ)
+//OSMutexPend () ç­‰å¾…ä¸€ä¸ªäº’æ–¥å‹ä¿¡å·é‡(æŒ‡é’ˆã€ç­‰å¾…è¶…æ—¶æ—¶é™ã€å‡ºé”™ä»£ç æŒ‡é’ˆ)
+//OSMutexPost () é‡Šæ”¾ä¸€ä¸ªäº’æ–¥å‹ä¿¡å·é‡(äº’æ–¥å‹ä¿¡å·é‡æŒ‡é’ˆ)
+//OSMutexQuery () æŸ¥è¯¢ä¸€ä¸ªäº’æ–¥å‹ä¿¡å·é‡çš„å½“å‰çŠ¶æ€(äº’æ–¥å‹ä¿¡å·é‡æŒ‡é’ˆã€çŠ¶æ€æ•°æ®ç»“æ„æŒ‡é’ˆ)
 
 
 #if OS_MUTEX_EN > 0
@@ -553,16 +553,16 @@ INT8U         OSMutexQuery(OS_EVENT *pevent, OS_MUTEX_DATA *pdata);
 #endif
 
 //*********************************************************************************************************
-//ÏûÏ¢¶ÓÁĞ¹ÜÀí (MESSAGE QUEUE MANAGEMENT)	  
-//OSQAccept () ¼ì²éÏûÏ¢¶ÓÁĞÖĞÊÇ·ñÒÑ¾­ÓĞĞèÒªµÄÏûÏ¢(ÏûÏ¢¶ÓÁĞµÄÖ¸Õë)
-//OSQCreate () ½¨Á¢Ò»¸öÏûÏ¢¶ÓÁĞ(ÏûÏ¢ÄÚ´æÇøµÄ»ùµØÖ·(Ö¸ÕëÊı×é)¡¢ÏûÏ¢ÄÚ´æÇøµÄ´óĞ¡)
-//OSQDel () É¾³ıÒ»¸öÏûÏ¢¶ÓÁĞ(ÏûÏ¢¶ÓÁĞÖ¸Õë¡¢É¾³ıÌõ¼ş¡¢´íÎóÖ¸Õë)
-//OSQFlush () Çå¿ÕÏûÏ¢¶ÓÁĞ(Ö¸ÏòµÃµ½ÏûÏ¢¶ÓÁĞµÄÖ¸Õë)
-//OSQPend () ÈÎÎñµÈ´ıÏûÏ¢¶ÓÁĞÖĞµÄÏûÏ¢(ÏûÏ¢¶ÓÁĞÖ¸Õë¡¢ÔÊĞíµÈ´ıµÄÊ±ÖÓ½ÚÅÄ¡¢´úÂë´íÎóÖ¸Õë)
-//OSQPost () ÏòÏûÏ¢¶ÓÁĞ·¢ËÍÒ»ÔòÏûÏ¢FIFO(ÏûÏ¢¶ÓÁĞÖ¸Õë¡¢·¢ËÍµÄÏûÏ¢)
-//OSQPostFront () ÏòÏûÏ¢¶ÓÁĞ·¢ËÍÒ»ÔòÏûÏ¢LIFO(ÏûÏ¢¶ÓÁĞÖ¸Õë¡¢·¢ËÍµÄÏûÏ¢)
-//OSQPostOpt () ÏòÏûÏ¢¶ÓÁĞ·¢ËÍÒ»ÔòÏûÏ¢LIFO(ÏûÏ¢¶ÓÁĞÖ¸Õë¡¢·¢ËÍµÄÏûÏ¢¡¢·¢ËÍÌõ¼ş)
-//OSQQuery () ²éÑ¯Ò»¸öÏûÏ¢¶ÓÁĞµÄµ±Ç°×´Ì¬(ĞÅºÅÁ¿Ö¸Õë¡¢×´Ì¬Êı¾İ½á¹¹Ö¸Õë)
+//æ¶ˆæ¯é˜Ÿåˆ—ç®¡ç† (MESSAGE QUEUE MANAGEMENT)	  
+//OSQAccept () æ£€æŸ¥æ¶ˆæ¯é˜Ÿåˆ—ä¸­æ˜¯å¦å·²ç»æœ‰éœ€è¦çš„æ¶ˆæ¯(æ¶ˆæ¯é˜Ÿåˆ—çš„æŒ‡é’ˆ)
+//OSQCreate () å»ºç«‹ä¸€ä¸ªæ¶ˆæ¯é˜Ÿåˆ—(æ¶ˆæ¯å†…å­˜åŒºçš„åŸºåœ°å€(æŒ‡é’ˆæ•°ç»„)ã€æ¶ˆæ¯å†…å­˜åŒºçš„å¤§å°)
+//OSQDel () åˆ é™¤ä¸€ä¸ªæ¶ˆæ¯é˜Ÿåˆ—(æ¶ˆæ¯é˜Ÿåˆ—æŒ‡é’ˆã€åˆ é™¤æ¡ä»¶ã€é”™è¯¯æŒ‡é’ˆ)
+//OSQFlush () æ¸…ç©ºæ¶ˆæ¯é˜Ÿåˆ—(æŒ‡å‘å¾—åˆ°æ¶ˆæ¯é˜Ÿåˆ—çš„æŒ‡é’ˆ)
+//OSQPend () ä»»åŠ¡ç­‰å¾…æ¶ˆæ¯é˜Ÿåˆ—ä¸­çš„æ¶ˆæ¯(æ¶ˆæ¯é˜Ÿåˆ—æŒ‡é’ˆã€å…è®¸ç­‰å¾…çš„æ—¶é’ŸèŠ‚æ‹ã€ä»£ç é”™è¯¯æŒ‡é’ˆ)
+//OSQPost () å‘æ¶ˆæ¯é˜Ÿåˆ—å‘é€ä¸€åˆ™æ¶ˆæ¯FIFO(æ¶ˆæ¯é˜Ÿåˆ—æŒ‡é’ˆã€å‘é€çš„æ¶ˆæ¯)
+//OSQPostFront () å‘æ¶ˆæ¯é˜Ÿåˆ—å‘é€ä¸€åˆ™æ¶ˆæ¯LIFO(æ¶ˆæ¯é˜Ÿåˆ—æŒ‡é’ˆã€å‘é€çš„æ¶ˆæ¯)
+//OSQPostOpt () å‘æ¶ˆæ¯é˜Ÿåˆ—å‘é€ä¸€åˆ™æ¶ˆæ¯LIFO(æ¶ˆæ¯é˜Ÿåˆ—æŒ‡é’ˆã€å‘é€çš„æ¶ˆæ¯ã€å‘é€æ¡ä»¶)
+//OSQQuery () æŸ¥è¯¢ä¸€ä¸ªæ¶ˆæ¯é˜Ÿåˆ—çš„å½“å‰çŠ¶æ€(ä¿¡å·é‡æŒ‡é’ˆã€çŠ¶æ€æ•°æ®ç»“æ„æŒ‡é’ˆ)
 
 #if (OS_Q_EN > 0) && (OS_MAX_QS > 0)
 
@@ -601,13 +601,13 @@ INT8U         OSQQuery(OS_EVENT *pevent, OS_Q_DATA *pdata);
 #endif
 
 //*********************************************************************************************************
-//ĞÅºÅÁ¿¹ÜÀí (SEMAPHORE MANAGEMENT)	    
-//OSSemAccept() ÎŞÌõ¼şµØµÈ´ıÇëÇóÒ»¸öĞÅºÅÁ¿º¯Êı
-//OSSemCreate() ½¨Á¢²¢³õÊ¼»¯Ò»¸öĞÅºÅÁ¿(ÊäÈëÒ»¸öĞÅºÅÁ¿Öµ)
-//OSSemDel() É¾³ıÒ»¸öĞÅºÅÁ¿(ĞÅºÅÖ¸Õë¡¢É¾³ıÌõ¼ş¡¢´íÎóÖ¸Õë)
-//OSSemPend () µÈ´ıÒ»¸öĞÅºÅÁ¿º¯Êı(ĞÅºÅÁ¿Ö¸Õë¡¢ÔÊĞíµÈ´ıµÄÊ±ÖÓ½ÚÅÄ¡¢´úÂë´íÎóÖ¸Õë)
-//OSSemPost () ·¢³öÒ»¸öĞÅºÅÁ¿º¯Êı(ĞÅºÅÁ¿Ö¸Õë)
-//OSSemQuery () ²éÑ¯Ò»¸öĞÅºÅÁ¿µÄµ±Ç°×´Ì¬(ĞÅºÅÁ¿Ö¸Õë¡¢×´Ì¬Êı¾İ½á¹¹Ö¸Õë)
+//ä¿¡å·é‡ç®¡ç† (SEMAPHORE MANAGEMENT)	    
+//OSSemAccept() æ— æ¡ä»¶åœ°ç­‰å¾…è¯·æ±‚ä¸€ä¸ªä¿¡å·é‡å‡½æ•°
+//OSSemCreate() å»ºç«‹å¹¶åˆå§‹åŒ–ä¸€ä¸ªä¿¡å·é‡(è¾“å…¥ä¸€ä¸ªä¿¡å·é‡å€¼)
+//OSSemDel() åˆ é™¤ä¸€ä¸ªä¿¡å·é‡(ä¿¡å·æŒ‡é’ˆã€åˆ é™¤æ¡ä»¶ã€é”™è¯¯æŒ‡é’ˆ)
+//OSSemPend () ç­‰å¾…ä¸€ä¸ªä¿¡å·é‡å‡½æ•°(ä¿¡å·é‡æŒ‡é’ˆã€å…è®¸ç­‰å¾…çš„æ—¶é’ŸèŠ‚æ‹ã€ä»£ç é”™è¯¯æŒ‡é’ˆ)
+//OSSemPost () å‘å‡ºä¸€ä¸ªä¿¡å·é‡å‡½æ•°(ä¿¡å·é‡æŒ‡é’ˆ)
+//OSSemQuery () æŸ¥è¯¢ä¸€ä¸ªä¿¡å·é‡çš„å½“å‰çŠ¶æ€(ä¿¡å·é‡æŒ‡é’ˆã€çŠ¶æ€æ•°æ®ç»“æ„æŒ‡é’ˆ)
 
 #if OS_SEM_EN > 0
 
@@ -631,18 +631,18 @@ INT8U         OSSemQuery(OS_EVENT *pevent, OS_SEM_DATA *pdata);
 #endif
 	   
 //*********************************************************************************************************
-//ÈÎÎñ¹ÜÀí (TASK MANAGEMENT)    
-//OSTaskChangePrio () ¸Ä±äÒ»¸öÈÎÎñµÄÓÅÏÈ¼¶(ÈÎÎñ¾ÉµÄÓÅÏÈ¼¶¡¢ÈÎÎñĞÂµÄÓÅÏÈ¼¶)
-//OSTaskCreate () ½¨Á¢ÈÎÎñ(ÈÎÎñ´úÂëÖ¸Õë¡¢´«µİ²ÎÊıÖ¸Õë¡¢·ÖÅäÈÎÎñ¶ÑÕ»Õ»¶¥Ö¸Õë¡¢ÈÎÎñÓÅÏÈ¼¶)
-//OSTaskCreateExt () ½¨Á¢À©Õ¹ÈÎÎñ(ÈÎÎñ´úÂëÖ¸Õë/´«µİ²ÎÊıÖ¸Õë/·ÖÅäÈÎÎñ¶ÑÕ»Õ»¶¥Ö¸Õë/·ÖÅäÈÎÎñÓÅÏÈ¼¶
-//(Î´À´µÄ)ÓÅÏÈ¼¶±êÊ¶(ÓëÓÅÏÈ¼¶ÏàÍ¬)/·ÖÅäÈÎÎñ¶ÑÕ»Õ»µ×Ö¸Õë/Ö¸¶¨¶ÑÕ»µÄÈİÁ¿(¼ìÑéÓÃ)
-//Ö¸ÏòÓÃ»§¸½¼ÓµÄÊı¾İÓòµÄÖ¸Õë/½¨Á¢ÈÎÎñÉè¶¨Ñ¡Ïî)
-//OSTaskDel () É¾³ıÈÎÎñ(ÈÎÎñµÄÓÅÏÈ¼¶)
-//OSTaskDelReq () ÇëÇóÒ»¸öÈÎÎñÉ¾³ıÆäËüÈÎÎñ»ò×ÔÉí?(ÈÎÎñµÄÓÅÏÈ¼¶)
-//OSTaskResume () »½ĞÑÒ»¸öÓÃOSTaskSuspend()º¯Êı¹ÒÆğµÄÈÎÎñ(ÈÎÎñµÄÓÅÏÈ¼¶)
-//OSTaskStkChk () ¼ì²éÈÎÎñ¶ÑÕ»×´Ì¬(ÈÎÎñÓÅÏÈ¼¶¡¢¼ìÑé¶ÑÕ»Êı¾İ½á¹¹)
-//OSTaskSuspend () ÎŞÌõ¼ş¹ÒÆğÒ»¸öÈÎÎñ(ÈÎÎñÓÅÏÈ¼¶)
-//OSTaskQuery () »ñÈ¡ÈÎÎñĞÅÏ¢(ÈÎÎñÖ¸Õë¡¢±£´æÊı¾İ½á¹¹Ö¸Õë)
+//ä»»åŠ¡ç®¡ç† (TASK MANAGEMENT)    
+//OSTaskChangePrio () æ”¹å˜ä¸€ä¸ªä»»åŠ¡çš„ä¼˜å…ˆçº§(ä»»åŠ¡æ—§çš„ä¼˜å…ˆçº§ã€ä»»åŠ¡æ–°çš„ä¼˜å…ˆçº§)
+//OSTaskCreate () å»ºç«‹ä»»åŠ¡(ä»»åŠ¡ä»£ç æŒ‡é’ˆã€ä¼ é€’å‚æ•°æŒ‡é’ˆã€åˆ†é…ä»»åŠ¡å †æ ˆæ ˆé¡¶æŒ‡é’ˆã€ä»»åŠ¡ä¼˜å…ˆçº§)
+//OSTaskCreateExt () å»ºç«‹æ‰©å±•ä»»åŠ¡(ä»»åŠ¡ä»£ç æŒ‡é’ˆ/ä¼ é€’å‚æ•°æŒ‡é’ˆ/åˆ†é…ä»»åŠ¡å †æ ˆæ ˆé¡¶æŒ‡é’ˆ/åˆ†é…ä»»åŠ¡ä¼˜å…ˆçº§
+//(æœªæ¥çš„)ä¼˜å…ˆçº§æ ‡è¯†(ä¸ä¼˜å…ˆçº§ç›¸åŒ)/åˆ†é…ä»»åŠ¡å †æ ˆæ ˆåº•æŒ‡é’ˆ/æŒ‡å®šå †æ ˆçš„å®¹é‡(æ£€éªŒç”¨)
+//æŒ‡å‘ç”¨æˆ·é™„åŠ çš„æ•°æ®åŸŸçš„æŒ‡é’ˆ/å»ºç«‹ä»»åŠ¡è®¾å®šé€‰é¡¹)
+//OSTaskDel () åˆ é™¤ä»»åŠ¡(ä»»åŠ¡çš„ä¼˜å…ˆçº§)
+//OSTaskDelReq () è¯·æ±‚ä¸€ä¸ªä»»åŠ¡åˆ é™¤å…¶å®ƒä»»åŠ¡æˆ–è‡ªèº«?(ä»»åŠ¡çš„ä¼˜å…ˆçº§)
+//OSTaskResume () å”¤é†’ä¸€ä¸ªç”¨OSTaskSuspend()å‡½æ•°æŒ‚èµ·çš„ä»»åŠ¡(ä»»åŠ¡çš„ä¼˜å…ˆçº§)
+//OSTaskStkChk () æ£€æŸ¥ä»»åŠ¡å †æ ˆçŠ¶æ€(ä»»åŠ¡ä¼˜å…ˆçº§ã€æ£€éªŒå †æ ˆæ•°æ®ç»“æ„)
+//OSTaskSuspend () æ— æ¡ä»¶æŒ‚èµ·ä¸€ä¸ªä»»åŠ¡(ä»»åŠ¡ä¼˜å…ˆçº§)
+//OSTaskQuery () è·å–ä»»åŠ¡ä¿¡æ¯(ä»»åŠ¡æŒ‡é’ˆã€ä¿å­˜æ•°æ®ç»“æ„æŒ‡é’ˆ)
 
 #if OS_TASK_CHANGE_PRIO_EN > 0
 INT8U         OSTaskChangePrio(INT8U oldprio, INT8U newprio);
@@ -683,12 +683,12 @@ INT8U         OSTaskQuery(INT8U prio, OS_TCB *pdata);
 #endif
 
 //*********************************************************************************************************
-//Ê±ÖÓ¹ÜÀíÏî (TIME MANAGEMENT)  
-//OSTimeDly () ÈÎÎñÑÓÊ±º¯Êı(Ê±ÖÓ½ÚÅÄÊı)
-//OSTimeDlyHMSM () ½«Ò»¸öÈÎÎñÑÓÊ±Èô¸ÉÊ±¼ä(Éè¶¨Ê±¡¢·Ö¡¢Ãë¡¢ºÁÃë)
-//OSTimeDlyResume () »½ĞÑÒ»¸öÓÃOSTimeDly()»òOSTimeDlyHMSM()º¯ÊıµÄÈÎÎñ(ÓÅÏÈ¼¶)
-//OSTimeGet () »ñÈ¡µ±Ç°ÏµÍ³Ê±ÖÓÊıÖµ
-//OSTimeSet () ÉèÖÃµ±Ç°ÏµÍ³Ê±ÖÓÊıÖµ	 
+//æ—¶é’Ÿç®¡ç†é¡¹ (TIME MANAGEMENT)  
+//OSTimeDly () ä»»åŠ¡å»¶æ—¶å‡½æ•°(æ—¶é’ŸèŠ‚æ‹æ•°)
+//OSTimeDlyHMSM () å°†ä¸€ä¸ªä»»åŠ¡å»¶æ—¶è‹¥å¹²æ—¶é—´(è®¾å®šæ—¶ã€åˆ†ã€ç§’ã€æ¯«ç§’)
+//OSTimeDlyResume () å”¤é†’ä¸€ä¸ªç”¨OSTimeDly()æˆ–OSTimeDlyHMSM()å‡½æ•°çš„ä»»åŠ¡(ä¼˜å…ˆçº§)
+//OSTimeGet () è·å–å½“å‰ç³»ç»Ÿæ—¶é’Ÿæ•°å€¼
+//OSTimeSet () è®¾ç½®å½“å‰ç³»ç»Ÿæ—¶é’Ÿæ•°å€¼	 
 
 void          OSTimeDly(INT16U ticks);
 
@@ -708,15 +708,15 @@ void          OSTimeSet(INT32U ticks);
 void          OSTimeTick(void);
 
 //*********************************************************************************************************
-//»ìÔÓº¯Êı¶¨Òå	 
-//OSInit() ³õÊ¼»¯UCOS-IIº¯Êı
-//OSIntEnter() ÖĞ¶Ïº¯ÊıÕıÔÚÖ´ĞĞ
-//OSIntExit() ÖĞ¶Ïº¯ÊıÒÑ¾­Íê³É(ÍÑÀëÖĞ¶Ï)
-//OSSchedLock() ¸øµ÷¶ÈÆ÷ÉÏËø
-//OSSchedUnlock() ¸øµ÷¶ÈÆ÷½âËø
-//OSStart() Æô¶¯¶à¸öÈÎÎñ
-//OSStatInit() Í³¼ÆÈÎÎñ³õÊ¼»¯
-//OSVersion() »ñµÃ°æ±¾ºÅ
+//æ··æ‚å‡½æ•°å®šä¹‰	 
+//OSInit() åˆå§‹åŒ–UCOS-IIå‡½æ•°
+//OSIntEnter() ä¸­æ–­å‡½æ•°æ­£åœ¨æ‰§è¡Œ
+//OSIntExit() ä¸­æ–­å‡½æ•°å·²ç»å®Œæˆ(è„±ç¦»ä¸­æ–­)
+//OSSchedLock() ç»™è°ƒåº¦å™¨ä¸Šé”
+//OSSchedUnlock() ç»™è°ƒåº¦å™¨è§£é”
+//OSStart() å¯åŠ¨å¤šä¸ªä»»åŠ¡
+//OSStatInit() ç»Ÿè®¡ä»»åŠ¡åˆå§‹åŒ–
+//OSVersion() è·å¾—ç‰ˆæœ¬å·
 
 void          OSInit(void);
 
@@ -735,23 +735,23 @@ void          OSStatInit(void);
 INT16U        OSVersion(void);
 
 //*********************************************************************************************************
-//ÄÚ²¿º¯ÊıÔ­ĞÍ INTERNAL FUNCTION PROTOTYPES
-//ÄãÔÚÓ¦ÓÃ³ÌĞòÖĞ²»ÄÜÊ¹ÓÃËüÃÇ (Your application MUST NOT call these functions)
+//å†…éƒ¨å‡½æ•°åŸå‹ INTERNAL FUNCTION PROTOTYPES
+//ä½ åœ¨åº”ç”¨ç¨‹åºä¸­ä¸èƒ½ä½¿ç”¨å®ƒä»¬ (Your application MUST NOT call these functions)
  
-//OS_Dummy() ½¨Á¢Ò»¸öĞéÄâº¯Êı
-//OS_EventTaskRdy() Ê¹Ò»¸öÈÎÎñ½øÈë¾ÍĞ÷Ì¬(OS_EVENT *pevent, void *msg, INT8U msk)
-//OS_EventTaskWait() Ê¹Ò»¸öÈÎÎñ½øÈëµÈ´ıÄ³ÊÂ¼ş·¢Éú×´Ì¬(ECBÖ¸Õë)
-//OS_EventTO() ÓÉÓÚ³¬Ê±¶ø½«ÈÎÎñÖÃÎª¾ÍĞ÷Ì¬(ECBÖ¸Õë)
-//OS_EventWaitListInit()ÊÂ¼ş¿ØÖÆ¿éÁĞ±í³õÊ¼»¯(ÊÂ¼ş¿ØÖÆ¿éÖ¸Õë)
-//OS_FlagInit() ³õÊ¼»¯ÊÂ¼ş±êÖ¾½á¹¹
-//OS_FlagUnlink() °ÑÕâ¸öOS_FLAG_NODE´ÓÊÂ¼ş±êÖ¾×éµÄµÈ´ıÈÎÎñÁ´±íÖĞÉ¾³ı(OS_FLAG_NODE *pnode)
-//OS_MemInit() ³õÊ¼»¯ÄÚ´æ·ÖÇø
-//OS_QInit() ³õÊ¼»¯ÊÂ¼ş¶ÓÁĞ½á¹¹
-//OS_Sched() ÈÎÎñµ÷¶Èº¯Êı
-//OS_TaskIdle() ¿ÕÏĞÈÎÎñº¯Êı(Ö¸ÏòÒ»¸öÊı¾İ½á¹¹)
-//OS_TaskStat() Í³¼ÆÈÎÎñ(Ö¸ÏòÒ»¸öÊı¾İ½á¹¹)
-//OS_TCBInit() ³õÊ¼»¯ÈÎÎñ¿ØÖÆ¿éTCB(ÓÅÏÈ¼¶Ö¸Õë¡¢Õ»¶¥Ö¸Õë¡¢Õ»µ×Ö¸Õë¡¢ÈÎÎñ±êÖ¾·û¡¢
-//¶ÑÕ»ÈİÁ¿¡¢À©Õ¹Ö¸Õë¡¢Ñ¡ÔñÏî)
+//OS_Dummy() å»ºç«‹ä¸€ä¸ªè™šæ‹Ÿå‡½æ•°
+//OS_EventTaskRdy() ä½¿ä¸€ä¸ªä»»åŠ¡è¿›å…¥å°±ç»ªæ€(OS_EVENT *pevent, void *msg, INT8U msk)
+//OS_EventTaskWait() ä½¿ä¸€ä¸ªä»»åŠ¡è¿›å…¥ç­‰å¾…æŸäº‹ä»¶å‘ç”ŸçŠ¶æ€(ECBæŒ‡é’ˆ)
+//OS_EventTO() ç”±äºè¶…æ—¶è€Œå°†ä»»åŠ¡ç½®ä¸ºå°±ç»ªæ€(ECBæŒ‡é’ˆ)
+//OS_EventWaitListInit()äº‹ä»¶æ§åˆ¶å—åˆ—è¡¨åˆå§‹åŒ–(äº‹ä»¶æ§åˆ¶å—æŒ‡é’ˆ)
+//OS_FlagInit() åˆå§‹åŒ–äº‹ä»¶æ ‡å¿—ç»“æ„
+//OS_FlagUnlink() æŠŠè¿™ä¸ªOS_FLAG_NODEä»äº‹ä»¶æ ‡å¿—ç»„çš„ç­‰å¾…ä»»åŠ¡é“¾è¡¨ä¸­åˆ é™¤(OS_FLAG_NODE *pnode)
+//OS_MemInit() åˆå§‹åŒ–å†…å­˜åˆ†åŒº
+//OS_QInit() åˆå§‹åŒ–äº‹ä»¶é˜Ÿåˆ—ç»“æ„
+//OS_Sched() ä»»åŠ¡è°ƒåº¦å‡½æ•°
+//OS_TaskIdle() ç©ºé—²ä»»åŠ¡å‡½æ•°(æŒ‡å‘ä¸€ä¸ªæ•°æ®ç»“æ„)
+//OS_TaskStat() ç»Ÿè®¡ä»»åŠ¡(æŒ‡å‘ä¸€ä¸ªæ•°æ®ç»“æ„)
+//OS_TCBInit() åˆå§‹åŒ–ä»»åŠ¡æ§åˆ¶å—TCB(ä¼˜å…ˆçº§æŒ‡é’ˆã€æ ˆé¡¶æŒ‡é’ˆã€æ ˆåº•æŒ‡é’ˆã€ä»»åŠ¡æ ‡å¿—ç¬¦ã€
+//å †æ ˆå®¹é‡ã€æ‰©å±•æŒ‡é’ˆã€é€‰æ‹©é¡¹)
 
 
 #if OS_TASK_DEL_EN > 0
@@ -789,8 +789,8 @@ void          OS_TaskStat(void *data);
 INT8U         OS_TCBInit(INT8U prio, OS_STK *ptos, OS_STK *pbos, INT16U id, INT32U stk_size, void *pext, INT16U opt);
 
 //*********************************************************************************************************
-//¸÷Àà¹³×Ó³ÌĞòº¯Êı¶¨ÒåÏî (FUNCTION PROTOTYPES)
-//ÌØ±ğ¹³×Óº¯ÊıÔ­ĞÍ (Target Specific Functions)
+//å„ç±»é’©å­ç¨‹åºå‡½æ•°å®šä¹‰é¡¹ (FUNCTION PROTOTYPES)
+//ç‰¹åˆ«é’©å­å‡½æ•°åŸå‹ (Target Specific Functions)
  
 
 #if OS_VERSION >= 204
@@ -820,8 +820,8 @@ void          OSTCBInitHook(OS_TCB *ptcb);
 void          OSTimeTickHook(void);
 
 //*********************************************************************************************************
-//º¯ÊıÔ­ĞÍ FUNCTION PROTOTYPES
-//ÌØÊâÖĞ¶Ïº¯ÊıÔ­ĞÍ (Compiler Specific ISR prototypes)
+//å‡½æ•°åŸå‹ FUNCTION PROTOTYPES
+//ç‰¹æ®Šä¸­æ–­å‡½æ•°åŸå‹ (Compiler Specific ISR prototypes)
 
 
 #ifndef OS_ISR_PROTO_EXT
@@ -842,7 +842,7 @@ void          OSTickISR(void);
 */
 
 //*********************************************************************************************************
-//ÊÂ¼ş±êÖ¾¹ÜÀíÌõ¼ş±àÒë
+//äº‹ä»¶æ ‡å¿—ç®¡ç†æ¡ä»¶ç¼–è¯‘
 
 #ifndef OS_FLAG_EN
 #error  "OS_CFG.H, Missing OS_FLAG_EN: Enable (1) or Disable (0) code generation for Event Flags"
@@ -876,7 +876,7 @@ void          OSTickISR(void);
 #endif
 
 //*********************************************************************************************************
-//ÏûÏ¢ÓÊÏä¹ÜÀíÌõ¼ş±àÒë
+//æ¶ˆæ¯é‚®ç®±ç®¡ç†æ¡ä»¶ç¼–è¯‘
 
 #ifndef OS_MBOX_EN
 #error  "OS_CFG.H, Missing OS_MBOX_EN: Enable (1) or Disable (0) code generation for MAILBOXES"
@@ -903,7 +903,7 @@ void          OSTickISR(void);
 #endif
 
 //*********************************************************************************************************
-//ÄÚ´æ¹ÜÀíÌõ¼ş±àÒë
+//å†…å­˜ç®¡ç†æ¡ä»¶ç¼–è¯‘
 
 #ifndef OS_MEM_EN
 #error  "OS_CFG.H, Missing OS_MEM_EN: Enable (1) or Disable (0) code generation for MEMORY MANAGER"
@@ -925,7 +925,7 @@ void          OSTickISR(void);
 #endif
 
 //*********************************************************************************************************
-//»¥³âĞÍĞÅºÅÁ¿¹ÜÀíÌõ¼ş±àÒë
+//äº’æ–¥å‹ä¿¡å·é‡ç®¡ç†æ¡ä»¶ç¼–è¯‘
 
 #ifndef OS_MUTEX_EN
 #error  "OS_CFG.H, Missing OS_MUTEX_EN: Enable (1) or Disable (0) code generation for MUTEX"
@@ -944,7 +944,7 @@ void          OSTickISR(void);
 #endif
 
 //*********************************************************************************************************
-//ÏûÏ¢¶ÓÁĞÌõ¼ş±àÒë
+//æ¶ˆæ¯é˜Ÿåˆ—æ¡ä»¶ç¼–è¯‘
 
 #ifndef OS_Q_EN
 #error  "OS_CFG.H, Missing OS_Q_EN: Enable (1) or Disable (0) code generation for QUEUES"
@@ -990,7 +990,7 @@ void          OSTickISR(void);
 #endif
 
 //*********************************************************************************************************
-//ĞÅºÅÁ¿Ìõ¼ş±àÒë
+//ä¿¡å·é‡æ¡ä»¶ç¼–è¯‘
 
 #ifndef OS_SEM_EN
 #error  "OS_CFG.H, Missing OS_SEM_EN: Enable (1) or Disable (0) code generation for SEMAPHORES"
@@ -1009,7 +1009,7 @@ void          OSTickISR(void);
 #endif
 
 //*********************************************************************************************************
-//ÈÎÎñ¹ÜÀíÌõ¼ş±àÒë
+//ä»»åŠ¡ç®¡ç†æ¡ä»¶ç¼–è¯‘
 
 #ifndef OS_MAX_TASKS
 #error  "OS_CFG.H, Missing OS_MAX_TASKS: Max. number of tasks in your application"
@@ -1059,7 +1059,7 @@ void          OSTickISR(void);
 #endif
 
 //*********************************************************************************************************
-//Ê±¼ä¹ÜÀíÌõ¼ş±àÒë
+//æ—¶é—´ç®¡ç†æ¡ä»¶ç¼–è¯‘
 
 #ifndef OS_TICKS_PER_SEC
 #error  "OS_CFG.H, Missing OS_TICKS_PER_SEC: Sets the number of ticks in one second"
@@ -1078,7 +1078,7 @@ void          OSTickISR(void);
 #endif
 
 //*********************************************************************************************************
-//»ìºÏ¹ÜÀíÌõ¼ş±àÒë
+//æ··åˆç®¡ç†æ¡ä»¶ç¼–è¯‘
 
 #ifndef OS_MAX_EVENTS
 #error  "OS_CFG.H, Missing OS_MAX_EVENTS: Max. number of event control blocks in your application"

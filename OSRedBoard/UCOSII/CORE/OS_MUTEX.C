@@ -1,9 +1,9 @@
-/*
+﻿/*
 *********************************************************************************************************
-// uC/OS-IIʵʱ�����ں�
-//�������ź��������
-//�� ��: OS_MUTEX.C ������Ҫ�������ź�������
-//�� ��: Jean J. Labrosse
+// uC/OS-II实时控制内核
+//互斥型信号量项管理
+//文 件: OS_MUTEX.C 包含主要互斥型信号量代码
+//作 者: Jean J. Labrosse
 *********************************************************************************************************
 */
 
@@ -11,29 +11,29 @@
 #include "includes.h"
 #endif
 
-// �ֲ����� (LOCAL CONSTANTS)
+// 局部变量 (LOCAL CONSTANTS)
 #define  OS_MUTEX_KEEP_LOWER_8   0x00FF
 #define  OS_MUTEX_KEEP_UPPER_8   0xFF00
 
 #define  OS_MUTEX_AVAILABLE      0x00FF
 
 
-#if OS_MUTEX_EN > 0	  //�������룺��OS_SEM_EN���������ź����������
-//�޵ȴ��ػ�ȡ�������ź���(ACCEPT MUTUAL EXCLUSION SEMAPHORE)
-//����: ��黥�����ź��������ж�ĳ��Դ�Ƿ����ʹ�ã��� OSMutexPend()��ͬ���ǣ�����Դ����ʹ�ã�
-//		����� OSMutexAccept()���������񲢲������� OSMutexAccept()����ѯ״̬��
-//����: pevent ָ�����ĳ��Դ�Ļ������ź����������ڽ���mutexʱ���õ���ָ��(�μ� OSMutexCreate())
-//		err ָ����������ָ�룬Ϊ����ֵ֮һ:
-//		OS_NO_ERR ���óɹ���
-//		OS_ERR_EVENT_TYPE 'pevent'����ָ��mutex���͵�ָ�룻
-//		OS_ERR_PEVENT_NULL 'pevent'�ǿ�ָ�룻
-//		OS_ERR_PEND_ISR ���жϷ����ӳ����е��� OSMutexAccept().
-//����: == 1 ���mutex��Ч�� OSMutexAccept()��������1��
-// 		== 0 ���mutex����������ռ�ã�OSMutexAccept()�򷵻�0��
-//����: 1�������Ƚ���mutex,Ȼ�����ʹ�ã�
-// 		2�����жϷ����ӳ����в��ܵ��� OSMutexAccept()������
-//		3����ʹ�� OSMutexAccept()��ȡmutex��״̬����ôʹ���깲����Դ�󣬱������ OSMutexPost()
-//		   �����ͷ�mutex 	    
+#if OS_MUTEX_EN > 0	  //条件编译：当OS_SEM_EN允许产生信号量程序代码
+//无等待地获取互斥型信号量(ACCEPT MUTUAL EXCLUSION SEMAPHORE)
+//描述: 检查互斥型信号量，以判断某资源是否可以使用，与 OSMutexPend()不同的是，若资源不能使用，
+//		则调用 OSMutexAccept()函数的任务并不被挂起， OSMutexAccept()仅查询状态。
+//参数: pevent 指向管理某资源的互斥型信号量。程序在建立mutex时，得到该指针(参见 OSMutexCreate())
+//		err 指向出错代码的指针，为以下值之一:
+//		OS_NO_ERR 调用成功；
+//		OS_ERR_EVENT_TYPE 'pevent'不是指向mutex类型的指针；
+//		OS_ERR_PEVENT_NULL 'pevent'是空指针；
+//		OS_ERR_PEND_ISR 在中断服务子程序中调用 OSMutexAccept().
+//返回: == 1 如果mutex有效， OSMutexAccept()函数返回1；
+// 		== 0 如果mutex被其他任务占用，OSMutexAccept()则返回0。
+//警告: 1、必须先建立mutex,然后才能使用；
+// 		2、在中断服务子程序中不能调用 OSMutexAccept()函数；
+//		3、如使用 OSMutexAccept()获取mutex的状态，那么使用完共享资源后，必须调用 OSMutexPost()
+//		   函数释放mutex 	    
 #if OS_MUTEX_ACCEPT_EN > 0
 INT8U  OSMutexAccept (OS_EVENT *pevent, INT8U *err)
 {
@@ -71,23 +71,23 @@ INT8U  OSMutexAccept (OS_EVENT *pevent, INT8U *err)
 }
 #endif                                                     
 
-//�����ͳ�ʼ���������ź���(CREATE A MUTUAL EXCLUSION SEMAPHORE)
-//����: �������ź���mutual�Ľ����ͳ�ʼ��. ���빲����Դ�򽻵�ʱ, ʹ��mutex���Ա�֤���㻥������.
-//����: prio ���ȼ��̳����ȼ�(PIP).��һ�������ȼ���������Ҫ�õ�ĳmutex,����ʱ���mutexȴ��
-//			 һ�������ȼ�������ռ��ʱ,�����ȼ���������ȼ�����������PIP,֪�����ͷŹ�����Դ��
-// 		err ָ����������ָ�룬Ϊ����ֵ֮һ:
-//		OS_NO_ERR ���óɹ�mutex�ѱ��ɹ��Ľ�����
-//		OS_ERR_CREATE_ISR ��ͼ���жϷ����ӳ����н���mutex��
-// 		OS_PRIO_EXIST ���ȼ�ΪPIP�������Ѿ����ڣ�
-// 		OS_ERR_PEVENT_NULL �Ѿ�û��OS_EVENT�ṹ����ʹ�õ��ˣ�
-//		OS_PRIO_INVALID ��������ȼ��Ƿ�����ֵ����OS_LOWEST_PRIO.
-//����: ����һ��ָ��,��ָ��ָ������mutex���¼����ƿ�.����ò����¼����ƿ�,�򷵻�һ����ָ��.
-//ע��: 1) �����Ƚ���mutex,Ȼ�����ʹ��;
-// 		2) ����ȷ�����ȼ��̳����ȼ�.��prio���ڿ�������Ӧ������Դ�򽻵������������ȼ���ߵ���
-// 		   ������ȼ�.������3�����ȼ��ֱ�Ϊ20��25��30�������ʹ��mutex����ôprio��ֵ����С��
-// 		   20�����ң��Ѿ�����������û��ռ��������ȼ���	
+//建立和初始化互斥型信号量(CREATE A MUTUAL EXCLUSION SEMAPHORE)
+//描述: 互斥型信号量mutual的建立和初始化. 在与共享资源打交道时, 使用mutex可以保证满足互斥条件.
+//参数: prio 优先级继承优先级(PIP).当一个高优先级的任务想要得到某mutex,而此时这个mutex却被
+//			 一个低优先级的任务占用时,低优先级任务的优先级可以提升到PIP,知道其释放共享资源。
+// 		err 指向出错代码的指针，为以下值之一:
+//		OS_NO_ERR 调用成功mutex已被成功的建立；
+//		OS_ERR_CREATE_ISR 试图在中断服务子程序中建立mutex；
+// 		OS_PRIO_EXIST 优先级为PIP的任务已经存在；
+// 		OS_ERR_PEVENT_NULL 已经没有OS_EVENT结构可以使用的了；
+//		OS_PRIO_INVALID 定义的优先级非法，其值大于OS_LOWEST_PRIO.
+//返回: 返回一个指针,该指针指向分配给mutex的事件控制块.如果得不到事件控制块,则返回一个空指针.
+//注意: 1) 必须先建立mutex,然后才能使用;
+// 		2) 必须确保优先级继承优先级.即prio高于可能与相应共享资源打交道的任务中优先级最高的任
+// 		   务的优先级.例如有3个优先级分别为20，25，30的任务会使用mutex，那么prio的值必须小于
+// 		   20；并且，已经建立了任务没有占用这个优先级。	
     
-//��������ʼ��һ���������ź���(���ȼ��̳����ȼ�(PIP)����������ָ��)
+//建立并初始化一个互斥型信号量(优先级继承优先级(PIP)、出错代码指针)
 OS_EVENT  *OSMutexCreate (INT8U prio, INT8U *err)
 {
 #if OS_CRITICAL_METHOD == 3                                /* Allocate storage for CPU status register */
@@ -130,25 +130,25 @@ OS_EVENT  *OSMutexCreate (INT8U prio, INT8U *err)
     return (pevent);
 }
 	    
-//ɾ���������ź��� (DELETE A MUTEX)
-//����: ɾ��һ��mutex��ʹ����������з��գ���Ϊ������������������ܻ��������ʵ�����Ѿ���ɾ��
-//		�˵�mutex��ʹ���������ʱ����ʮ��С�ģ�һ���˵��Ҫɾ��һ��mutex������Ӧɾ�����ܻ��õ�
-//		���mutex����������
-//����: pevent ָ��mutex��ָ�롣Ӧ�ó�����mutexʱ�õ���ָ��(�μ�OSMutexCreate()
-//		opt �ò�������ɾ��mutex��������:
-//		opt == OS_DEL_NO_PEND ֻ�����Ѿ�û���κ������ڵȴ���mutexʱ������ɾ����
-//		opt == OS_DEL_ALWAYS ������û�������ڵȴ����mutex������ɾ��mutex��
-//		-->�ڵڶ�������£����еȴ�mutex�����������������̬.
-// 		err ָ����������ָ�룬Ϊ����ֵ֮һ:
-//		OS_NO_ERR ���óɹ���mutexɾ���ɹ���
-//		OS_ERR_DEL_ISR ��ͼ���жϷ����ӳ�����ɾ��mutex��
-//		OS_ERR_INVALID_OPT �����opt������Ч�����������ᵽ��2������֮һ��
-//		OS_ERR_TASK_WAITING ������OS_DEL_NO_PEND,����һ����һ�����ϵ������ڵ����mutex.
-//		OS_ERR_EVENT_TYPE 'pevent'����ָ��mutex��ָ�룻
-//		OS_ERR_PEVENT_NULL �Ѿ�û�п���ʹ�õ�OS_EVENT���ݽṹ�ˡ�			   
-//����: pevent ���mutex�Ѿ�ɾ�����򷵻ؿ�ָ�룻���mutexû��ɾ�����򷵻�pevent.
-// 		�ں�һ������£�����Ӧ���������룬�Բ��ԭ�� 
-//ע��: 1) ʹ���������ʱ����ʮ��С�ģ���Ϊ����������ܻ��õ�mutex��  
+//删除互斥型信号量 (DELETE A MUTEX)
+//描述: 删除一个mutex。使用这个函数有风险，因为多任务中其他任务可能还想用这个实际上已经被删除
+//		了的mutex。使用这个函数时必须十分小心，一般地说，要删除一个mutex，首先应删除可能会用到
+//		这个mutex的所有任务。
+//参数: pevent 指向mutex的指针。应用程序建立mutex时得到该指针(参见OSMutexCreate()
+//		opt 该参数定义删除mutex的条件。:
+//		opt == OS_DEL_NO_PEND 只能在已经没有任何任务在等待该mutex时，才能删除；
+//		opt == OS_DEL_ALWAYS 不管有没有任务在等待这个mutex，立刻删除mutex。
+//		-->在第二种情况下，所有等待mutex的任务都立即进入就绪态.
+// 		err 指向出错代码的指针，为以下值之一:
+//		OS_NO_ERR 调用成功，mutex删除成功；
+//		OS_ERR_DEL_ISR 试图在中断服务子程序中删除mutex。
+//		OS_ERR_INVALID_OPT 定义的opt参数无效，不是上面提到的2个参数之一；
+//		OS_ERR_TASK_WAITING 定义了OS_DEL_NO_PEND,而有一个或一个以上的任务在等这个mutex.
+//		OS_ERR_EVENT_TYPE 'pevent'不是指向mutex的指针；
+//		OS_ERR_PEVENT_NULL 已经没有可以使用的OS_EVENT数据结构了。			   
+//返回: pevent 如果mutex已经删除，则返回空指针；如果mutex没能删除，则返回pevent.
+// 		在后一种情况下，程序应检查出错代码，以查出原因。 
+//注意: 1) 使用这个函数时必须十分小心，因为其他任务可能会用到mutex。  
 #if OS_MUTEX_DEL_EN
 OS_EVENT  *OSMutexDel (OS_EVENT *pevent, INT8U opt, INT8U *err)
 {
@@ -220,32 +220,32 @@ OS_EVENT  *OSMutexDel (OS_EVENT *pevent, INT8U opt, INT8U *err)
 }
 #endif
 				 
-//�ȴ�һ���������ź���(����) (PEND ON MUTUAL EXCLUSION SEMAPHORE)
-//����: ��������Ҫ��ռ������Դʱ��Ӧʹ��OSMutexPend()����.��������ڵ��ñ�����ʱ������Դ��
-//		��ʹ�ã���OSMutexPend()�������أ�����OSMutexPend()����������õ���mutex��
-//ע�⣺OSMutexPend()ʵ���ϲ�û��"��"���ñ�����������ʲôֵ��ֻ��������err��ֵ����Ϊ
-//		OS_NO_ERR�����ñ��������������õ���mutex���������С�
-// ---> Ȼ�������nutex�Ѿ����������ռ���ˣ���ôOSMutexPend()�����ͽ����øú������������
-//		�ȴ�mutex�������б��У�����������ǽ����˵ȴ�״̬��ֱ��ռ��mutex�������ͷ���mutex��
-//		��������Դ������ֱ������ĵȴ�ʱ�޳�ʱ������ڵȴ�ʱ����mutex�����ͷ�,��ôucos_ii��
-//		�����еȴ�mutex�����������ȼ���ߵ�����
-//ע�⣺���mutex�����ȼ��ϵ͵�����ռ���ˣ���ôOSMutexPend()�Ὣռ��mutex����������ȼ�����
-//		�����ȼ��̳����ȼ�PIP��PIP����mutex����ʱ�����(�μ�OSMutexCreate())
-//����: pevent ָ��mutuex��ָ�롣Ӧ�ó����ڽ���mutuexʱ�õ���ָ���(�μ�OSMutexCreate())
-// 		timeout ��ʱ�ӽ�����Ŀ�ĵȴ���ʱʱ�ޡ��������һʱ�޵ò���mutex�����񽫻ָ�ִ�С�
-//		        timeout��ֵΪ0����ʾ�������ڵصȴ�mutex��timeout�����ֵ��65535��ʱ�ӽ�
-//				�ġ�timeout��ֵ������ʱ�ӽ���ͬ����timeout����������һ��ʱ�ӽ��ĵ���ʱ
-//				��ʼ�ݼ����������ν��һ��ʱ�ӽ��ģ�Ҳ�������̾͵����ˡ�
-//		err ָ����������ָ�룬Ϊ����ֵ֮һ:
-//		OS_NO_ERR ���óɹ���mutex����ʹ�ã�
-//		OS_TIMEOUT �ڶ����ʱ�����ڵò���mutex��
-//		OS_ERR_EVENT_TYPE �û�û����OSMutexPend()����ָ��mutex��ָ�룻
-// 		OS_ERR_PEVENT_NULL 'pevent'�ǿ�ָ��
-// 		OS_ERR_PEND_ISR ��ͼ���жϷ����ӳ����л��mutex.
-//����: ��
-//ע��: 1) �����Ƚ���mutex,Ȼ�����ʹ��;
-// 		2) ��Ҫ��ռ��mutex���������Ҳ��Ҫ��ռ��mutex������ȴ�usoc_ii�ṩ���ź��������估��
-//		   Ϣ���е�,��Ҫ��ռ��mutex�������ӳ�.����,�û�����Ӧ��ץ��ʱ��,��������ͷŹ�����Դ��	   
+//等待一个互斥型信号量(挂起) (PEND ON MUTUAL EXCLUSION SEMAPHORE)
+//描述: 当任务需要独占共享资源时，应使用OSMutexPend()函数.如果任务在调用本函数时共享资源可
+//		以使用，则OSMutexPend()函数返回，调用OSMutexPend()函数的任务得到了mutex。
+//注意：OSMutexPend()实际上并没有"给"调用本函数的任务什么值，只不过参数err的值被置为
+//		OS_NO_ERR，调用本函数的任务好像得到了mutex并继续运行。
+// ---> 然而，如果nutex已经被别的任务占用了，那么OSMutexPend()函数就将调用该函数的任务放入
+//		等待mutex的任务列表中，这个任务于是进入了等待状态，直到占有mutex的任务释放了mutex以
+//		及共享资源，或者直到定义的等待时限超时。如果在等待时限内mutex得以释放,那么ucos_ii恢
+//		复运行等待mutex的任务中优先级最高的任务。
+//注意：如果mutex被优先级较低的任务占用了，那么OSMutexPend()会将占用mutex的任务的优先级提升
+//		到优先级继承优先级PIP。PIP是在mutex建立时定义的(参见OSMutexCreate())
+//参数: pevent 指向mutuex的指针。应用程序在建立mutuex时得到该指针的(参见OSMutexCreate())
+// 		timeout 以时钟节拍数目的等待超时时限。如果在这一时限得不到mutex，任务将恢复执行。
+//		        timeout的值为0，表示将无限期地等待mutex。timeout的最大值是65535个时钟节
+//				拍。timeout的值并不与时钟节拍同步，timeout计数器在下一个时钟节拍到来时
+//				开始递减。在这里，所谓下一个时钟节拍，也就是立刻就到来了。
+//		err 指向出错代码的指针，为以下值之一:
+//		OS_NO_ERR 调用成功，mutex可以使用；
+//		OS_TIMEOUT 在定义的时间限内得不到mutex；
+//		OS_ERR_EVENT_TYPE 用户没能向OSMutexPend()传递指向mutex的指针；
+// 		OS_ERR_PEVENT_NULL 'pevent'是空指针
+// 		OS_ERR_PEND_ISR 试图在中断服务子程序中获得mutex.
+//返回: 无
+//注意: 1) 必须先建立mutex,然后才能使用;
+// 		2) 不要将占用mutex的任务挂起，也不要让占有mutex的任务等待usoc_ii提供的信号量、邮箱及消
+//		   息队列等,不要将占用mutex的任务延迟.换言,用户代码应该抓紧时间,尽量快地释放共享资源。	   
 void  OSMutexPend (OS_EVENT *pevent, INT16U timeout, INT8U *err)
 {
 #if OS_CRITICAL_METHOD == 3                                /* Allocate storage for CPU status register */
@@ -321,22 +321,22 @@ void  OSMutexPend (OS_EVENT *pevent, INT16U timeout, INT8U *err)
     OS_EXIT_CRITICAL();
     *err = OS_NO_ERR;
 }
-//�ͷ�һ���������ź���(POST TO A MUTUAL EXCLUSION SEMAPHORE)
-//����: ����OSMutexPost()���Է���mutex��ֻ�ǵ��û������ѵ���OSMutexAccept()��OSMutexPend()��
-//		��õ�mutexʱ��OSMutexPost()�����������á������ȼ��ϸߵ�������ͼ�õ�mutexʱ,���ռ��
-//		mutex����������ȼ��Ѿ������ߣ���ôOSMutexPost()����ʹ���ȼ������˵�����ָ�ԭ������
-//		�ȼ��������һ�����ϵ������ڵȴ����mutex����ô�ȴ�mutex�����������ȼ���ߵ����񽫵�
-// 		�õ�mutex��Ȼ�󱾺�������õ��Ⱥ���,�������ѵ������ǲ��ǽ������̬���������ȼ���ߵ�
-//		��������ǣ����������л���������������С����û�еȴ�mutex������,��ô������ֻ����
-//		�ǽ�nutex��ֵ��ΪOxFF����ʾmutex����ʹ�á�
-//����: pevent ָ��mutuex��ָ�롣Ӧ�ó����ڽ���mutuexʱ�õ���ָ���(�μ�OSMutexCreate())
-//����: OS_NO_ERR ���óɹ���mutex���ͷţ�
-//		OS_ERR_EVENT_TYPE OSMutexPost()���ݵĲ���ָ��mutex��ָ�룻
-//		OS_ERR_PEVENT_NULL 'pevent'�ǿ�ָ�룻
-//		OS_ERR_POST_ISR ��ͼ���жϷ����ӳ����е���OSMutexPost()������
-//		OS_ERR_NOT_MUTEX_OWNER ����mutex������ʵ���ϲ���ռ��mutex��
-//ע�⣺1) �����Ƚ���mutex,Ȼ�����ʹ��;
-//		2) ���жϷ����ӳ����в��ܵ���OSMutexPost()����  
+//释放一个互斥型信号量(POST TO A MUTUAL EXCLUSION SEMAPHORE)
+//描述: 调用OSMutexPost()可以发出mutex。只是当用户程序已调用OSMutexAccept()或OSMutexPend()请
+//		求得到mutex时，OSMutexPost()函数才起作用。当优先级较高的任务试图得到mutex时,如果占用
+//		mutex的任务的优先级已经被升高，那么OSMutexPost()函数使优先级升高了的任务恢复原来的优
+//		先级。如果有一个以上的任务在等待这个mutex，那么等待mutex的任务中优先级最高的任务将得
+// 		得到mutex。然后本函数会调用调度函数,看被唤醒的任务是不是进入就绪态任务中优先级最高的
+//		任务。如果是，则做任务切换，让这个任务运行。如果没有等待mutex的任务,那么本函数只不过
+//		是将nutex的值设为OxFF，表示mutex可以使用。
+//参数: pevent 指向mutuex的指针。应用程序在建立mutuex时得到该指针的(参见OSMutexCreate())
+//返回: OS_NO_ERR 调用成功，mutex被释放；
+//		OS_ERR_EVENT_TYPE OSMutexPost()传递的不是指向mutex的指针；
+//		OS_ERR_PEVENT_NULL 'pevent'是空指针；
+//		OS_ERR_POST_ISR 试图在中断服务子程序中调用OSMutexPost()函数；
+//		OS_ERR_NOT_MUTEX_OWNER 发出mutex的任务实际上并不占用mutex。
+//注意：1) 必须先建立mutex,然后才能使用;
+//		2) 在中断服务子程序中不能调用OSMutexPost()函数  
 
 INT8U  OSMutexPost (OS_EVENT *pevent)
 {

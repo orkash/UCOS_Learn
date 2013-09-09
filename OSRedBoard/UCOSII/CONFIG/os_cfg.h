@@ -1,10 +1,10 @@
-/*
+ï»¿/*
 *********************************************************************************************************
-uC/OS-IIÊµÊ±¿ØÖÆÄÚºË
-Ö÷ÒªµÄ°üº¬ÎÄ¼ş
+uC/OS-IIå®æ—¶æ§åˆ¶å†…æ ¸
+ä¸»è¦çš„åŒ…å«æ–‡ä»¶
 
-ÎÄ ¼ş: OS_CFG.H ucosÄÚºË¹¹ÔìÎÄ¼ş
-×÷ Õß: Jean J. Labrosse
+æ–‡ ä»¶: OS_CFG.H ucoså†…æ ¸æ„é€ æ–‡ä»¶
+ä½œ è€…: Jean J. Labrosse
 *********************************************************************************************************
 */
 
@@ -13,94 +13,94 @@ uC/OS-IIÊµÊ±¿ØÖÆÄÚºË
 #define __OS_CFG_H__
 
 //*********************************************************************************************************
-//uC/OS-II µÄÄÚºË¹¹Ôì
+//uC/OS-II çš„å†…æ ¸æ„é€ 
 
-#define OS_MAX_EVENTS             2    //Ó¦ÓÃÖĞ×î¶àÊÂ¼ş¿ØÖÆ¿éµÄÊıÄ¿ ±ØĞë´óÓÚ0                                                                       
-#define OS_MAX_FLAGS              5    //Ó¦ÓÃÖĞ×î¶àÊÂ¼ş±êÖ¾×éµÄÊıÄ¿	±ØĞë´óÓÚ 0							  
-#define OS_MAX_MEM_PART           5    //×î¶àÄÚ´æ¿éµÄÊıÄ¿           MUST be > 0 							 
-#define OS_MAX_QS                 2    //Ó¦ÓÃÖĞ×î¶à¶ÔÁĞ¿ØÖÆ¿éµÄÊıÄ¿	MUST be > 0					   
-#define OS_MAX_TASKS             11    //Ó¦ÓÃÖĞ×î¶àÈÎÎñÊıÄ¿			MUST be >= 2 					  
-#define OS_LOWEST_PRIO           12    //¶¨ÒåÈÎÎñµÄ×îµÍÓÅÏÈ¼¶		²»µÃ´óÓÚ 63
-#define OS_TASK_IDLE_STK_SIZE   512    //Í³¼ÆÈÎÎñ¶ÑÕ»ÈİÁ¿( # °´ÕÕOS_STKµÄ¿í¶ÈÊıÄ¿) 
+#define OS_MAX_EVENTS             2    //åº”ç”¨ä¸­æœ€å¤šäº‹ä»¶æ§åˆ¶å—çš„æ•°ç›® å¿…é¡»å¤§äº0                                                                       
+#define OS_MAX_FLAGS              5    //åº”ç”¨ä¸­æœ€å¤šäº‹ä»¶æ ‡å¿—ç»„çš„æ•°ç›®	å¿…é¡»å¤§äº 0							  
+#define OS_MAX_MEM_PART           5    //æœ€å¤šå†…å­˜å—çš„æ•°ç›®           MUST be > 0 							 
+#define OS_MAX_QS                 2    //åº”ç”¨ä¸­æœ€å¤šå¯¹åˆ—æ§åˆ¶å—çš„æ•°ç›®	MUST be > 0					   
+#define OS_MAX_TASKS             11    //åº”ç”¨ä¸­æœ€å¤šä»»åŠ¡æ•°ç›®			MUST be >= 2 					  
+#define OS_LOWEST_PRIO           12    //å®šä¹‰ä»»åŠ¡çš„æœ€ä½ä¼˜å…ˆçº§		ä¸å¾—å¤§äº 63
+#define OS_TASK_IDLE_STK_SIZE   512    //ç»Ÿè®¡ä»»åŠ¡å †æ ˆå®¹é‡( # æŒ‰ç…§OS_STKçš„å®½åº¦æ•°ç›®) 
 
-#define OS_TASK_STAT_EN           1    //ÔÊĞí (1) »òÕß½ûÖ¹ (0) Í³¼ÆÈÎÎñ
-#define OS_TASK_STAT_STK_SIZE   512    //¿ÕÏĞÈÎÎñ¶ÑÕ»ÈİÁ¿ (#°´ÕÕOS_STKµÄ¿í¶ÈÊıÄ¿) 
+#define OS_TASK_STAT_EN           1    //å…è®¸ (1) æˆ–è€…ç¦æ­¢ (0) ç»Ÿè®¡ä»»åŠ¡
+#define OS_TASK_STAT_STK_SIZE   512    //ç©ºé—²ä»»åŠ¡å †æ ˆå®¹é‡ (#æŒ‰ç…§OS_STKçš„å®½åº¦æ•°ç›®) 
 
-#define OS_ARG_CHK_EN             1    //ÔÊĞí (1) »òÕß½ûÖ¹ (0) ±äÁ¿¼ì²é
-#define OS_CPU_HOOKS_EN           1    //ÔÚ´¦ÀíÆ÷ÒÆÖ²ÎÄ¼şÖĞÔÊĞíÊ¹ÓÃ uC/OS-II µÄ½Ó¿Úº¯Êı
-
-
-                                       // ----------------------- ÊÂ¼ş±êÖ¾¹ÜÀí ------------------------ 
-#define OS_FLAG_EN                1    //ÔÊĞí (1) »òÕß½ûÖ¹ (0) ²úÉúÊÂ¼ş±êÖ¾Ïà¹Ø´úÂë
-#define OS_FLAG_WAIT_CLR_EN       1    //ÔÊĞíÉú³É Wait on Clear ÊÂ¼ş±êÖ¾´úÂë
-#define OS_FLAG_ACCEPT_EN         1    //ÔÊĞíÉú³É OSFlagAccept()                          
-#define OS_FLAG_DEL_EN            1    //ÔÊĞíÉú³É OSFlagDel()
-#define OS_FLAG_QUERY_EN          1    //ÔÊĞíÉú³É OSFlagQuery() 
+#define OS_ARG_CHK_EN             1    //å…è®¸ (1) æˆ–è€…ç¦æ­¢ (0) å˜é‡æ£€æŸ¥
+#define OS_CPU_HOOKS_EN           1    //åœ¨å¤„ç†å™¨ç§»æ¤æ–‡ä»¶ä¸­å…è®¸ä½¿ç”¨ uC/OS-II çš„æ¥å£å‡½æ•°
 
 
-                                       // -------------------- ÏûÏ¢ÓÊÏä¹ÜÀí--------------------- 
-#define OS_MBOX_EN                1    //ÔÊĞí (1) »òÕß½ûÖ¹ (0) ²úÉúÏûÏ¢ÓÊÏäÏà¹Ø´úÂë
-#define OS_MBOX_ACCEPT_EN         1    //ÔÊĞíÉú³É OSMboxAccept()
-#define OS_MBOX_DEL_EN            1    //ÔÊĞíÉú³É OSMboxDel() 
-#define OS_MBOX_POST_EN           1    //ÔÊĞíÉú³É OSMboxPost()
-#define OS_MBOX_POST_OPT_EN       1    //ÔÊĞíÉú³É OSMboxPostOpt() 
-#define OS_MBOX_QUERY_EN          1    //ÔÊĞíÉú³É OSMboxQuery()
+                                       // ----------------------- äº‹ä»¶æ ‡å¿—ç®¡ç† ------------------------ 
+#define OS_FLAG_EN                1    //å…è®¸ (1) æˆ–è€…ç¦æ­¢ (0) äº§ç”Ÿäº‹ä»¶æ ‡å¿—ç›¸å…³ä»£ç 
+#define OS_FLAG_WAIT_CLR_EN       1    //å…è®¸ç”Ÿæˆ Wait on Clear äº‹ä»¶æ ‡å¿—ä»£ç 
+#define OS_FLAG_ACCEPT_EN         1    //å…è®¸ç”Ÿæˆ OSFlagAccept()                          
+#define OS_FLAG_DEL_EN            1    //å…è®¸ç”Ÿæˆ OSFlagDel()
+#define OS_FLAG_QUERY_EN          1    //å…è®¸ç”Ÿæˆ OSFlagQuery() 
 
 
-                                       // ---------------------ÄÚ´æ¹ÜÀí  -------------------- 
-#define OS_MEM_EN                 1    //ÔÊĞí (1) »òÕß½ûÖ¹ (0) ²úÉúÄÚ´æÏà¹Ø´úÂë
-#define OS_MEM_QUERY_EN           1    //ÔÊĞíÉú³É OSMemQuery() 
+                                       // -------------------- æ¶ˆæ¯é‚®ç®±ç®¡ç†--------------------- 
+#define OS_MBOX_EN                1    //å…è®¸ (1) æˆ–è€…ç¦æ­¢ (0) äº§ç”Ÿæ¶ˆæ¯é‚®ç®±ç›¸å…³ä»£ç 
+#define OS_MBOX_ACCEPT_EN         1    //å…è®¸ç”Ÿæˆ OSMboxAccept()
+#define OS_MBOX_DEL_EN            1    //å…è®¸ç”Ÿæˆ OSMboxDel() 
+#define OS_MBOX_POST_EN           1    //å…è®¸ç”Ÿæˆ OSMboxPost()
+#define OS_MBOX_POST_OPT_EN       1    //å…è®¸ç”Ÿæˆ OSMboxPostOpt() 
+#define OS_MBOX_QUERY_EN          1    //å…è®¸ç”Ÿæˆ OSMboxQuery()
 
 
-                                       // ---------------- »¥³âĞÍĞÅºÅÁ¿¹ÜÀí --------------- 
-#define OS_MUTEX_EN               1    //ÔÊĞí (1) »òÕß½ûÖ¹ (0) ²úÉú»¥³âĞÍĞÅºÅÁ¿Ïà¹Ø´úÂë
-#define OS_MUTEX_ACCEPT_EN        1    //ÔÊĞíÉú³É OSMutexAccept()
-#define OS_MUTEX_DEL_EN           1    //ÔÊĞíÉú³É OSMutexDel()
-#define OS_MUTEX_QUERY_EN         1    //ÔÊĞíÉú³É OSMutexQuery() 
+                                       // ---------------------å†…å­˜ç®¡ç†  -------------------- 
+#define OS_MEM_EN                 1    //å…è®¸ (1) æˆ–è€…ç¦æ­¢ (0) äº§ç”Ÿå†…å­˜ç›¸å…³ä»£ç 
+#define OS_MEM_QUERY_EN           1    //å…è®¸ç”Ÿæˆ OSMemQuery() 
 
 
-                                       // ---------------------- ÏûÏ¢¶ÓÁĞºÅ¹ÜÀí ---------------------- 
-#define OS_Q_EN                   1    //ÔÊĞí (1) »òÕß½ûÖ¹ (0) ²úÉúÏûÏ¢¶ÓÁĞÏà¹Ø´úÂë
-#define OS_Q_ACCEPT_EN            1    //ÔÊĞíÉú³É OSQAccept() 
-#define OS_Q_DEL_EN               1    //ÔÊĞíÉú³É OSQDel()
-#define OS_Q_FLUSH_EN             1    //ÔÊĞíÉú³É OSQFlush() 
-#define OS_Q_POST_EN              1    //ÔÊĞíÉú³É OSQPost() 
-#define OS_Q_POST_FRONT_EN        1    //ÔÊĞíÉú³É OSQPostFront()
-#define OS_Q_POST_OPT_EN          1    //ÔÊĞíÉú³ÉOSQPostOpt()                          
-#define OS_Q_QUERY_EN             1    //ÔÊĞíÉú³ÉOSQQuery()  
+                                       // ---------------- äº’æ–¥å‹ä¿¡å·é‡ç®¡ç† --------------- 
+#define OS_MUTEX_EN               1    //å…è®¸ (1) æˆ–è€…ç¦æ­¢ (0) äº§ç”Ÿäº’æ–¥å‹ä¿¡å·é‡ç›¸å…³ä»£ç 
+#define OS_MUTEX_ACCEPT_EN        1    //å…è®¸ç”Ÿæˆ OSMutexAccept()
+#define OS_MUTEX_DEL_EN           1    //å…è®¸ç”Ÿæˆ OSMutexDel()
+#define OS_MUTEX_QUERY_EN         1    //å…è®¸ç”Ÿæˆ OSMutexQuery() 
 
 
-                                       // ------------------------ ĞÅºÅ¹ÜÀí ------------------------ 
-#define OS_SEM_EN                 1    //ÔÊĞí (1) »òÕß½ûÖ¹ (0) ²úÉúĞÅºÅÁ¿Ïà¹Ø´úÂë
-#define OS_SEM_ACCEPT_EN          1    //ÔÊĞíÉú³ÉOSSemAccept()                            
-#define OS_SEM_DEL_EN             1    //ÔÊĞíÉú³ÉOSSemDel()                               
-#define OS_SEM_QUERY_EN           1    //ÔÊĞíÉú³ÉOSSemQuery()                             
+                                       // ---------------------- æ¶ˆæ¯é˜Ÿåˆ—å·ç®¡ç† ---------------------- 
+#define OS_Q_EN                   1    //å…è®¸ (1) æˆ–è€…ç¦æ­¢ (0) äº§ç”Ÿæ¶ˆæ¯é˜Ÿåˆ—ç›¸å…³ä»£ç 
+#define OS_Q_ACCEPT_EN            1    //å…è®¸ç”Ÿæˆ OSQAccept() 
+#define OS_Q_DEL_EN               1    //å…è®¸ç”Ÿæˆ OSQDel()
+#define OS_Q_FLUSH_EN             1    //å…è®¸ç”Ÿæˆ OSQFlush() 
+#define OS_Q_POST_EN              1    //å…è®¸ç”Ÿæˆ OSQPost() 
+#define OS_Q_POST_FRONT_EN        1    //å…è®¸ç”Ÿæˆ OSQPostFront()
+#define OS_Q_POST_OPT_EN          1    //å…è®¸ç”ŸæˆOSQPostOpt()                          
+#define OS_Q_QUERY_EN             1    //å…è®¸ç”ŸæˆOSQQuery()  
 
 
-                                       // ---------------------ÈÎÎñ¹ÜÀí  ---------------------- 
-#define OS_TASK_CHANGE_PRIO_EN    1    //ÔÊĞíÉú³ÉOSTaskChangePrio()                    
-#define OS_TASK_CREATE_EN         1    //ÔÊĞíÉú³ÉOSTaskCreate()                          
-#define OS_TASK_CREATE_EXT_EN     1    //ÔÊĞíÉú³ÉOSTaskCreateExt()                       
-#define OS_TASK_DEL_EN            1    //ÔÊĞíÉú³ÉOSTaskDel()                             
-#define OS_TASK_SUSPEND_EN        1    //ÔÊĞíÉú³ÉOSTaskSuspend() and OSTaskResume()      
-#define OS_TASK_QUERY_EN          1    //ÔÊĞíÉú³ÉOSTaskQuery()                           
+                                       // ------------------------ ä¿¡å·ç®¡ç† ------------------------ 
+#define OS_SEM_EN                 1    //å…è®¸ (1) æˆ–è€…ç¦æ­¢ (0) äº§ç”Ÿä¿¡å·é‡ç›¸å…³ä»£ç 
+#define OS_SEM_ACCEPT_EN          1    //å…è®¸ç”ŸæˆOSSemAccept()                            
+#define OS_SEM_DEL_EN             1    //å…è®¸ç”ŸæˆOSSemDel()                               
+#define OS_SEM_QUERY_EN           1    //å…è®¸ç”ŸæˆOSSemQuery()                             
 
 
-                                       // --------------------- -Ê±¼ä¹ÜÀí ---------------------- 
-#define OS_TIME_DLY_HMSM_EN       1    //ÔÊĞíÉú³ÉOSTimeDlyHMSM()                         
-#define OS_TIME_DLY_RESUME_EN     1    //ÔÊĞíÉú³ÉOSTimeDlyResume()                       
-#define OS_TIME_GET_SET_EN        1    //ÔÊĞíÉú³ÉOSTimeGet() and OSTimeSet()             
+                                       // ---------------------ä»»åŠ¡ç®¡ç†  ---------------------- 
+#define OS_TASK_CHANGE_PRIO_EN    1    //å…è®¸ç”ŸæˆOSTaskChangePrio()                    
+#define OS_TASK_CREATE_EN         1    //å…è®¸ç”ŸæˆOSTaskCreate()                          
+#define OS_TASK_CREATE_EXT_EN     1    //å…è®¸ç”ŸæˆOSTaskCreateExt()                       
+#define OS_TASK_DEL_EN            1    //å…è®¸ç”ŸæˆOSTaskDel()                             
+#define OS_TASK_SUSPEND_EN        1    //å…è®¸ç”ŸæˆOSTaskSuspend() and OSTaskResume()      
+#define OS_TASK_QUERY_EN          1    //å…è®¸ç”ŸæˆOSTaskQuery()                           
 
 
-                                       // ---------------------- »ìºÏ¹ÜÀí ----------------------- 
-#define OS_SCHED_LOCK_EN          1    //ÔÊĞíÉú³ÉOSSchedLock() and OSSchedUnlock()       
+                                       // --------------------- -æ—¶é—´ç®¡ç† ---------------------- 
+#define OS_TIME_DLY_HMSM_EN       1    //å…è®¸ç”ŸæˆOSTimeDlyHMSM()                         
+#define OS_TIME_DLY_RESUME_EN     1    //å…è®¸ç”ŸæˆOSTimeDlyResume()                       
+#define OS_TIME_GET_SET_EN        1    //å…è®¸ç”ŸæˆOSTimeGet() and OSTimeSet()             
 
 
-#define OS_TICKS_PER_SEC          100  //ÉèÖÃÃ¿ÃëµÄ½ÚÅÄÊıÄ¿                       
+                                       // ---------------------- æ··åˆç®¡ç† ----------------------- 
+#define OS_SCHED_LOCK_EN          1    //å…è®¸ç”ŸæˆOSSchedLock() and OSSchedUnlock()       
+
+
+#define OS_TICKS_PER_SEC          100  //è®¾ç½®æ¯ç§’çš„èŠ‚æ‹æ•°ç›®                       
 
 
 //typedef INT16U             OS_FLAGS;   // Date type for event flag bits (8, 16 or 32 bits)             
-typedef unsigned short            OS_FLAGS;   //ÊÂ¼ş±êÖ¾µÄÊı¾İÀàĞÍ (8Î», 16Î» »ò 32 Î»)	   
+typedef unsigned short            OS_FLAGS;   //äº‹ä»¶æ ‡å¿—çš„æ•°æ®ç±»å‹ (8ä½, 16ä½ æˆ– 32 ä½)	   
 
 #endif
 

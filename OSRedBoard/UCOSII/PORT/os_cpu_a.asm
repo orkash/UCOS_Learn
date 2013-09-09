@@ -1,9 +1,9 @@
-;/*********************** (C) COPYRIGHT 2010 Libraworks *************************
+ï»¿;/*********************** (C) COPYRIGHT 2010 Libraworks *************************
 ;* File Name	: os_cpu_a.asm 
 ;* Author		: Librae 
 ;* Version		: V1.0
 ;* Date			: 06/10/2010
-;* Description	: ¦ÌCOS-II asm port
+;* Description	: Î¼COS-II asm port
 ;*******************************************************************************/
 
 		IMPORT  OSRunning               ; External references
@@ -27,11 +27,11 @@
         EXPORT  PendSV_Handler
         	
      
-NVIC_INT_CTRL   	EQU     0xE000ED04  ; ÖĞ¶Ï¿ØÖÆ¼Ä´æÆ÷
-NVIC_SYSPRI2    	EQU     0xE000ED20  ; ÏµÍ³ÓÅÏÈ¼¶¼Ä´æÆ÷(2)
-NVIC_PENDSV_PRI 	EQU     0xFFFF0000  ; Èí¼şÖĞ¶ÏºÍÏµÍ³½ÚÅÄÖĞ¶Ï
-                                        ; (¶¼Îª×îµÍ£¬0xff).
-NVIC_PENDSVSET  	EQU     0x10000000  ; ´¥·¢Èí¼şÖĞ¶ÏµÄÖµ.
+NVIC_INT_CTRL   	EQU     0xE000ED04  ; ä¸­æ–­æ§åˆ¶å¯„å­˜å™¨
+NVIC_SYSPRI2    	EQU     0xE000ED20  ; ç³»ç»Ÿä¼˜å…ˆçº§å¯„å­˜å™¨(2)
+NVIC_PENDSV_PRI 	EQU     0xFFFF0000  ; è½¯ä»¶ä¸­æ–­å’Œç³»ç»ŸèŠ‚æ‹ä¸­æ–­
+                                        ; (éƒ½ä¸ºæœ€ä½ï¼Œ0xff).
+NVIC_PENDSVSET  	EQU     0x10000000  ; è§¦å‘è½¯ä»¶ä¸­æ–­çš„å€¼.
 
 
 		PRESERVE8 
@@ -42,13 +42,13 @@ NVIC_PENDSVSET  	EQU     0x10000000  ; ´¥·¢Èí¼şÖĞ¶ÏµÄÖµ.
            
 
 ;/***************************************************************************************
-;* º¯ÊıÃû³Æ: OS_ENTER_CRITICAL
+;* å‡½æ•°åç§°: OS_ENTER_CRITICAL
 ;*
-;* ¹¦ÄÜÃèÊö: ½øÈëÁÙ½çÇø 
+;* åŠŸèƒ½æè¿°: è¿›å…¥ä¸´ç•ŒåŒº 
 ;*            
-;* ²Î    Êı: None
+;* å‚    æ•°: None
 ;*
-;* ·µ »Ø Öµ: None
+;* è¿” å› å€¼: None
 ;*****************************************************************************************/ 
 
 OS_ENTER_CRITICAL
@@ -65,13 +65,13 @@ OS_ENTER_CRITICAL
   		BX LR
 
 ;/***************************************************************************************
-;* º¯ÊıÃû³Æ: OS_EXIT_CRITICAL
+;* å‡½æ•°åç§°: OS_EXIT_CRITICAL
 ;*
-;* ¹¦ÄÜÃèÊö: ÍË³öÁÙ½çÇø 
+;* åŠŸèƒ½æè¿°: é€€å‡ºä¸´ç•ŒåŒº 
 ;*            
-;* ²Î    Êı: None
+;* å‚    æ•°: None
 ;*
-;* ·µ »Ø Öµ: None
+;* è¿” å› å€¼: None
 ;*****************************************************************************************/
 
 OS_EXIT_CRITICAL
@@ -82,19 +82,19 @@ OS_EXIT_CRITICAL
         STRB    R2, [R1]
 		MOV     R1,  #0	      
 		CMP     R2,  #0			        ; if OSInterrputSum=0,enable 
-                                        ; interruptsÈç¹ûOSInterrputSum=0£¬
+                                        ; interruptså¦‚æœOSInterrputSum=0ï¼Œ
 		MSREQ  PRIMASK, R1   
 	    POP   	{R1, R2}
 		BX LR
 
 ;/**************************************************************************************
-;* º¯ÊıÃû³Æ: OSStartHighRdy
+;* å‡½æ•°åç§°: OSStartHighRdy
 ;*
-;* ¹¦ÄÜÃèÊö: Ê¹ÓÃµ÷¶ÈÆ÷ÔËĞĞµÚÒ»¸öÈÎÎñ
+;* åŠŸèƒ½æè¿°: ä½¿ç”¨è°ƒåº¦å™¨è¿è¡Œç¬¬ä¸€ä¸ªä»»åŠ¡
 ;* 
-;* ²Î    Êı: None
+;* å‚    æ•°: None
 ;*
-;* ·µ »Ø Öµ: None
+;* è¿” å› å€¼: None
 ;**************************************************************************************/  
 
 OSStartHighRdy
@@ -109,7 +109,7 @@ OSStartHighRdy
         MOV     R5, #1
         STRB    R5, [R4]
 
-                                       ;ÇĞ»»µ½×î¸ßÓÅÏÈ¼¶µÄÈÎÎñ
+                                       ;åˆ‡æ¢åˆ°æœ€é«˜ä¼˜å…ˆçº§çš„ä»»åŠ¡
         LDR     R4, =NVIC_INT_CTRL     ;rigger the PendSV exception (causes context switch)
         LDR     R5, =NVIC_PENDSVSET
         STR     R5, [R4]
@@ -119,36 +119,36 @@ OSStartHang
         B       OSStartHang            ;should never get here
 
 ;/**************************************************************************************
-;* º¯ÊıÃû³Æ: OSCtxSw
+;* å‡½æ•°åç§°: OSCtxSw
 ;*
-;* ¹¦ÄÜÃèÊö: ÈÎÎñ¼¶ÉÏÏÂÎÄÇĞ»»         
+;* åŠŸèƒ½æè¿°: ä»»åŠ¡çº§ä¸Šä¸‹æ–‡åˆ‡æ¢         
 ;*
-;* ²Î    Êı: None
+;* å‚    æ•°: None
 ;*
-;* ·µ »Ø Öµ: None
+;* è¿” å› å€¼: None
 ;***************************************************************************************/
   
 OSCtxSw
 		PUSH    {R4, R5}
-        LDR     R4, =NVIC_INT_CTRL  	;´¥·¢PendSVÒì³£ (causes context switch)
+        LDR     R4, =NVIC_INT_CTRL  	;è§¦å‘PendSVå¼‚å¸¸ (causes context switch)
         LDR     R5, =NVIC_PENDSVSET
         STR     R5, [R4]
 		POP     {R4, R5}
         BX      LR
 
 ;/**************************************************************************************
-;* º¯ÊıÃû³Æ: OSIntCtxSw
+;* å‡½æ•°åç§°: OSIntCtxSw
 ;*
-;* ¹¦ÄÜÃèÊö: ÖĞ¶Ï¼¶ÈÎÎñÇĞ»»
+;* åŠŸèƒ½æè¿°: ä¸­æ–­çº§ä»»åŠ¡åˆ‡æ¢
 ;*
-;* ²Î    Êı: None
+;* å‚    æ•°: None
 ;*
-;* ·µ »Ø Öµ: None
+;* è¿” å› å€¼: None
 ;***************************************************************************************/
 
 OSIntCtxSw
 		PUSH    {R4, R5}
-        LDR     R4, =NVIC_INT_CTRL      ;´¥·¢PendSVÒì³£ (causes context switch)
+        LDR     R4, =NVIC_INT_CTRL      ;è§¦å‘PendSVå¼‚å¸¸ (causes context switch)
         LDR     R5, =NVIC_PENDSVSET
         STR     R5, [R4]
 		POP     {R4, R5}
@@ -156,18 +156,18 @@ OSIntCtxSw
         NOP
 
 ;/**************************************************************************************
-;* º¯ÊıÃû³Æ: OSPendSV
+;* å‡½æ•°åç§°: OSPendSV
 ;*
-;* ¹¦ÄÜÃèÊö: OSPendSV is used to cause a context switch.
+;* åŠŸèƒ½æè¿°: OSPendSV is used to cause a context switch.
 ;*
-;* ²Î    Êı: None
+;* å‚    æ•°: None
 ;*
-;* ·µ »Ø Öµ: None
+;* è¿” å› å€¼: None
 ;***************************************************************************************/
 
 PendSV_Handler
     CPSID   I                                                   ; Prevent interruption during context switch
-    MRS     R0, PSP                                             ; PSP is process stack pointer Èç¹ûÔÚÓÃPSP¶ÑÕ»,Ôò¿ÉÒÔºöÂÔ±£´æ¼Ä´æÆ÷,²Î¿¼CM3È¨ÍşÖĞµÄË«¶ÑÕ»-°×²Ë×¢
+    MRS     R0, PSP                                             ; PSP is process stack pointer å¦‚æœåœ¨ç”¨PSPå †æ ˆ,åˆ™å¯ä»¥å¿½ç•¥ä¿å­˜å¯„å­˜å™¨,å‚è€ƒCM3æƒå¨ä¸­çš„åŒå †æ ˆ-ç™½èœæ³¨
     CBZ     R0, PendSV_Handler_Nosave		                    ; Skip register save the first time
 
     SUBS    R0, R0, #0x20                                       ; Save remaining regs r4-11 on process stack
@@ -204,13 +204,13 @@ PendSV_Handler_Nosave
 
 
 ;/**************************************************************************************
-;* º¯ÊıÃû³Æ: ItDisAll
+;* å‡½æ•°åç§°: ItDisAll
 ;*
-;* ¹¦ÄÜÃèÊö: ¹Ø±ÕÖĞ¶Ï¿ØÖÆÆ÷µÄËùÓĞÖĞ¶Ï.
+;* åŠŸèƒ½æè¿°: å…³é—­ä¸­æ–­æ§åˆ¶å™¨çš„æ‰€æœ‰ä¸­æ–­.
 ;*
-;* ²Î    Êı: None
+;* å‚    æ•°: None
 ;*
-;* ·µ »Ø Öµ: None
+;* è¿” å› å€¼: None
 ;***************************************************************************************/
 
 ItDisAll
