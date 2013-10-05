@@ -75,7 +75,9 @@ OS_EMU_STK          *SS_SP;
     int             Recursion = 0;
 #endif
 
-
+#if OS_TMR_EN > 0
+	static  INT16U  OSTmrCtr;
+#endif
 /*
 *********************************************************************************************************
 *                                       OS INITIALIZATION HOOK
@@ -95,6 +97,9 @@ void OSInitHookBegin(void)
     InitializeCriticalSection(&OSCriticalSection);
 #else
     OSSemaphore = CreateSemaphore( NULL, 1, 1, NULL );
+#endif
+#if OS_TMR_EN > 0
+	OSTmrCtr = 0;
 #endif
 }
 
@@ -349,6 +354,13 @@ void OSTimeTickHook (void)
 	UINT32 times;
 	times = OSTimeGet();
 //	OS_Printf("%d\n",times);
+#if OS_TMR_EN > 0
+	OSTmrCtr++;
+	if (OSTmrCtr >= (OS_TICKS_PER_SEC / OS_TMR_CFG_TICKS_PER_SEC)) {
+		OSTmrCtr = 0;
+		OSTmrSignal();
+	}
+#endif
 }
 
 /*

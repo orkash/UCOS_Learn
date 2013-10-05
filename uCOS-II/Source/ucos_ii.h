@@ -78,7 +78,7 @@ extern "C" {
 
 #define  OS_TASK_STAT_PRIO  (OS_LOWEST_PRIO - 1u)       /* Statistic task priority                     */
 #define  OS_TASK_IDLE_PRIO  (OS_LOWEST_PRIO)            /* IDLE      task priority                     */
-#define  OS_TASK_TMR_PRIO   (0u)						/* 定时器为最高优先级                          */
+#define  OS_TASK_TMR_PRIO   (0)                         /* 定时器为最高优先级                          */
 
 #if OS_LOWEST_PRIO <= 63u
 #define  OS_EVENT_TBL_SIZE ((OS_LOWEST_PRIO) / 8u + 1u) /* Size of event table                         */

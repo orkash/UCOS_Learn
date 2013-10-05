@@ -23,9 +23,10 @@
 */
 
 #define  TASK_STK_SIZE       128
-#define  TASK_START_PRIO0    8
-#define  TASK_START_PRIO1    9
-#define  TASK_START_PRIO2    10
+
+#define  ATASK_PRIO          9
+#define  BTASK_PRIO          10
+#define  CTASK_PRIO          11
 
 /*
 *********************************************************************************************************
@@ -33,8 +34,10 @@
 *********************************************************************************************************
 */
 
-OS_STK        AppStartTaskStk[TASK_STK_SIZE];
-OS_STK        BppStartTaskStk[TASK_STK_SIZE];
+OS_STK        AppStartTaskStk[APP_TASK_START_STK_SIZE];
+OS_STK        ATaskStk[TASK_STK_SIZE];
+OS_STK        BTaskStk[TASK_STK_SIZE];
+OS_STK        CTaskStk[TASK_STK_SIZE];
 
 //内存管理相关变量
 OS_MEM * CommTxBuffer1;
@@ -49,6 +52,9 @@ OS_EVENT * Str_semp;
 //互斥型信号量
 OS_EVENT * Str_mutex;
 
+//定时器相关变量
+OS_TMR * Str_Tmr;
+
 /*
 *********************************************************************************************************
 *                                            FUNCTION PROTOTYPES
@@ -56,11 +62,15 @@ OS_EVENT * Str_mutex;
 */
 
 static  void  AppStartTask(void *p_arg);
-static  void  BppStartTask(void *p_arg);
+static  void  ATask(void *p_arg);
+static  void  BTask(void *p_arg);
+static  void  CTask(void *p_arg);
 #if OS_VIEW_MODULE > 0
 static  void  AppTerminalRx(INT8U rx_data);
 static  void  BppTerminalRx(INT8U rx_data);
 #endif
+
+static  void  TmrCallBack(OS_TMR *ptmr, void *p_arg);
 
 /*
 *********************************************************************************************************
@@ -80,28 +90,13 @@ void main(int argc, char *argv[])
 #endif
 
     OSInit();                              /* Initialize "uC/OS-II, The Real-Time Kernel"                                      */
-
-	CommTxBuffer1 = OSMemCreate(CommTxPart1,8,128,&err);	//创建内存分区
-	Str_box       = OSMboxCreate((void *)0);                //创建消息邮箱
-	Str_semp      = OSSemCreate(0);                         //创建信号量
-	Str_mutex     = OSMutexCreate(2,&err);                  //创建互斥型信号量
     
 	err = OSTaskCreateExt(AppStartTask,
                     (void *)0,
                     (OS_STK *)&AppStartTaskStk[TASK_STK_SIZE-1],
-                    TASK_START_PRIO0,
-                    TASK_START_PRIO0,
+                    APP_TASK_START_PRIO,
+                    APP_TASK_START_PRIO,
                     (OS_STK *)&AppStartTaskStk[0],
-                    TASK_STK_SIZE,
-                    (void *)0,
-                    OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR);
-
-    err = OSTaskCreateExt(BppStartTask,
-                    (void *)0,
-                    (OS_STK *)&BppStartTaskStk[TASK_STK_SIZE-1],
-                    TASK_START_PRIO2,
-                    TASK_START_PRIO2,
-                    (OS_STK *)&BppStartTaskStk[0],
                     TASK_STK_SIZE,
                     (void *)0,
                     OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR);
@@ -125,24 +120,78 @@ void main(int argc, char *argv[])
 *                  set to 0 by 'OSTaskCreate()'.
 *********************************************************************************************************
 */
-
 void  AppStartTask (void *p_arg)
+{
+	INT8U  err;
+	p_arg = p_arg;
+
+#if 0
+	BSP_Init();                                  /* For embedded targets, initialize BSP functions                             */
+#endif
+
+#if OS_TASK_STAT_EN > 0
+	OSStatInit();                                /* Determine CPU capacity                                                     */
+#endif
+
+	Str_Tmr       = OSTmrCreate(0,
+		                        10,
+								OS_TMR_OPT_PERIODIC,
+								TmrCallBack,
+								(void *)0,
+								(INT8U *)(void *)"Tmr test",
+								&err);                      //创建软定时器
+	CommTxBuffer1 = OSMemCreate(CommTxPart1,8,128,&err);	//创建内存分区
+	Str_box       = OSMboxCreate((void *)0);                //创建消息邮箱
+	Str_semp      = OSSemCreate(0);                         //创建信号量
+	Str_mutex     = OSMutexCreate(2,&err);                  //创建互斥型信号量
+	err = OSTaskCreateExt(ATask,
+		(void *)0,
+		(OS_STK *)&ATaskStk[TASK_STK_SIZE-1],
+		ATASK_PRIO,
+		ATASK_PRIO,
+		(OS_STK *)&ATaskStk[0],
+		TASK_STK_SIZE,
+		(void *)0,
+		OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR);
+	err = OSTaskCreateExt(BTask,
+		(void *)0,
+		(OS_STK *)&BTaskStk[TASK_STK_SIZE-1],
+		BTASK_PRIO,
+		BTASK_PRIO,
+		(OS_STK *)&BTaskStk[0],
+		TASK_STK_SIZE,
+		(void *)0,
+		OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR);
+	OSTaskNameSet(ATASK_PRIO, (INT8U *)(void *)"A Task", &err);
+	OSTaskNameSet(BTASK_PRIO, (INT8U *)(void *)"B Task", &err);
+	
+	OSTmrStart(Str_Tmr,&err);                    //启动软定时器
+
+	while (TRUE)                                 /* Task body, always written as an infinite loop.                             */
+	{		
+		OSTimeDlyHMSM(0,0,0,100);
+//		OSTaskSuspend(APP_TASK_START_PRIO);
+//		OSTimeDlyHMSM(0,0,3,0);
+	}
+}
+
+void  TmrCallBack(OS_TMR *ptmr, void *p_arg)
+{
+	OS_Printf("定时任务\n");  //提示信息
+}
+
+
+
+void  ATask (void *p_arg)
 {
 	INT8U  err;
 	INT8U i;
 	INT8U * BlkPtr;;
 	p_arg = p_arg;
 
-#if 0
-    BSP_Init();                                  /* For embedded targets, initialize BSP functions                             */
-#endif
-
-
-#if OS_TASK_STAT_EN > 0
-    OSStatInit();                                /* Determine CPU capacity                                                     */
-#endif
-    
-    while (TRUE)                                 /* Task body, always written as an infinite loop.                             */
+	OSTaskDel(APP_TASK_START_PRIO);
+	
+	while (TRUE)                                 /* Task body, always written as an infinite loop.                             */
 	{
 		BlkPtr = OSMemGet(CommTxBuffer1,&err);
 		if(err  == OS_ERR_NONE){
@@ -171,22 +220,13 @@ void  AppStartTask (void *p_arg)
 //        OSTimeDlyHMSM(0, 0, 0, 200);       
     }
 }
-void  BppStartTask (void *p_arg)
+void  BTask (void *p_arg)
 {
 	INT8U * BlkPtr;
 	INT8U err;
     p_arg = p_arg;
 
-#if 0
-    BSP_Init();                                  /* For embedded targets, initialize BSP functions                             */
-#endif
-
-
-#if OS_TASK_STAT_EN > 0
-    OSStatInit();                                /* Determine CPU capacity                                                     */
-#endif
-    
-    while (TRUE)                                 /* Task body, always written as an infinite loop.                             */
+	while (TRUE)                                 /* Task body, always written as an infinite loop.                             */
 	{       		
 //		OS_Printf("2-");  /* your code here. Create more tasks, etc.                                    */
 //        OSTimeDlyHMSM(0, 0, 0,500);
@@ -194,5 +234,6 @@ void  BppStartTask (void *p_arg)
 		OS_Printf("任务2--接收到的消息是：%s\n",BlkPtr);
 		OS_Printf("任务2--发送打印完成信号！\n");
 		OSSemPost(Str_semp);
+//		OSTaskDel(OS_PRIO_SELF);
     }
 }
