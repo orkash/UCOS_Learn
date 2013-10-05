@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="app_cfg.h" />
     <ClInclude Include="includes.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Source\ucos_ii.h" />
     <ClInclude Include="Ports\WIN32\os_cpu.h" />
     <ClInclude Include="Ports\WIN32\os_trace.h" />
@@ -164,6 +165,9 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="uCOSII.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

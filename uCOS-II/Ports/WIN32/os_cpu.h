@@ -42,7 +42,7 @@
 *********************************************************************************************************
 */
 
-#define _WIN32_WINNT          0x0400 
+//#define _WIN32_WINNT          0x0400 
 #define  OS_CPU_EXT           extern
 #define  OS_TASK_SW()         SetEvent(OSCtxSwW32Event)
 #define  OS_STK_GROWTH        1                             /* Stack grows from HIGH to LOW memory on 80x86  */

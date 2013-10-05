@@ -346,6 +346,9 @@ void OSTaskStatHook (void)
 
 void OSTimeTickHook (void)
 {
+	UINT32 times;
+	times = OSTimeGet();
+//	OS_Printf("%d\n",times);
 }
 
 /*

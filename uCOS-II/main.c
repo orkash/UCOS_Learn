@@ -22,10 +22,10 @@
 *********************************************************************************************************
 */
 
-#define  TASK_STK_SIZE    128
-#define  TASK_START_PRIO0    5
-#define  TASK_START_PRIO1    4
-#define  TASK_START_PRIO2    3
+#define  TASK_STK_SIZE       128
+#define  TASK_START_PRIO0    8
+#define  TASK_START_PRIO1    9
+#define  TASK_START_PRIO2    10
 
 /*
 *********************************************************************************************************
@@ -35,6 +35,19 @@
 
 OS_STK        AppStartTaskStk[TASK_STK_SIZE];
 OS_STK        BppStartTaskStk[TASK_STK_SIZE];
+
+//内存管理相关变量
+OS_MEM * CommTxBuffer1;
+INT8U CommTxPart1[8][128];
+
+//消息邮箱相关变量
+OS_EVENT * Str_box;
+
+//信号量相关变量
+OS_EVENT * Str_semp;
+
+//互斥型信号量
+OS_EVENT * Str_mutex;
 
 /*
 *********************************************************************************************************
@@ -62,14 +75,18 @@ void main(int argc, char *argv[])
 {
 	INT8U  err;
 
-
 #if 0
     BSP_IntDisAll();                       /* For an embedded target, disable all interrupts until we are ready to accept them */
 #endif
 
     OSInit();                              /* Initialize "uC/OS-II, The Real-Time Kernel"                                      */
 
-    err = OSTaskCreateExt(AppStartTask,
+	CommTxBuffer1 = OSMemCreate(CommTxPart1,8,128,&err);	//创建内存分区
+	Str_box       = OSMboxCreate((void *)0);                //创建消息邮箱
+	Str_semp      = OSSemCreate(0);                         //创建信号量
+	Str_mutex     = OSMutexCreate(2,&err);                  //创建互斥型信号量
+    
+	err = OSTaskCreateExt(AppStartTask,
                     (void *)0,
                     (OS_STK *)&AppStartTaskStk[TASK_STK_SIZE-1],
                     TASK_START_PRIO0,
@@ -89,17 +106,8 @@ void main(int argc, char *argv[])
                     (void *)0,
                     OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR);
 
-#if OS_TASK_NAME_SIZE > 11
-    OSTaskNameSet(APP_TASK_START_PRIO, (INT8U *)"Start Task", &err);
-#endif
-
-#if OS_TASK_NAME_SIZE > 14
-    OSTaskNameSet(OS_IDLE_PRIO, (INT8U *)"uC/OS-II Idle", &err);
-#endif
-
-#if (OS_TASK_NAME_SIZE > 14) && (OS_TASK_STAT_EN > 0)
-    OSTaskNameSet(OS_STAT_PRIO, "uC/OS-II Stat", &err);
-#endif
+    OSTaskNameSet(APP_TASK_START_PRIO, (INT8U *)(void *)"Start Task"   , &err);
+    OSTaskNameSet(OS_TASK_IDLE_PRIO  , (INT8U *)(void *)"uC/OS-II Idle", &err);
 
     OSStart();                             /* Start multitasking (i.e. give control to uC/OS-II)                               */
 }
@@ -120,7 +128,10 @@ void main(int argc, char *argv[])
 
 void  AppStartTask (void *p_arg)
 {
-    p_arg = p_arg;
+	INT8U  err;
+	INT8U i;
+	INT8U * BlkPtr;;
+	p_arg = p_arg;
 
 #if 0
     BSP_Init();                                  /* For embedded targets, initialize BSP functions                             */
@@ -132,13 +143,38 @@ void  AppStartTask (void *p_arg)
 #endif
     
     while (TRUE)                                 /* Task body, always written as an infinite loop.                             */
-	{       		
-		OS_Printf("1-");  /* your code here. Create more tasks, etc.                                    */
-        OSTimeDlyHMSM(0, 0, 1, 0);       
+	{
+		BlkPtr = OSMemGet(CommTxBuffer1,&err);
+		if(err  == OS_ERR_NONE){
+			OS_MemClr(BlkPtr,20);
+			OS_Printf("任务1--申请内存成功，请输入：");  //提示信息
+		}
+		else {
+			OS_Printf("任务1--申请内存有一个错误");
+			OS_STOP();
+		}
+		for(i = 0 ;i < 128; i++){
+			BlkPtr[i] = getchar();
+			if(BlkPtr[i] == 0x0a){
+				BlkPtr[i] = 0x00;
+				break;
+			}
+			else if(BlkPtr[i] == 'Q'){
+				OS_STOP();
+			}
+		}
+		OS_Printf("任务1--发送消息邮箱，并等待传输完成。\n");  //提示信息
+		OSMboxPost(Str_box,BlkPtr);                            //发送消息邮箱内容是接收到的键盘输入
+		OSSemPend(Str_semp,0,&err);                            //等待打印完成信号
+		OS_Printf("任务1--接收到传输完成信号，释放内存\n\n");  //提示信息
+		err = OSMemPut(CommTxBuffer1,BlkPtr);                  //释放内存
+//        OSTimeDlyHMSM(0, 0, 0, 200);       
     }
 }
 void  BppStartTask (void *p_arg)
 {
+	INT8U * BlkPtr;
+	INT8U err;
     p_arg = p_arg;
 
 #if 0
@@ -152,7 +188,11 @@ void  BppStartTask (void *p_arg)
     
     while (TRUE)                                 /* Task body, always written as an infinite loop.                             */
 	{       		
-		OS_Printf("2-");  /* your code here. Create more tasks, etc.                                    */
-        OSTimeDlyHMSM(0, 0, 0,500);       
+//		OS_Printf("2-");  /* your code here. Create more tasks, etc.                                    */
+//        OSTimeDlyHMSM(0, 0, 0,500);
+		BlkPtr = OSMboxPend(Str_box,0,&err);
+		OS_Printf("任务2--接收到的消息是：%s\n",BlkPtr);
+		OS_Printf("任务2--发送打印完成信号！\n");
+		OSSemPost(Str_semp);
     }
 }
