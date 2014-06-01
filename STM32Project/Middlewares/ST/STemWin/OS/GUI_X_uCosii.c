@@ -90,8 +90,6 @@ int  GUI_X_GetTime (void)
 void  GUI_X_Delay (int period)
 {
     INT32U  ticks;
-
-
     ticks = (period * 1000) / OS_TICKS_PER_SEC;
     OSTimeDly((INT16U)ticks);
 }
