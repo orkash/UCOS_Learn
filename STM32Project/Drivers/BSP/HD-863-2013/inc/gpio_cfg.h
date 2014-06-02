@@ -1,8 +1,8 @@
 /*
 *************************************************************************************
 **文件说明：gpio配置
-**文件名称： gpio_cfg.h 
-**创建日期：2013.11.06  
+**文件名称： gpio_cfg.h
+**创建日期：2013.11.06
 **创 建 人：王玮
 **-----------------------------------------------------------------------------------
 **修改日期：2013.xx.xx
@@ -17,7 +17,7 @@
 
 
 /**************************************************
-说明：gpio端口使能掩码    
+说明：gpio端口使能掩码
 可根据工程需要继续添加，并在代码文件中添加相应处理。
 **************************************************/
 #define  EN_GPIO_KEY        ((Uint16)0x0001)
@@ -38,7 +38,7 @@
 **************************************************/
 #define RCC_FSMC_PORT                                \
         RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE  \
-      | RCC_APB2Periph_GPIOF | RCC_APB2Periph_GPIOG 
+      | RCC_APB2Periph_GPIOF | RCC_APB2Periph_GPIOG
 
 #define GPIOD_FSMC_PIN                                          \
         GPIO_Pin_0  | GPIO_Pin_1  | GPIO_Pin_3  | GPIO_Pin_4    \
@@ -47,8 +47,8 @@
       | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15
 
 #define GPIOE_FSMC_PIN                                          \
-        GPIO_Pin_3  | GPIO_Pin_4                                \
-      | GPIO_Pin_5  | GPIO_Pin_7  | GPIO_Pin_8                  \
+        GPIO_Pin_0  | GPIO_Pin_1  | GPIO_Pin_3  | GPIO_Pin_4    \
+      | GPIO_Pin_5  | GPIO_Pin_6  | GPIO_Pin_7  | GPIO_Pin_8    \
       | GPIO_Pin_9  | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12   \
       | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15
 
@@ -56,13 +56,15 @@
         GPIO_Pin_0  | GPIO_Pin_1  | GPIO_Pin_2  |GPIO_Pin_3     \
       | GPIO_Pin_4  | GPIO_Pin_5  | GPIO_Pin_12                 \
       | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15
- 
+
 #define GPIOG_FSMC_PIN                                          \
         GPIO_Pin_0  | GPIO_Pin_1  | GPIO_Pin_2  | GPIO_Pin_3    \
       | GPIO_Pin_4  | GPIO_Pin_5
 
 
-           
+
+
+
 
 /**************************************************
 说明：KEY端口相关
@@ -83,11 +85,11 @@
 #define LED_GREEN      GPIO_Pin_14
 #define GPIOG_LED_PIN  LED_RED | LED_BLUE | LED_GREEN
 #define LedRedOn()     GPIO_ResetBits(LED_PORT,LED_RED)
-#define LedRedOff()    GPIO_SetBits(  LED_PORT,LED_RED) 
+#define LedRedOff()    GPIO_SetBits(  LED_PORT,LED_RED)
 #define LedBlueOn()    GPIO_ResetBits(LED_PORT,LED_BLUE)
 #define LedBlueOff()   GPIO_SetBits(  LED_PORT,LED_BLUE)
 #define LedGreenOn()   GPIO_ResetBits(LED_PORT,LED_GREEN)
-#define LedGreenOff()  GPIO_SetBits(  LED_PORT,LED_GREEN) 
+#define LedGreenOff()  GPIO_SetBits(  LED_PORT,LED_GREEN)
 #define LedAllOn()     GPIO_ResetBits(LED_PORT,LED_RED | LED_BLUE | LED_GREEN)
 #define LedAllOff()    GPIO_SetBits(  LED_PORT,LED_RED | LED_BLUE | LED_GREEN)
 
@@ -106,8 +108,8 @@ do{                                               \
     GPIO_ResetBits(LCD_RST_PORT,LCD_RST_PIN);     \
     GPIO_SetBits(LCD_RST_PORT,LCD_RST_PIN);       \
 }while(0)
-    
-    
+
+
 
 
 

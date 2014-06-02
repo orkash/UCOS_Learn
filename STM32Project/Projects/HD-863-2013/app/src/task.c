@@ -18,6 +18,7 @@
 #include "memory.h"
 #include "word.h"
 #include "guidemo.h"
+#include "GUI.h"
 
 
 
@@ -43,6 +44,17 @@ void TaskLed1(void *pdata);
 void TaskLed2(void *pdata);
 
 
+
+void SetFont(void)
+{
+    GUI_SetFont(&GUI_Font8x16);
+    GUI_DispStringAt("This text is 8 by 16 pixels\n",0,30);
+    GUI_SetFont(&GUI_Font6x8);
+    GUI_DispStringAt("This text is 6 by 8 pixels\n",0,50);
+    GUI_SetFont(&GUI_Font32B_ASCII);
+    GUI_DispStringAt("This text is 48 by 64 pixels\n",0,90);
+}
+
 /***************************************************
 开始任务
 ****************************************************/
@@ -64,6 +76,17 @@ void TaskStart(void * pdata)
 //                 (OS_STK *)&TASK_RTC_DIS_UPDATE_STK[RTC_STK_SIZE-1],
 //                 RTC_TASK_Prio);
     OS_EXIT_CRITICAL();
+
+    //WM_SetCreateFlags(WM_CF_MEMDEV);
+
+    // Init the STemWin GUI Library
+    GUI_Init();
+
+    GUI_DispString("Hello STemWin!\n");
+    GUI_DispString("Hello STemWin!\n");
+
+    SetFont();
+
     GUIDEMO_Main();
     OSTaskDel(OS_PRIO_SELF);      //开始任务完成，删除自身。
 }

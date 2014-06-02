@@ -111,7 +111,7 @@ Purpose     : Display controller configuration (single layer)
 */
 static void LcdWriteReg(U16 Data) {
   // ... TBD by user
-  *(__IO Uint16 *)LCD_ADDR_CMD = Data;
+  LCD_WriteCmd(Data) ;
 }
 
 /********************************************************************
@@ -123,7 +123,7 @@ static void LcdWriteReg(U16 Data) {
 */
 static void LcdWriteData(U16 Data) {
   // ... TBD by user
-  *(__IO Uint16 *)LCD_ADDR_DAT = Data;
+  LCD_WriteDat(Data);
 }
 
 /********************************************************************
@@ -136,7 +136,8 @@ static void LcdWriteData(U16 Data) {
 static void LcdWriteDataMultiple(U16 * pData, int NumItems) {
   while (NumItems--) {
     // ... TBD by user
-    *(__IO Uint16 *)LCD_ADDR_DAT = * pData ++;
+    LCD_WriteDat(* pData);
+    pData ++;
   }
 }
 
@@ -150,7 +151,8 @@ static void LcdWriteDataMultiple(U16 * pData, int NumItems) {
 static void LcdReadDataMultiple(U16 * pData, int NumItems) {
   while (NumItems--) {
     // ... TBD by user
-    * pData ++ = *(__IO Uint16 *)LCD_ADDR_DAT;
+    * pData = LCD_ReadDat();
+    pData ++;
   }
 }
 

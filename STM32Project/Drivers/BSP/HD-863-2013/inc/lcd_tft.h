@@ -44,11 +44,12 @@
 /**************************************************
 说明：LCD端口操作
 **************************************************/
-#define  LCD_ADDR_CMD         ((Uint32)0x60000002)
-#define  LCD_ADDR_DAT         ((Uint32)0x60000004)
+#define  LCD_ADDR_CMD         ((Uint32)0x63bffff8)
+#define  LCD_ADDR_DAT         ((Uint32)0x63bffffc)
 
 #define  LCD_WriteCmd(Cmd)    (*(__IO Uint16 *)LCD_ADDR_CMD) = (Uint16)Cmd
 #define  LCD_WriteDat(Dat)    (*(__IO Uint16 *)LCD_ADDR_DAT) = (Uint16)Dat
+#define  LCD_ReadDat()        (*(__IO Uint16 *)LCD_ADDR_DAT)
 
 /**************************************************
 说明：LCD操作 CMD

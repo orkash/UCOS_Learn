@@ -11,7 +11,7 @@
 */
 #include "user_cfg.h"
 #include "drivers.h"
-#include "GUI.h"
+
 
 
 
@@ -50,15 +50,7 @@ void NVIC_Configuration(void)
 }
 
 
-void SetFont(void)
-{
-    GUI_SetFont(&GUI_Font8x16);
-    GUI_DispStringAt("This text is 8 by 16 pixels\n",0,30);
-    GUI_SetFont(&GUI_Font6x8);
-    GUI_DispStringAt("This text is 6 by 8 pixels\n",0,50);
-    GUI_SetFont(&GUI_Font32B_ASCII);
-    GUI_DispStringAt("This text is 48 by 64 pixels\n",0,90);
-}
+
 /*
 *************************************************************************************
 * 名    称：void SysInit(void)
@@ -79,15 +71,8 @@ void SysInit(void)
     //LCDx_Init();
     RTC_Prepare();
     SD_Init();
+    FSMC_Config(EN_FSMC_PSRAM,ENABLE);       //开启PSRAM FSMC接口
 
-    //WM_SetCreateFlags(WM_CF_MEMDEV);
 
-    // Init the STemWin GUI Library
-    GUI_Init();
-
-    GUI_DispString("Hello STemWin!\n");
-    GUI_DispString("Hello STemWin!\n");
-
-    SetFont();
 }
 

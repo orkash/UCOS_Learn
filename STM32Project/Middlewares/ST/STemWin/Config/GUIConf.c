@@ -62,7 +62,7 @@ Purpose     : Display controller initialization
 //
 // Define the available number of bytes available for the GUI
 //
-#define GUI_NUMBYTES  ((1024) * 10)
+#define GUI_NUMBYTES  ((1024) * 20)
 
 /*********************************************************************
 *
@@ -78,12 +78,15 @@ Purpose     : Display controller initialization
 *   Called during the initialization process in order to set up the
 *   available memory for the GUI.
 */
-//#define  aMemory     (0x60000000)
+#define  EXRAM_ADDR     (U32)(0x63c00100)
+
 void GUI_X_Config(void) {
   //
   // 32 bit aligned memory area
   //
-  static U32 aMemory[GUI_NUMBYTES / 4];
+//  static U32 aMemory[GUI_NUMBYTES / 4];
+  static U32 * aMemory   ;
+  aMemory = (U32 * )EXRAM_ADDR;
   //
   // Assign memory to emWin
   //
