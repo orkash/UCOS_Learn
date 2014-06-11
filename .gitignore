@@ -8,6 +8,9 @@
 !*.cpp
 !*.h
 !*.docx
+!*.xml
+
+
 
 #VCнд╪Ч
 !*.sln
